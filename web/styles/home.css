@@ -1,0 +1,313 @@
+/* עיצוב עמוד הבית - home.css */
+
+/* רקע עליון עם גלים */
+.hero-home {
+    position: relative;
+    padding: 15rem 2rem 5rem;
+    text-align: center;
+  }
+  
+  .hero-background img {
+    width: 100%;
+    height: auto;
+    transform: scale(-1, -0.75);  /* הופך גם אנכית וגם אופקית */
+    display: block;
+    position: absolute;
+    top: -11rem; /* או כמה שתצטרכי להזיז כלפי מעלה */
+    left: 0;
+    z-index: -1;
+  }
+
+  .logo-slogan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* ממרכז את שניהם אופקית */
+    justify-content: center; /* אם יש גובה קבוע, ימרכז גם אנכית */
+    text-align: center;
+  }
+  
+  .logo {
+    width: 800px;
+    height: auto;
+  }
+  
+  .subtitle {
+    font-size: 2rem;
+    margin-bottom: 6rem;
+    color: #003344;
+  }
+
+.hero-animate-wrapper .logo,
+.hero-animate-wrapper .subtitle,
+.hero-animate-wrapper .btn-create-model,
+.hero-animate-wrapper .btn-load-model {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.hero-animate-wrapper.animate-in .logo,
+.hero-animate-wrapper.animate-in .subtitle,
+.hero-animate-wrapper.animate-in .btn-create-model,
+.hero-animate-wrapper.animate-in .btn-load-model {
+  animation-name: fadeSlideUp;
+  animation-duration: 0.6s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+
+.hero-animate-wrapper.animate-in .logo {
+  animation-delay: 0.2s;
+}
+.hero-animate-wrapper.animate-in .subtitle {
+  animation-delay: 0.4s;
+}
+.hero-animate-wrapper.animate-in .btn-create-model {
+  animation-delay: 0.6s;
+}
+.hero-animate-wrapper.animate-in .btn-load-model {
+  animation-delay: 0.8s;
+}
+.hero-animate-wrapper.animate-in .scroll-wrapper {
+  animation-delay: 1s;
+}
+
+/* 1. ברירת מחדל - שקוף וירד */
+.hero-animate-wrapper .scroll-outer-wrapper {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* 2. כשהאנימציה מופעלת */
+.hero-animate-wrapper.animate-in .scroll-outer-wrapper {
+  animation: fadeSlideUp 0.6s ease forwards;
+  animation-delay: 1s;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hero-animate-wrapper.animation-complete .btn-create-model,
+.hero-animate-wrapper.animation-complete .btn-load-model {
+  animation: unset;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+.hero-animate-wrapper.animation-complete .custom-upload-button:hover {
+  transform: translateY(0) scale(1.04);
+}
+
+
+.scroll-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-top: 6rem;
+  color: #002D3E; /* צבע רגיל */
+}
+
+/* ✨ יתווסף רק אחרי שהאלמנט הופיע */
+.scroll-bounce {
+  animation: scroll-bounce 2s infinite ease-in-out;
+}
+
+.scroll-wrapper:hover {
+  color: #0d6781; /* משנה גם את הטקסט וגם את החץ בזכות currentColor */
+}
+
+.scroll-down {
+  font-size: 1.6rem;
+  font-weight: 300;
+  transition: inherit;
+}
+
+@keyframes scroll-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+  /* קונטקסט - איך לומדים */
+  .context-section {
+    background: url("../assets/P1-MIDDLE.png") no-repeat center;
+    background-size: cover;
+    border-radius: 18px;
+    padding: 6rem 4rem; /* פדינג עליון ותחתון 6rem, צדדים 4rem */
+    min-height: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .context-cards {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* עיצוב אחיד לכרטיסיות */
+  .context-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 3rem 3rem 2.5rem; /* padding-top גדול יחסית לכותרת קבועה */
+    width: 35%; /* צר יותר */
+    height: 420px;
+    position: relative; /* במקום absolute */
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: transform 0.3s ease;
+  }
+  
+  /* טקסט */
+  .context-card h2 {
+    font-size: 2.6rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+    text-align: right;
+  }
+  
+  .context-card p {
+    font-size: 1.8rem;
+    text-align: right;
+    line-height: 1.9;
+    margin: 0;
+  }
+  
+  .card-top-right {
+    bottom: 3rem;
+    right: 4rem;
+  }
+  
+  /* שמאל למטה (הכרטיסייה השנייה) */
+  .card-bottom-left {
+    top: 3rem;
+    left: 4rem;
+  }
+
+  /* תיבות הסבר כחולות */
+  .explainer-section {
+    background-color: #eef7fc;
+    padding: 6rem 0rem;
+  }
+  
+  .explainer-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  .explainer-box {
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    text-align: center;
+    width: 18%;
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: scale(1);
+  }
+  
+  /* אפקט ה-hover */
+  .explainer-box:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    cursor: default;
+  }
+  
+
+  .explainer-box p{
+    margin-top: 5rem;
+    font-size: 1.7rem;
+  }
+  
+  .explainer-box.blue {
+    background-color: #01335F;
+  }
+  
+  .explainer-box.light-green {
+    background-color: #5F879B;
+  }
+  
+  .explainer-box.turquoise {
+    background-color: #006884;
+  }
+  
+  .explainer-box.dark-green {
+    background-color: #004051;
+  }
+  
+  /* שלבי התהליך */
+  .steps-section {
+    background-color: #012E45;
+    color: white;
+    padding: 6rem 0rem;
+    text-align: center;
+  }
+
+  .steps-section h2 {
+    font-size: 4rem;
+    margin-bottom: 0.1rem;
+  }
+  
+  .steps {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+  }
+  
+  .step {
+    padding: 2rem;
+    width: 12%;
+  }
+  
+  p.number {
+    font-size: 4.4rem;
+    margin: 0
+  }
+
+  p.step-title {
+    font-size: 2rem;
+    margin: 0 0 0.3rem 0;
+  }
+
+  p.description {
+    font-size: 1.4rem;
+    margin: 0;
+  }
+  
+  /* תחתית - התחלה */
+  .start-footer {
+    background: url("../assets/P1-END.png") no-repeat center bottom;
+    background-size: cover;
+    padding: 8rem 2rem;
+    text-align: center;
+  }
+
+  p,
+  span {
+    font-weight: 300;
+  }
+
+  h2 {
+    font-weight: 400;
+  }
+  

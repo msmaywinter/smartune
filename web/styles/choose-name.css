@@ -1,0 +1,83 @@
+body {
+    background: url("../assets/P2-START.png") no-repeat top center;
+    background-size: 100% 80%;
+}
+
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* או center אם את רוצה באמצע הדף */
+  }  
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    margin-top: 4rem;
+}
+  
+  .hero-section h1,
+  .hero-section span,
+  .hero-section button,
+  .hero-section .template-link,
+  .hero-section .custom-upload-button {
+    font-weight: 300 !important;
+  }
+
+  .hero-section p {
+    font-weight: 200 !important;
+  }
+
+  h1 {
+    font-size: 4.5rem;
+  }
+  
+  .hero-text-group {
+    margin-top: 2rem;
+  }
+  
+  .hero-text-group p {
+    margin: 0;
+    line-height: 1.7;
+  }
+  
+  input#modelNameInput {
+    font-family: 'Assistant', sans-serif;
+    width: 40rem;
+    max-width: 90%;
+    padding: 1.2rem 2rem;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 12px;
+    background-color: #EEF9FD;
+    color: #002D3E;
+    text-align: right;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 0 1px transparent;
+    margin-top: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  /* אפקט קל בלחיצה */
+  input#modelNameInput:focus {
+    box-shadow: 0 0 0 3px rgba(0, 115, 150, 0.3);
+  }
+  
+  /* placeholder אפרפר */
+  input#modelNameInput::placeholder {
+    color: #999;
+    font-weight: 300;
+  }
+
+  .input-error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  
+  
+  

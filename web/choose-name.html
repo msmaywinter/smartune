@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>בחירת שם למודל- SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/choose-name.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+  <div id="preloader-placeholder"></div>
+
+  <div id="navbar-placeholder"></div>
+  <main>
+
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <h1>העלאת הקובץ הושלמה בהצלחה!</h1>
+        <div class="hero-text-group">
+            <p id="set-count">הקובץ מכיל ... שאלות ותשובות.</p>
+        </div>
+        <input type="text" id="modelNameInput" placeholder="בחר/י שם מודל..." />
+        <p id="name-error" class="input-error-message" style="display: none;"></p>
+    </section>
+
+    <div class="bottom-buttons">
+        <button class="nav-button" onclick="navigateTo('upload.html')">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+          חזרה
+        </button>
+      
+        <button class="nav-button disabled-button">
+          שמירה והמשך
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>      
+      
+      
+  </main>
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/choose-name.js"></script>
+  
+</body>
+</html>

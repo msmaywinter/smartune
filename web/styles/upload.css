@@ -1,0 +1,203 @@
+h2 {
+  font-weight: 300;
+  font-size: 3.5rem;
+}
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    padding-top: 1rem;
+  }
+  
+  .hero-section h1,
+  .hero-section span,
+  .hero-section p,
+  .hero-section button,
+  .hero-section .template-link,
+  .hero-section .custom-upload-button {
+    font-weight: 300 !important;
+  }
+
+  h1 {
+    font-size: 4.5rem;
+  }
+  
+  .hero-text-group {
+    margin-top: 2rem;
+  }
+  
+  .hero-text-group p {
+    margin: 0;
+    line-height: 1.7;
+  }
+  
+  .template-link {
+    font-size: 1.4rem;
+    color: #0d6781;
+  }
+  
+  .upload-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  
+  .upload-wrapper input[type="file"] {
+    display: none;
+  }
+
+  .scroll-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    color: #002D3E; /* צבע רגיל */
+    animation: scroll-bounce 2s infinite ease-in-out;
+  }
+  
+  .scroll-wrapper:hover {
+    color: #0d6781; /* משנה גם את הטקסט וגם את החץ בזכות currentColor */
+  }
+  
+  .scroll-down {
+    font-size: 1.6rem;
+    font-weight: 300;
+    transition: inherit;
+  }
+  
+  @keyframes scroll-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
+    }
+  }
+  
+  .example-section {
+    background: #006884;
+    padding: 4rem 2rem 20rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .example-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .example-content > div {
+    text-align: right;
+    direction: rtl;
+    max-width: 700px;
+    padding-right: 2rem;
+  }
+  
+  .example-content h2,
+  .example-content li,
+  .example-content p,
+  .example-content span {
+    text-align: right;
+    direction: rtl;
+    font-weight: 300;
+  }
+  
+  .example-section img {
+    max-width: 100%;
+    border-radius: 10px;
+    height: auto;
+  }
+  
+.tips-section {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+  
+  .tip-box h2{
+    padding-right: 1rem;
+  }
+  
+  .tip-box {
+    background-color: #E3F3FE;
+    padding: 2.5rem 3rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 1.5rem;
+    font-weight: 300;
+    position: relative;
+    z-index: 20;
+    align-items: right;
+    text-align: right;     /* יישור של כל התוכן לימין */
+    display: inline-block; /* חשוב! כדי שהרוחב יתאים לתוכן */
+    white-space: nowrap;   /* כדי למנוע שבירת שורות */
+  }
+
+  .tip-box h2,
+  .tip-box ul,
+  .tip-box li {
+    direction: rtl;
+    text-align: right;
+    list-style-position: inside; /* תבליטים בצד ימין */
+  }
+  
+  .avoid-section {
+    background-color: #01335F;
+    color: white;
+    padding: 20rem 2rem 6rem;
+    margin: 0;
+    position: relative;
+    z-index: 0;
+  }
+
+  .avoid-section ul {
+    direction: rtl;
+    text-align: right;       /* יישור הטקסט לימין */
+    list-style-position: inside;
+    width: fit-content;      /* הרוחב יתאים לתוכן */
+    margin: 0 auto;          /* מרכז את הרשימה כולה */
+    padding: 0 1rem;         /* קצת רווח פנימי */
+  }
+  
+  .avoid-section li {
+    font-weight: 300;
+    direction: rtl;
+    text-align: right;
+    margin-bottom: 1rem;
+  }
+  
+  .summary-section {
+    background-image: url("../assets/P2-END.png");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: 100% 200%; /* גובה גדול יותר → חותך מלמטה */
+    text-align: center;
+    font-weight: 300;
+    padding: 24rem 2rem 8rem;
+    color: white;
+    min-height: 300px;
+    position: relative;
+    width: 100vw; /* תופס את כל רוחב המסך */
+    overflow: hidden; /* מונע גלישה אם התמונה חורגת */
+  }
+  
+body {
+    background: url("../assets/P2-START.png") no-repeat top center;
+    background-size: 100% 20%;
+}

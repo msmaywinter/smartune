@@ -1,0 +1,127 @@
+body {
+    background: url("../assets/P2-START.png") no-repeat top center;
+    background-size: 100% 80%;
+}
+
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }  
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    margin-top: 4rem;
+}
+  
+  .hero-section h1,
+  .hero-section span,
+  .hero-section button,
+  .hero-section .template-link,
+  .hero-section .custom-upload-button {
+    font-weight: 300 !important;
+  }
+
+  .hero-section p {
+    font-weight: 200 !important;
+  }
+
+  h1 {
+    font-size: 4.5rem;
+  }
+  
+  .hero-text-group {
+    margin-top: 2rem;
+  }
+  
+  .slider-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 3rem auto 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }  
+  
+  #setsSlider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 30px; /* עבה יותר */
+    background: linear-gradient(to right, #004051 0%, #eef9fd 0%);
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    will-change: background;
+  }
+  
+  #setsSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+  }
+  #setsSlider::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+  }
+
+  #setsSlider::-webkit-slider-thumb::after {
+    content: attr(value);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.4rem;
+    color: #004051;
+    font-family: 'Assistant', sans-serif;
+    pointer-events: none;
+  }  
+
+/* עדכון לעיגול הערך כדי לעבוד עם transform במקום left */
+.thumb-value {
+    position: absolute;
+    transition: left 0.3s ease, background-color 0.3s ease;
+    top: -15%; 
+    left: 0; 
+    transform: translateX(0);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #d0e6f6;
+    border: 1px solid #004051;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #004051;
+    font-family: 'Assistant', sans-serif;
+    pointer-events: none;
+    z-index: 2;
+    /* הוספת transition לחלקות בשחרור הגרירה */
+    will-change: transform; /* רמז לדפדפן להאיץ את השינוי */
+}
+  
+  .slider-labels {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-size: 1.3rem;
+    color: #002D3E;
+    font-weight: 300;
+    padding: 0 0.5rem;
+  }
+  

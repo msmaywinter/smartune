@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>בחירת כמות סטים להוספה - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/add-ai-option.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+  <div id="preloader-placeholder"></div>
+
+  <div id="navbar-placeholder"></div>
+  <main>
+
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <h1>בחירת כמות שאלות ותשובות להוספה</h1>
+        <div class="hero-text-group">
+            <p>בחרו כמה שאלות ותשובות הבינה המלאכותית תיצור עבורכם</p>
+        </div>
+        
+        <div class="slider-container">
+            <input type="range" id="setsSlider" min="10" max="100" value="10" step="5" />
+            <div id="thumb-value" class="thumb-value">10</div>
+            <div class="slider-labels">
+                <span id="max-label">100</span>
+                <span id="min-label">10</span>
+              </div>
+              
+          </div>           
+    
+        </div>
+          
+    </section>
+
+    <div class="bottom-buttons">
+        <button class="nav-button" onclick="navigateTo('choose-name.html')">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+          חזרה
+        </button>
+      
+        <button class="nav-button" onclick="navigateTo('generate-sets.html')">
+          שמירה והמשך
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>      
+      
+      
+  </main>
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/add-ai-option.js"></script>
+  
+</body>
+</html>

@@ -1,0 +1,116 @@
+#feedbackModal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  font-family: 'Assistant', sans-serif;
+}
+
+.modal.hidden {
+  display: none !important;
+}
+
+.modal-title {
+  font-size: 2.4rem;
+  font-family: 'Assistant', sans-serif;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  color: #0d6781;
+  text-align: center;
+}
+
+.modal-subtext {
+  font-size: 1.4rem; /* מוקטן טיפה */
+  font-family: 'Assistant', sans-serif;
+  font-weight: 300;
+  color: #003344;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* אזור כפתורים */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 0.6rem;
+  flex-direction: row;
+  margin-top: 1rem;
+  flex-shrink: 1;
+}
+
+/* כפתור */
+.modal-button {
+  font-size: 1.2rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #BEE2F8;
+  color: #002D3E;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  font-family: 'Assistant', sans-serif;
+  font-weight: 300;
+  white-space: nowrap;
+}
+
+.modal-button:hover {
+  transform: scale(1.04);
+  background-color: #A6D4ED;
+}
+
+.modal-button.primary {
+  background-color: #0d6781;
+  color: white;
+}
+
+.modal-button.primary:hover {
+  background-color: #0a5064;
+}
+
+.modal-error-list {
+  text-align: right;
+  margin: 1.5rem 0;
+  padding-right: 1.5rem;
+  direction: rtl;
+  font-weight: 300;
+  color: #003344;
+  line-height: 1.6;
+}
+
+.modal-error-list li {
+  margin-bottom: 0.6rem;
+  list-style-type: disc;
+  font-size: 1.3rem;
+  color: darkred;
+  text-align: right;
+  font-family: 'Assistant', sans-serif;
+}
+
+.modal-error-extra {
+  text-align: right;
+  direction: rtl;
+  font-size: 1.2rem;
+  color: #003344;
+  font-family: 'Assistant', sans-serif;
+  font-weight: 300;
+  margin-top: 1rem;
+}
