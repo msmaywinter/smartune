@@ -213,9 +213,9 @@ window.addEventListener("DOMContentLoaded", () => {
         setTimeout(updateSliderUI, 10);
     }
     
-    continueButton.addEventListener("click", async () => {
+    continueButton.addEventListener("click", () => {
         if (continueButton.classList.contains("disabled-button")) return;
-    
+        
         const selectedSets = currentValue; // כמות הסטים מהסליידר
         const modelName = urlParams.get("name"); // שם המודל
     
@@ -224,17 +224,10 @@ window.addEventListener("DOMContentLoaded", () => {
             return;
         }
     
-        try {
-            // קריאה לשרת: שולחים רק את מספר הסטים ואת שם המודל
-            await eel.generate_sets(selectedSets, modelName)();
-            
-            // אחרי הצלחה - מעבר לדף הבא
-            window.location.href = `generate-sets.html?sets=${selectedSets}&name=${encodeURIComponent(modelName)}`;
-        } catch (error) {
-            console.error("❌ שגיאה בשליחת בקשה לג'נרציה:", error);
-            alert("קרתה שגיאה ביצירת הסטים. נסה שוב.");
-        }
-    });    
+        // רק מעבר עם פרמטרים ב-URL
+        window.location.href = `generate-sets.html?sets=${selectedSets}&name=${encodeURIComponent(modelName)}`;
+    });
+    
     
     // עדכון ראשוני של הסליידר
     updateSliderUI();

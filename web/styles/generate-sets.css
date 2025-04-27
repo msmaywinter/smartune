@@ -1,0 +1,101 @@
+body {
+    background: url("../assets/soft-bg.png") no-repeat top center;
+    background-size: cover;
+}
+
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }  
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    margin-top: 4rem;
+}
+  
+  .hero-section h1,
+  .hero-section span,
+  .hero-section button,
+  .hero-section .template-link,
+  .hero-section .custom-upload-button {
+    font-weight: 300 !important;
+  }
+
+  h1 {
+    font-size: 4.5rem;
+  }
+
+  @keyframes fadePulse {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.02);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }  
+  
+  .hero-content h1 {
+    animation: fadePulse 2s infinite;
+  }  
+
+  .progress-container {
+    width: 60%;
+    margin: 40px auto;
+    text-align: center;
+    position: relative;
+  }
+  
+  .progress-bar-out {
+    width: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid #ABC9D6;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 30px;
+    position: relative;
+    direction: ltr;
+  }
+  
+  .progress-bar-inner {
+    background-color: #30698C;
+    height: 100%;
+    width: 0%;
+    transition: width 0.6s ease;
+    border-radius: 20px;
+    transform-origin: left center;
+    left: 0;
+    position: absolute;
+  }
+  
+  .percentage-text {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+  }
+
+  .progress-info {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #30698C;
+    font-weight: 600;
+  }
+  
+  
+  
+  

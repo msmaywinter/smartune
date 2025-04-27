@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import eel
 import pandas as pd
 from pathlib import Path
 from collections import defaultdict
@@ -182,6 +183,7 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
                 existing_questions.extend(item["question"] for item in batch)
                 generated_count += len(batch)
                 print(f"⏳ התקדמות: {generated_count} מתוך {total_to_generate} סטים")
+                eel.update_progress(generated_count, total_to_generate)
         else:
             chunks = list(chunk_list(group_data, CHUNK_SIZE))
             chunk_count = len(chunks)
@@ -204,6 +206,7 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
                     existing_questions.extend(item["question"] for item in batch)
                     generated_count += len(batch)
                     print(f"⏳ התקדמות: {generated_count} מתוך {total_to_generate} סטים")
+                    eel.update_progress(generated_count, total_to_generate)
 
     # === שלב השלמה אם חסרים סטים ===
     remaining_to_generate = total_to_generate - len(all_generated)
@@ -227,6 +230,7 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
                 existing_questions.extend(item["question"] for item in batch)
                 remaining_to_generate -= actual
                 print(f"⏳ הושלמו {actual} סטים נוספים (סה\"כ: {len(all_generated)})")
+                eel.update_progress(len(all_generated), total_to_generate)
 
         if remaining_to_generate > 0:
             print(f"⚠️ עדיין חסרים {remaining_to_generate} סטים – ייתכן שהמודל לא ייצר את כולם.")
@@ -238,6 +242,8 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(all_generated, f, ensure_ascii=False, indent=2)
+
+    eel.done_generating()
 
     print(f"\n✅ נוצרו {len(all_generated)} סטים חדשים עבור המודל '{model_name}'")
     print(f"📁 נשמר אל: {output_path}")
