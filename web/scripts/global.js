@@ -33,10 +33,10 @@ window.addEventListener('DOMContentLoaded', () => {
 function adjustLogoByPageType() {
   const logo = document.getElementById('logo-image');
   if (logo) {
-    if (document.body.classList.contains('loading-page')) {
-      logo.src = 'assets/SmarTune.png'; // לוגו שחור לעמוד טעינה
+    if (document.body.classList.contains('black-logo-page')) {
+      logo.src = 'assets/SmarTune.png'; // לוגו שחור
     } else {
-      logo.src = 'assets/SmarTune_white.png'; // לוגו רגיל לעמודים אחרים
+      logo.src = 'assets/SmarTune_white.png'; // לוגו לבן לעמודים אחרים
     }
   }
 }

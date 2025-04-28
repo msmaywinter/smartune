@@ -7,6 +7,9 @@ from pathlib import Path
 from collections import defaultdict
 from dotenv import load_dotenv
 from openai import OpenAI
+from datetime import datetime
+
+MODELS_DIR = "models_metadata"
 
 # === הגדרות כלליות === #
 load_dotenv()
@@ -18,6 +21,16 @@ TEMPERATURE = 0.3
 CHUNK_SIZE = 3
 
 # === פונקציות עזר === #
+def load_model_metadata(model_name: str) -> dict:
+    """טוען את המטאדאטה של מודל לפי שם."""
+    metadata_path = os.path.join(MODELS_DIR, f"{model_name}.json")
+    if not os.path.exists(metadata_path):
+        raise FileNotFoundError(f"לא נמצא קובץ מטאדאטה למודל: {model_name}")
+
+    with open(metadata_path, "r", encoding="utf-8") as f:
+        metadata = json.load(f)
+
+    return metadata
 
 def detect_language(data):
     hebrew_chars = set("אבגדהוזחטיכלמנסעפצקרשת")
@@ -137,20 +150,20 @@ def generate_batch(sample_data, avoid_qs, lang, num_to_generate):
         )
         return extract_json_safely(response.choices[0].message.content)
     except Exception as e:
-        print(f"❌ שגיאה בג׳נרציה: {e}")
+        print(f"שגיאה בג׳נרציה: {e}")
         return []
 
 # === פונקציית הג׳נרציה הראשית === #
 
-def generate_by_topics(original_data: list, total_to_generate: int, model_name: str):
+async def generate_by_topics(original_data: list, total_to_generate: int, model_name: str):
     if not original_data:
-        print("❌ הקובץ ריק! אין שאלות לקרוא.")
+        print("הקובץ ריק! אין שאלות לקרוא.")
         return
-    print("🔍 מפתחות של שורה ראשונה:", original_data[0].keys())
+    print("מפתחות של שורה ראשונה:", original_data[0].keys())
     grouped = group_by_topic(original_data)
-    print(f"🔍 מספר נושאים שנמצאו: {len(grouped)}")
+    print(f"מספר נושאים שנמצאו: {len(grouped)}")
     for topic, questions in grouped.items():
-        print(f"📚 נושא: '{topic}' - מספר שאלות: {len(questions)}")
+        print(f"נושא: '{topic}' - מספר שאלות: {len(questions)}")
 
     distribution = distribute_generation_amount(total_to_generate, grouped)
     lang = detect_language(original_data)
@@ -164,10 +177,10 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
         if num_to_generate == 0:
             continue
 
-        print(f"\n📚 נושא: {topic} | שאלות קיימות: {len(group_data)} | לג׳נרציה: {num_to_generate}")
+        print(f"\nנושא: {topic} | שאלות קיימות: {len(group_data)} | לג׳נרציה: {num_to_generate}")
 
         if generated_count >= total_to_generate:
-            print("🛑 הושלמה הג׳נרציה של כל הסטים המבוקשים.")
+            print("הושלמה הג׳נרציה של כל הסטים המבוקשים.")
             break
 
         remaining_for_topic = min(num_to_generate, total_to_generate - generated_count)
@@ -179,10 +192,13 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
 
             batch = generate_batch(group_data, existing_questions, lang, to_generate_now)
             if batch:
+                batch = batch[:total_to_generate - generated_count]  # חותך את הבאטץ׳ לפני שמוסיפים בכלל
                 all_generated.extend(batch)
                 existing_questions.extend(item["question"] for item in batch)
                 generated_count += len(batch)
-                print(f"⏳ התקדמות: {generated_count} מתוך {total_to_generate} סטים")
+                eel.update_progress(generated_count, total_to_generate)
+
+                print(f"התקדמות: {generated_count} מתוך {total_to_generate} סטים")
                 eel.update_progress(generated_count, total_to_generate)
         else:
             chunks = list(chunk_list(group_data, CHUNK_SIZE))
@@ -192,7 +208,7 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
 
             for idx, sample in enumerate(chunks):
                 if generated_count >= total_to_generate:
-                    print("🛑 הושלמה הג׳נרציה של כל הסטים המבוקשים.")
+                    print("הושלמה הג׳נרציה של כל הסטים המבוקשים.")
                     break
 
                 to_generate_now = per_chunk + (1 if idx < extra else 0)
@@ -205,13 +221,13 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
                     all_generated.extend(batch)
                     existing_questions.extend(item["question"] for item in batch)
                     generated_count += len(batch)
-                    print(f"⏳ התקדמות: {generated_count} מתוך {total_to_generate} סטים")
+                    print(f"התקדמות: {generated_count} מתוך {total_to_generate} סטים")
                     eel.update_progress(generated_count, total_to_generate)
 
     # === שלב השלמה אם חסרים סטים ===
     remaining_to_generate = total_to_generate - len(all_generated)
     if remaining_to_generate > 0:
-        print(f"\n⚠️ נוצרו רק {len(all_generated)} סטים מתוך {total_to_generate}. משלים את החסר...")
+        print(f"\nנוצרו רק {len(all_generated)} סטים מתוך {total_to_generate}. משלים את החסר...")
 
         all_existing = original_data + all_generated
         existing_questions = [item["question"] for item in all_existing]
@@ -225,15 +241,16 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
             sample = items[:CHUNK_SIZE]
             batch = generate_batch(sample, existing_questions, lang, remaining_to_generate)
             if batch:
-                actual = len(batch)
+                batch = batch[:remaining_to_generate]  # חותכים לפי מה שחסר
                 all_generated.extend(batch)
                 existing_questions.extend(item["question"] for item in batch)
-                remaining_to_generate -= actual
-                print(f"⏳ הושלמו {actual} סטים נוספים (סה\"כ: {len(all_generated)})")
+                remaining_to_generate -= len(batch)
+
+                print(f"⏳ הושלמו {len(batch)} סטים נוספים (סה\"כ: {len(all_generated)})")
                 eel.update_progress(len(all_generated), total_to_generate)
 
         if remaining_to_generate > 0:
-            print(f"⚠️ עדיין חסרים {remaining_to_generate} סטים – ייתכן שהמודל לא ייצר את כולם.")
+            print(f"עדיין חסרים {remaining_to_generate} סטים – ייתכן שהמודל לא ייצר את כולם.")
 
     # שמירת הפלט לקובץ
     output_dir = Path(f"data/generated/{model_name}")
@@ -245,5 +262,33 @@ def generate_by_topics(original_data: list, total_to_generate: int, model_name: 
 
     eel.done_generating()
 
-    print(f"\n✅ נוצרו {len(all_generated)} סטים חדשים עבור המודל '{model_name}'")
-    print(f"📁 נשמר אל: {output_path}")
+    print(f"\nנוצרו {len(all_generated)} סטים חדשים עבור המודל '{model_name}'")
+    print(f"נשמר אל: {output_path}")
+
+# === עדכון מטאדאטה בסיום ג'נרציה === #
+def finalize_generation(model_name: str) -> dict:
+    """מעודכן את כמות הסטים המג'ונרטים והכמות הסופית במטאדאטה."""
+    metadata_path = os.path.join(MODELS_DIR, f"{model_name}.json")
+    if not os.path.exists(metadata_path):
+        return {"success": False, "error": "קובץ מטאדאטה לא נמצא."}
+
+    try:
+        with open(metadata_path, "r", encoding="utf-8") as f:
+            metadata = json.load(f)
+
+        original_count = metadata.get("original_count", 0)
+        generated_requested = metadata.get("generated_requested", 0)
+
+        metadata["generated_count"] = generated_requested
+        metadata["total_final_count"] = original_count + generated_requested
+        metadata["last_updated"] = datetime.now().isoformat()
+
+        with open(metadata_path, "w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+
+        print(f"עודכן מטאדאטה לאחר סיום ג'נרציה למודל {model_name}")
+        return {"success": True}
+
+    except Exception as e:
+        print(f"שגיאה בעדכון מטאדאטה לאחר ג'נרציה: {e}")
+        return {"success": False, "error": str(e)}

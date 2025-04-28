@@ -213,22 +213,30 @@ window.addEventListener("DOMContentLoaded", () => {
         setTimeout(updateSliderUI, 10);
     }
     
-    continueButton.addEventListener("click", () => {
+    continueButton.addEventListener("click", async () => {
         if (continueButton.classList.contains("disabled-button")) return;
-        
-        const selectedSets = currentValue; // כמות הסטים מהסליידר
-        const modelName = urlParams.get("name"); // שם המודל
-    
+      
+        const selectedSets = currentValue;
+        const modelName = urlParams.get("name");
+      
         if (!modelName) {
-            alert("לא הוזן שם מודל!");
-            return;
+          alert("לא הוזן שם מודל!");
+          return;
         }
-    
-        // רק מעבר עם פרמטרים ב-URL
-        window.location.href = `generate-sets.html?sets=${selectedSets}&name=${encodeURIComponent(modelName)}`;
-    });
-    
-    
+      
+        try {
+          // עדכון המטאדאטה - המשתמש כן בחר להרחיב
+          await eel.update_generation_choice(modelName, true, selectedSets)();
+          
+          // מעבר לעמוד הבא
+          window.location.href = `generate-sets.html?name=${encodeURIComponent(modelName)}`;
+      
+        } catch (error) {
+          console.error("שגיאה בעדכון המטאדאטה:", error);
+          alert("שגיאה בעדכון מידע. נסה שוב.");
+        }
+      });
+      
     // עדכון ראשוני של הסליידר
     updateSliderUI();
 });

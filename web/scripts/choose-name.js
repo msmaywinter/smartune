@@ -58,25 +58,19 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });  
 
-continueButton.addEventListener("click", async () => {
+  continueButton.addEventListener("click", async () => {
     if (continueButton.classList.contains("disabled-button")) return;
   
     const name = input.value.trim();
   
     try {
-      // כאן תוכלי לעדכן אם את רוצה לשלוח מידע נוסף כמו מספר שאלות:
-      const metadata = {
-        original_count: parseInt(new URLSearchParams(window.location.search).get("count")),
-        user_notes: "שם שנבחר ע״י המשתמש"
-      };
-  
-      const result = await eel.save_model_metadata(name, metadata)();
-      console.log("🔍 תוצאה מהשרת:", result);
+      const result = await eel.save_model_metadata(name)();
+      console.log("תוצאה מהשרת:", result);
   
       if (result.success) {
+        // העברת פרמטר של שם המודל כדי שתהיה לעמוד הבא גישה למטאדאטה
         window.location.href = `add-ai-option.html?name=${encodeURIComponent(name)}`;
       } else {
-        // מקרה נדיר שבו השם כבר נתפס בין הבדיקה ללחיצה
         errorMsg.textContent = result.error;
         errorMsg.style.display = "block";
         continueButton.classList.add("disabled-button");
@@ -89,4 +83,5 @@ continueButton.addEventListener("click", async () => {
       continueButton.classList.add("disabled-button");
       lastValidState = false;
     }
-  });  
+  });
+  

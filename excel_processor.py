@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import re
 import os
+from datetime import datetime
 
 # הגדרות קבועות
 MIN_ROWS = 50
@@ -69,6 +70,28 @@ def validate_content(df: pd.DataFrame) -> list:
 
     return errors
 
+# שלב 5: יצירת קובץ מטאדאטה
+def create_temp_metadata(original_count):
+    """יוצרת קובץ מטאדאטה זמני אחרי ולידציה מוצלחת של קובץ אקסל."""
+    metadata = {
+        "original_count": original_count,
+        "user_generated": False,
+        "generated_requested": 0,
+        "generated_count": 0,
+        "manual_added_count": 0,
+        "total_final_count": original_count,
+        "creation_date": datetime.now().isoformat(),
+        "last_updated": datetime.now().isoformat()
+    }
+    
+    os.makedirs('models_metadata', exist_ok=True)
+    temp_metadata_path = os.path.join('models_metadata', 'temp_metadata.json')
+
+    with open(temp_metadata_path, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ נוצר קובץ מטאדאטה זמני: {temp_metadata_path}")
+
 # פונקציה מרכזית שמריצה את כל התהליך
 def process_excel_file(file_path: str) -> dict:
     if not is_valid_excel_file(file_path):
@@ -89,4 +112,6 @@ def process_excel_file(file_path: str) -> dict:
         return {"success": False, "errors": content_errors}
 
     # החזר את df להמשך טיפול בשלב הבא
+    create_temp_metadata(len(df))
+
     return {"success": True, "data": df.to_dict(orient="records")}

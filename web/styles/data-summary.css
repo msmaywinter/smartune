@@ -1,0 +1,31 @@
+body {
+    background: url("../assets/soft-bg.png") no-repeat top center;
+    background-size: cover;
+}
+
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }  
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    margin-top: 4rem;
+}
+  
+  .hero-section h1,
+  .hero-section span,
+  .hero-section button,
+  .hero-section .template-link,
+  .hero-section .custom-upload-button {
+    font-weight: 300 !important;
+  }
+
+  h1 {
+    font-size: 4.5rem;
+  }
+  
