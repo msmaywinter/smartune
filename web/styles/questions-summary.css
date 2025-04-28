@@ -1,0 +1,67 @@
+body {
+    background: url("../assets/soft-bg.png") no-repeat top center;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    font-family: 'Assistant', sans-serif;
+  }
+  
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 🟰 ממקד הכל לאמצע אנכית */
+  }
+  
+  .hero-content {
+    text-align: center;
+    margin-bottom: 2rem; /* מרווח יפה מעל הקארד */
+  }
+  
+  h1 {
+    font-size: 4.5rem;
+    font-weight: 300;
+    color: #002D3E; /* צבע כהה יפה לכותרת */
+  }
+  
+  .summary-card {
+    background-color: rgba(48, 105, 140, 0.8); /* 🔥 כחול שקוף 80% */
+    color: white;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 🟰 טקסטים וכפתור במרכז אופקית */
+    gap: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* צללה עדינה */
+  }
+  
+  .summary-card p {
+    margin: 0;
+  }
+  
+  .nav-button {
+    background-color: #BEE2F8;
+    color: #002D3E;
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 200px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-button:hover {
+    background-color: #A6D4ED;
+  }
+  

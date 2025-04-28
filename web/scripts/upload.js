@@ -30,6 +30,7 @@ async function upload() {
 
       if (result.success) {
         const numOfSets = result.data.length;
+        localStorage.setItem('uploadedCount', numOfSets);
         window.location.href = `choose-name.html?count=${numOfSets}`;
       } else {
         const errors = result.errors;
