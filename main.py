@@ -42,27 +42,27 @@ def save_model_metadata(name):
     return save_fn(name)
 
 @eel.expose
-def update_generation_choice(model_name, wants_generation, generated_requested):
-    return update_generation_choice_fn(model_name, wants_generation, generated_requested)
+def update_generation_choice(slug, wants_generation, generated_requested):
+    return update_generation_choice_fn(slug, wants_generation, generated_requested)
 
 @eel.expose
-def load_model_metadata(model_name):
-    return load_model_metadata_fn(model_name)
+def load_model_metadata(slug):
+    return load_model_metadata_fn(slug)
 
 @eel.expose
-def finalize_model_generation(model_name):
-    return finalize_generation(model_name)
+def finalize_model_generation(slug):
+    return finalize_generation(slug)
 
 @eel.expose
-def generate_sets(model_name):
-    return asyncio.run(generate_sets_async(model_name))
+def generate_sets(slug):
+    return asyncio.run(generate_sets_async(slug))
 
 @eel.expose
 def done_generating():
     """פונקציה שקוראת ל-JavaScript כדי לסמן שהג'נרציה הסתיימה"""
     pass  # אין צורך בלוגיקה נוספת כאן, זה רק לחשיפה
 
-async def generate_sets_async(model_name):
+async def generate_sets_async(slug):
     try:
         excel_files = glob.glob("uploads/*.xlsx")
         if not excel_files:
@@ -106,13 +106,15 @@ async def generate_sets_async(model_name):
             print("לא נמצאו שאלות תקינות בקובץ.")
             return {"success": False}
 
-        metadata = load_model_metadata(model_name)
+        metadata = load_model_metadata(slug)
+        model_name = metadata.get("model_name", slug)  # נשתמש בשם המקורי רק לצורכי תיעוד
         selected_sets = metadata.get("generated_requested", 0)
+
         if selected_sets <= 0:
-            print(f"שגיאה: לא הוגדר מספר סטים לג'נרציה במטאדאטה למודל '{model_name}'.")
+            print(f"שגיאה: לא הוגדר מספר סטים לג'נרציה במטאדאטה למודל '{slug}'.")
             return {"success": False}
 
-        await generate_by_topics(original_data, selected_sets, model_name)
+        await generate_by_topics(original_data, selected_sets, slug)
 
         return {"success": True}
 
@@ -121,8 +123,9 @@ async def generate_sets_async(model_name):
         return {"success": False}
     
 @eel.expose
-def load_generated_data(model_name):
-    return load_generated_data_fn(model_name)
+def load_generated_data(slug):
+    return load_generated_data_fn(slug)
+
 
 # ===== פתיחת הדפדפן והתחלת השרת =====
 

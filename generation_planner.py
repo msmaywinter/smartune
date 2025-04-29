@@ -19,9 +19,9 @@ def get_generation_limits(original_count: int) -> dict:
         "message": f"ניתן לג׳נרט עד {max_gen} סטים חדשים על בסיס {original_count} סטים שהועלו."
     }
 
-def update_generation_choice(model_name: str, wants_generation: bool, generated_requested: int) -> dict:
+def update_generation_choice(slug: str, wants_generation: bool, generated_requested: int) -> dict:
     """מעדכנת האם המשתמש רוצה להרחיב את המאגר וכמה סטים לבקש."""
-    metadata_path = os.path.join(MODELS_DIR, f"{model_name}.json")
+    metadata_path = os.path.join(MODELS_DIR, f"{slug}.json")
     
     if not os.path.exists(metadata_path):
         return {"success": False, "error": "קובץ מטאדאטה לא נמצא."}
@@ -37,9 +37,10 @@ def update_generation_choice(model_name: str, wants_generation: bool, generated_
         with open(metadata_path, "w", encoding="utf-8") as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
 
-        print(f"✅ עודכן מטאדאטה למודל {model_name}: user_generated={wants_generation}, generated_requested={generated_requested}")
+        print(f"✅ עודכן מטאדאטה למודל {slug}: user_generated={wants_generation}, generated_requested={generated_requested}")
         return {"success": True}
 
     except Exception as e:
         print(f"שגיאה בזמן עדכון המטאדאטה: {e}")
         return {"success": False, "error": str(e)}
+

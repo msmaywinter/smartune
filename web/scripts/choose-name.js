@@ -69,7 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
   
       if (result.success) {
         // העברת פרמטר של שם המודל כדי שתהיה לעמוד הבא גישה למטאדאטה
-        window.location.href = `add-ai-option.html?name=${encodeURIComponent(name)}`;
+        window.location.href = `add-ai-option.html?slug=${encodeURIComponent(result.slug)}`;
       } else {
         errorMsg.textContent = result.error;
         errorMsg.style.display = "block";

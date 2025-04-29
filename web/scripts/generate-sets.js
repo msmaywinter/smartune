@@ -1,6 +1,7 @@
 // משתנה גלובלי
 let selectedSets = 0;
-let modelName = "";
+const urlParams = new URLSearchParams(window.location.search);
+const slug = urlParams.get("slug");
 
 // 1. לחשוף פונקציות ל-eel
 eel.expose(update_progress);
@@ -36,17 +37,17 @@ function done_generating() {
   }
 
   // צריך לקרוא לעדכון המטאדאטה לפני המעבר
-  console.log("קורא לעדכון מטאדאטה עם המודל:", modelName);
-  eel.finalize_model_generation(modelName)().then(result => {
+  console.log("קורא לעדכון מטאדאטה עם המודל:", slug);
+  eel.finalize_model_generation(slug)().then(result => {
     console.log("תוצאת עדכון מטאדאטה:", result);
     
     // פרק זמן המתנה
     console.log("מתחיל המתנה לפני מעבר עמוד");
     setTimeout(function() {
       try {
-        console.log("מנסה לעבור לעמוד הבא עם המודל:", modelName);
+        console.log("מנסה לעבור לעמוד הבא עם המודל:", slug);
         localStorage.setItem('generatedCount', selectedSets);
-        navigateTo(`data-summary.html?name=${encodeURIComponent(modelName)}`);
+        navigateTo(`data-summary.html?slug=${encodeURIComponent(slug)}`);
       } catch (error) {
         console.error("שגיאה במעבר עמוד:", error);
         alert('קרתה שגיאה בסיום התהליך.');
@@ -61,16 +62,15 @@ function done_generating() {
 // 2. להתחיל תהליך הג'נרציה כשנטען העמוד
 window.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
-  modelName = urlParams.get('name');
 
-  if (!modelName) {
+  if (!slug) {
     alert('חסר שם מודל - לא ניתן להמשיך.');
     return;
   }
 
   try {
     // מבקשים את כמות הסטים לג'נרציה מהמטאדאטה
-    const metadata = await eel.load_model_metadata(modelName)();
+    const metadata = await eel.load_model_metadata(slug)();
     selectedSets = metadata.generated_requested;
 
     if (!selectedSets || selectedSets < 1) {
@@ -90,7 +90,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (logo) {
         clearInterval(waitForNavbar);
         try {
-          const response = await eel.generate_sets(modelName)();
+          const response = await eel.generate_sets(slug)();
           if (!response.success) {
             alert("קרתה שגיאה ביצירת הסטים.");
             return;

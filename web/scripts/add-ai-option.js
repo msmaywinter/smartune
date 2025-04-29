@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const modelName = urlParams.get("name");
+    const slug = urlParams.get("slug");
 
     const count = parseInt(urlParams.get("count"));
     
@@ -215,28 +215,18 @@ window.addEventListener("DOMContentLoaded", () => {
     
     continueButton.addEventListener("click", async () => {
         if (continueButton.classList.contains("disabled-button")) return;
-      
-        const selectedSets = currentValue;
-        const modelName = urlParams.get("name");
-      
-        if (!modelName) {
-          alert("לא הוזן שם מודל!");
-          return;
-        }
-      
+    
+        const selectedSets = currentValue; // הוספה נדרשת כאן!
+    
         try {
-          // עדכון המטאדאטה - המשתמש כן בחר להרחיב
-          await eel.update_generation_choice(modelName, true, selectedSets)();
-          
-          // מעבר לעמוד הבא
-          window.location.href = `generate-sets.html?name=${encodeURIComponent(modelName)}`;
-      
+            await eel.update_generation_choice(slug, true, selectedSets)();
+            window.location.href = `generate-sets.html?slug=${encodeURIComponent(slug)}`;
         } catch (error) {
-          console.error("שגיאה בעדכון המטאדאטה:", error);
-          alert("שגיאה בעדכון מידע. נסה שוב.");
+            console.error("שגיאה בעדכון המטאדאטה:", error);
+            alert("שגיאה בעדכון מידע. נסה שוב.");
         }
-      });
-      
+    });
+    
     // עדכון ראשוני של הסליידר
     updateSliderUI();
 });

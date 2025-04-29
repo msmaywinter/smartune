@@ -21,11 +21,11 @@ TEMPERATURE = 0.3
 CHUNK_SIZE = 3
 
 # === פונקציות עזר === #
-def load_model_metadata(model_name: str) -> dict:
+def load_model_metadata(slug: str) -> dict:
     """טוען את המטאדאטה של מודל לפי שם."""
-    metadata_path = os.path.join(MODELS_DIR, f"{model_name}.json")
+    metadata_path = os.path.join(MODELS_DIR, f"{slug}.json")
     if not os.path.exists(metadata_path):
-        raise FileNotFoundError(f"לא נמצא קובץ מטאדאטה למודל: {model_name}")
+        raise FileNotFoundError(f"לא נמצא קובץ מטאדאטה למודל: {slug}")
 
     with open(metadata_path, "r", encoding="utf-8") as f:
         metadata = json.load(f)
@@ -155,7 +155,7 @@ def generate_batch(sample_data, avoid_qs, lang, num_to_generate):
 
 # === פונקציית הג׳נרציה הראשית === #
 
-async def generate_by_topics(original_data: list, total_to_generate: int, model_name: str):
+async def generate_by_topics(original_data: list, total_to_generate: int, slug: str):
     if not original_data:
         print("הקובץ ריק! אין שאלות לקרוא.")
         return
@@ -253,22 +253,24 @@ async def generate_by_topics(original_data: list, total_to_generate: int, model_
             print(f"עדיין חסרים {remaining_to_generate} סטים – ייתכן שהמודל לא ייצר את כולם.")
 
     # שמירת הפלט לקובץ
-    output_dir = Path(f"data/generated/{model_name}")
+    output_dir = Path(f"data/generated/{slug}")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "generated_raw.json"
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(all_generated, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
 
     eel.done_generating()
 
-    print(f"\nנוצרו {len(all_generated)} סטים חדשים עבור המודל '{model_name}'")
+    print(f"\nנוצרו {len(all_generated)} סטים חדשים עבור המודל '{slug}'")
     print(f"נשמר אל: {output_path}")
 
 # === עדכון מטאדאטה בסיום ג'נרציה === #
-def finalize_generation(model_name: str) -> dict:
+def finalize_generation(slug: str) -> dict:
     """מעודכן את כמות הסטים המג'ונרטים והכמות הסופית במטאדאטה."""
-    metadata_path = os.path.join(MODELS_DIR, f"{model_name}.json")
+    metadata_path = os.path.join(MODELS_DIR, f"{slug}.json")
     if not os.path.exists(metadata_path):
         return {"success": False, "error": "קובץ מטאדאטה לא נמצא."}
 
@@ -286,7 +288,7 @@ def finalize_generation(model_name: str) -> dict:
         with open(metadata_path, "w", encoding="utf-8") as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
 
-        print(f"עודכן מטאדאטה לאחר סיום ג'נרציה למודל {model_name}")
+        print(f"עודכן מטאדאטה לאחר סיום ג'נרציה למודל {slug}")
         return {"success": True}
 
     except Exception as e:
