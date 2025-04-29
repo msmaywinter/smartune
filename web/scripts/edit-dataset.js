@@ -11,16 +11,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   
     try {
       const metadata = await eel.load_model_metadata(modelName)();
-      console.log("Metadata loaded:", metadata);
-  
-      // עכשיו נמלא את התוכן בדף
-      document.getElementById('original-count').innerText = metadata.original_count || 0;
-      document.getElementById('generated-count').innerText = metadata.generated_count || 0;
-      document.getElementById('total-final-count').innerText = metadata.total_final_count || 0;
-  
     } catch (error) {
       console.error("שגיאה בטעינת המטאדאטה:", error);
-      alert("קרתה שגיאה בטעינת נתוני הסיכום.");
     }
+
+    try {
+      const generated_data = await eel.load_generated_data(modelName)();
+    } catch (error) {
+      console.error("שגיאה בטעינת קובץ הדאטה:", error);
+    }
+    
   });
   

@@ -46,7 +46,7 @@ function done_generating() {
       try {
         console.log("מנסה לעבור לעמוד הבא עם המודל:", modelName);
         localStorage.setItem('generatedCount', selectedSets);
-        navigateTo(`/data-summary.html?name=${encodeURIComponent(modelName)}`);
+        navigateTo(`data-summary.html?name=${encodeURIComponent(modelName)}`);
       } catch (error) {
         console.error("שגיאה במעבר עמוד:", error);
         alert('קרתה שגיאה בסיום התהליך.');

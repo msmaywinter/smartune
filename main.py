@@ -11,6 +11,7 @@ from excel_processor import process_excel_file
 from model_registry import is_valid_model_name, is_duplicate_model_name, save_model_metadata as save_fn
 from openai_generator import generate_by_topics, load_model_metadata as load_model_metadata_fn, finalize_generation
 from generation_planner import update_generation_choice as update_generation_choice_fn
+from data_editor import load_generated_data as load_generated_data_fn
 
 eel.init('web')
 
@@ -118,6 +119,10 @@ async def generate_sets_async(model_name):
     except Exception as e:
         print(f"שגיאה בג'נרציה: {e}")
         return {"success": False}
+    
+@eel.expose
+def load_generated_data(model_name):
+    return load_generated_data_fn(model_name)
 
 # ===== פתיחת הדפדפן והתחלת השרת =====
 

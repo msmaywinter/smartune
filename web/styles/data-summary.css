@@ -10,22 +10,22 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* 🟰 ממקד הכל לאמצע אנכית */
+  justify-content: center;
 }
 
 .hero-content {
   text-align: center;
-  margin-bottom: 2rem; /* מרווח יפה מעל הקארד */
+  margin-bottom: 2rem;
 }
 
 h1 {
   font-size: 4.5rem;
   font-weight: 300;
-  color: #002D3E; /* צבע כהה יפה לכותרת */
+  color: #002D3E;
 }
 
 .summary-card {
-  background-color: rgba(48, 105, 140, 0.8); /* 🔥 כחול שקוף 80% */
+  background-color: rgba(48, 105, 140, 0.8);
   color: white;
   padding: 3rem 2rem;
   border-radius: 20px;
@@ -36,9 +36,9 @@ h1 {
   font-weight: 300;
   display: flex;
   flex-direction: column;
-  align-items: center; /* 🟰 טקסטים וכפתור במרכז אופקית */
+  align-items: center;
   gap: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* צללה עדינה */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .summary-card p {
