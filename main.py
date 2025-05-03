@@ -6,6 +6,7 @@ import eel
 import glob
 import pandas as pd
 import asyncio
+from pathlib import Path
 
 from excel_processor import process_excel_file
 from model_registry import is_valid_model_name, is_duplicate_model_name, save_model_metadata as save_fn
@@ -61,6 +62,53 @@ def generate_sets(slug):
 def done_generating():
     """פונקציה שקוראת ל-JavaScript כדי לסמן שהג'נרציה הסתיימה"""
     pass  # אין צורך בלוגיקה נוספת כאן, זה רק לחשיפה
+
+@eel.expose
+def append_to_generated_raw(slug, example):
+    print("📥 append_to_generated_raw הופעלה")
+    try:
+        path = Path(f"data/generated/{slug}/generated_raw.json")
+        if not path.exists():
+            data = []
+        else:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+        data.append({
+            "question": example.get("question", "").strip(),
+            "answer": example.get("answer", "").strip()
+        })
+
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+        return {"success": True}
+    except Exception as e:
+        print(f"שגיאה בשמירת שאלה חדשה: {e}")
+        return {"success": False, "error": str(e)}
+    
+@eel.expose
+def delete_from_generated_raw(slug, index):
+    try:
+        path = Path(f"data/generated/{slug}/generated_raw.json")
+        if not path.exists():
+            return {"success": False, "error": "לא נמצא קובץ generated_raw."}
+
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        if 0 <= index < len(data):
+            del data[index]
+        else:
+            return {"success": False, "error": "אינדקס לא חוקי."}
+
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+        return {"success": True}
+    except Exception as e:
+        print(f"שגיאה במחיקת שאלה: {e}")
+        return {"success": False, "error": str(e)}
 
 async def generate_sets_async(slug):
     try:
@@ -124,10 +172,17 @@ async def generate_sets_async(slug):
     
 @eel.expose
 def load_generated_data(slug):
-    return load_generated_data_fn(slug)
+    filepath = f"data/generated/{slug}/generated_raw.json"
+    if not os.path.exists(filepath):
+        return []
+
+    with open(filepath, "r", encoding="utf-8") as f:
+        data = json.load(f)
+        return data
 
 
 # ===== פתיחת הדפדפן והתחלת השרת =====
 
 webbrowser.open_new("http://localhost:8000/home.html")
+print("🟢 eel.start עומד להתחיל")
 eel.start("home.html", mode=None)

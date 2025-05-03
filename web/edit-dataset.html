@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>מאגר המידע - SMARTUNE</title>
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/buttons.css">
   <link rel="stylesheet" href="styles/navbar.css">
-  <link rel="stylesheet" href="styles/edit-dataset.css">
+  <link rel="stylesheet" href="styles/edit-dataset.css" />
   <script type="text/javascript" src="/eel.js"></script>
 </head>
 <body class="black-logo-page">
 
+  <!-- כאן נטען ה-navbar -->
   <div id="navbar-placeholder"></div>
-  <main>
-    <section class="hero-section">
-      <div class="hero-background"></div>
-  
-      <div class="hero-content">
-        <h1>מאגר המידע</h1>
-      </div>
-  
-      
-    </section>
+
+  <main class="main-wrapper">
+    <h1 class="title">מאגר המידע</h1>
+
+    <div class="qa-header">
+      <div class="qa-cell header">שאלה</div>
+      <div class="qa-cell header">תשובה</div>
+    </div>
+
+    <div id="qa-container" class="qa-list">
+      <!-- שורות שאלות ותשובות יוכנסו כאן -->
+    </div>
+
+    <div class="qa-add-row">
+      <button id="add-question-btn" class="add-btn">+</button>
+      <input id="new-answer-input" type="text" placeholder="כתוב/י תשובה חדשה..." class="qa-input">
+      <input id="new-question-input" type="text" placeholder="כתוב/י שאלה חדשה..." class="qa-input">
+    </div>
+
+    <button class="download-button">📥 ייצוא המאגר</button>
   </main>
 
   <script src="scripts/global.js"></script>
   <script src="scripts/edit-dataset.js"></script>
-  
 </body>
 </html>
