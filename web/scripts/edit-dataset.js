@@ -60,18 +60,13 @@ function renderQAList(list) {
     const row = document.createElement("div");
     row.className = "qa-row";
 
-    const qSpan = document.createElement("span");
-    qSpan.className = "qa-question";
-    qSpan.innerText = item.question;
-
-    const aSpan = document.createElement("span");
-    aSpan.className = "qa-answer";
-    aSpan.innerText = item.answer;
-
-    const delBtn = document.createElement("button");
-    delBtn.className = "delete-btn";
-    delBtn.innerText = "✖";
-    delBtn.onclick = async () => {
+    // תיבת מחיקה
+    const deleteBox = document.createElement("div");
+    deleteBox.className = "qa-delete-box";
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "delete-btn";
+    deleteBtn.innerText = "✖";
+    deleteBtn.onclick = async () => {
       const confirmed = confirm("האם אתה בטוח שברצונך למחוק?");
       if (!confirmed) return;
 
@@ -85,9 +80,25 @@ function renderQAList(list) {
       }
     };
 
-    row.appendChild(qSpan);
-    row.appendChild(aSpan);
-    row.appendChild(delBtn);
+    deleteBox.appendChild(deleteBtn);
+
+    // תיבת שאלה
+    const questionBox = document.createElement("div");
+    questionBox.className = "qa-box qa-question";
+    questionBox.innerText = item.question;
+
+    // תיבת תשובה
+    const answerBox = document.createElement("div");
+    answerBox.className = "qa-box qa-answer";
+    answerBox.innerText = item.answer;
+
+    // הוספת כל התאים לשורה
+    row.appendChild(questionBox);
+    row.appendChild(answerBox);
+    row.appendChild(deleteBox);
+
+    // הוספת השורה לקונטיינר
     container.appendChild(row);
   });
 }
+

@@ -7,7 +7,7 @@ body {
 }
 
 .main-wrapper {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 50px auto;
   padding: 0 20px;
 }
@@ -16,73 +16,102 @@ body {
   text-align: center;
   font-size: 50px;
   color: #004051;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   font-weight: 300;
 }
+.qa-list {
+  scrollbar-color: #95C3D9 transparent;
+  scrollbar-width: thin;
+  direction: rtl;
+  scrollbar-gutter: right;
+  unicode-bidi: plaintext;
+}
+
+.qa-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.qa-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.qa-list::-webkit-scrollbar-thumb {
+  background-color: #95C3D9;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
 
 .qa-header {
   display: flex;
-  justify-content: space-between;
-  padding: 0 30px 10px 50px;
+  justify-content: stretch;
+  padding: 0px 32px 10px 75px;
 }
 
 .qa-cell.header {
-  width: 40%;
+  width: 47%;
   background-color: #95C3D9;
-  padding: 4px;
+  padding: 6px;
   text-align: center;
   font-weight: 300;
-  font-size: 28px;
+  font-size: 24px;
   border-radius: 5px;
-  color: #FFFFFF;
+  color: white;
 }
 
 .qa-list {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  padding: 0 30px;
 }
 
 .qa-row {
   display: flex;
-  align-items: center;
-  background-color: rgba(149, 195, 217, 0.65);
-  border-radius: 5px;
-  padding: 12px 16px;
-  gap: 20px;
-  margin: 0 30px;
+  gap: 12px;
+  justify-content: space-between;
 }
 
-.qa-question,
-.qa-answer {
+.qa-box {
+  background-color: rgba(149, 195, 217, 0.65); /* #95C3D9 שקוף */
+  border-radius: 5px;
+  padding: 8px;
   flex: 1;
   font-size: 16px;
-  color: #03045e;
-  padding: 0 10px;
+  color: #004051;
   text-align: right;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
 }
 
-.delete-btn {
-  background-color: #0077b6;
-  color: white;
-  font-weight: bold;
+.qa-delete-box {
+  background-color: rgba(149, 195, 217, 0.65);
+  border-radius: 8px;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.qa-delete-box {
+  background: none;
   border: none;
-  border-radius: 50%;
-  font-size: 20px;
-  width: 36px;
-  height: 36px;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
   cursor: pointer;
 }
 
 .qa-add-row {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin: 30px 30px 20px;
+  justify-content: stretch;
+  padding: 0px 28px 36px 0px;
 }
 
 .qa-input {
@@ -90,27 +119,34 @@ body {
   width: 40%;
   border: none;
   background-color: #e0f7fa;
-  border-radius: 12px;
+  border-radius: 5px;
   font-size: 14px;
   text-align: right;
 }
 
-.add-btn {
-  background-color: #0077b6;
+.add-btn,
+.delete-btn {
+  background-color: #95C3D9;
   color: white;
-  font-size: 26px;
+  font-size: 24px;
   border: none;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+.add-btn:hover,
+.delete-btn:hover {
+  background-color: #6ca4bc;
 }
 
 .download-button {
   display: block;
   margin: 0 auto;
-  background-color: #023e8a;
-  color: white;
+  background-color: #BEE2F8;
+  color: #002D3E;
+  font-weight: 300;
   font-size: 16px;
   padding: 12px 24px;
   border: none;
@@ -120,4 +156,31 @@ body {
 
 .download-button:hover {
   background-color: #0077b6;
+}
+
+/* תיבות קלט לשורת ההוספה בלבד */
+.add-input {
+  background-color: rgba(217, 220, 221, 0.65); /* אפור עם שקיפות */
+  min-height: 25px;
+  display: flex;
+  align-items: center;
+  flex: 0.46;
+}
+.add-input::placeholder {
+  color: rgba(0, 45, 62, 0.43);
+}
+
+/* כפתור ההוספה "+" בשורת ההוספה בלבד */
+.grey-add-btn {
+  background-color: #B3B3B3;
+  color: #ffffff;
+  transition: background-color 0.3s;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  font-size: 40px;
+}
+
+.grey-add-btn:hover {
+  background-color: rgba(170, 173, 175, 0.65); /* hover כהה */
 }
