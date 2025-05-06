@@ -56,3 +56,5 @@ window.addEventListener("load", () => {
     }
   }, 50);
 });
+
+eel.expose(navigateTo)
