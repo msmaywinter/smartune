@@ -184,3 +184,11 @@ body {
 .grey-add-btn:hover {
   background-color: rgba(170, 173, 175, 0.65); /* hover כהה */
 }
+.qa-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.qa-row:hover {
+  background-color: rgba(149, 195, 217, 0.35);
+}

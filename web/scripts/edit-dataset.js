@@ -52,7 +52,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-function renderQAList(list) {
+async function renderQAList(list) {
   const container = document.getElementById("qa-container");
   container.innerHTML = "";
 
@@ -60,27 +60,12 @@ function renderQAList(list) {
     const row = document.createElement("div");
     row.className = "qa-row";
 
-    // תיבת מחיקה
-    const deleteBox = document.createElement("div");
-    deleteBox.className = "qa-delete-box";
-    const deleteBtn = document.createElement("button");
-    deleteBtn.className = "delete-btn";
-    deleteBtn.innerText = "✖";
-    deleteBtn.onclick = async () => {
-      const confirmed = confirm("האם אתה בטוח שברצונך למחוק?");
-      if (!confirmed) return;
-
-      try {
-        await eel.delete_from_generated_raw(modelName, index)();
-        const updated = await eel.load_generated_data(modelName)();
-        renderQAList(updated);
-      } catch (err) {
-        console.error("שגיאה במחיקה:", err);
-        alert("❌ שגיאה במחיקת שאלה.");
-      }
-    };
-
-    deleteBox.appendChild(deleteBtn);
+    // ❗ הוספת התנהגות של מעבר לעמוד צפייה בפריט
+    row.addEventListener("click", () => {
+      localStorage.setItem("dataset", JSON.stringify(list));
+      localStorage.setItem("currentIndex", index);
+      window.location.href = `view-dataset-item.html?slug=${modelName}`;
+    });    
 
     // תיבת שאלה
     const questionBox = document.createElement("div");
@@ -92,6 +77,30 @@ function renderQAList(list) {
     answerBox.className = "qa-box qa-answer";
     answerBox.innerText = item.answer;
 
+    // תיבת מחיקה
+    const deleteBox = document.createElement("div");
+    deleteBox.className = "qa-delete-box";
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "delete-btn";
+    deleteBtn.innerText = "✖";
+
+    deleteBtn.addEventListener("click", async (e) => {
+      e.stopPropagation(); // מונע מעבר לעמוד צפייה
+      const confirmed = confirm("האם אתה בטוח שברצונך למחוק?");
+      if (!confirmed) return;
+
+      try {
+        await eel.delete_from_generated_raw(modelName, index)();
+        const updated = await eel.load_generated_data(modelName)();
+        renderQAList(updated);
+      } catch (err) {
+        console.error("שגיאה במחיקה:", err);
+        alert("❌ שגיאה במחיקת שאלה.");
+      }
+    });
+
+    deleteBox.appendChild(deleteBtn);
+
     // הוספת כל התאים לשורה
     row.appendChild(questionBox);
     row.appendChild(answerBox);
@@ -101,4 +110,3 @@ function renderQAList(list) {
     container.appendChild(row);
   });
 }
-

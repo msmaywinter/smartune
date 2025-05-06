@@ -3,7 +3,7 @@
     color: #002D3E;
     padding: 0 30px;
     height: 60px;
-    border-radius: 10px;
+    border-radius: 15px;
     font-size: 1.5rem;
     cursor: pointer;
     text-align: center;
@@ -11,13 +11,11 @@
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
-    transition: transform 0.3s ease, background-color 0.3s ease;
     text-decoration: none;
     box-sizing: border-box;
   }
   
   .custom-upload-button:hover {
-    transform: translateY(0) scale(1.04);
     background-color: #A6D4ED;
   }
   
@@ -27,7 +25,7 @@
     color: white;
     padding: 14px 28px;
     font-size: 1.4rem;
-    border-radius: 10px;
+    border-radius: 15px;
     text-decoration: none;
     border: none;
     cursor: pointer;
@@ -58,7 +56,7 @@
     border: none;
     padding: 10px 20px;
     font-size: 1.2rem;
-    border-radius: 8px;
+    border-radius: 15px;
     cursor: pointer;
     z-index: 10;
   }
@@ -88,7 +86,7 @@
     border: none;
     padding: 10px 20px;
     font-size: 1.2rem;
-    border-radius: 8px;
+    border-radius: 15px;
     cursor: pointer;
     display: flex;
     align-items: center;

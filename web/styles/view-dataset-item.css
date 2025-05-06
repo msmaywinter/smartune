@@ -1,0 +1,132 @@
+body {
+    background: url("../assets/soft-bg.png") no-repeat top center;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    font-family: 'Assistant', sans-serif;
+  }
+  
+  .main-wrapper {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+  
+  .title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    gap: 2rem;
+  }
+  
+  .title {
+    font-size: 50px;
+    color: #004051;
+    font-weight: 300;
+    margin: 0;
+    flex: 1;
+  }
+  
+  .back-button1 {
+    position: absolute;
+    background-color: #d0e6f6;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #002D3E;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+  }
+  
+  .back-button1:hover {
+    background-color: #bdd9ee;
+  }
+  
+  .item-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    margin-top: 40px;
+  }
+  
+  .qa-box {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 3px solid #30698C;
+    border-radius: 40px;
+    padding: 0px 50px;
+    width: 80%;
+    max-width: 900px;
+    line-height: 1.6;
+    text-align: right;
+    direction: rtl;
+    font-size: 38px;
+  }
+  
+  .qa-label {
+    text-align: right;
+    direction: rtl;
+    margin-bottom: 10px;
+    color: #004051;
+    font-weight: 300;
+  }
+  
+  .qa-text {
+    text-align: right;
+    direction: rtl;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    white-space: pre-wrap;
+    color: #004051;
+    font-weight: 300;
+    font-size: 24px;
+  }
+  
+  .buttons-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2.5rem;
+    padding: 0 3rem;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    padding-right: 17rem;
+  }
+  
+  .delete-button-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    padding-right: 5rem;
+  }
+  
+  .center-buttons {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 400px;
+  }
+  
+  .center-buttons,
+  .delete-button-wrapper {
+    min-width: fit-content;
+  }
+  .custom-upload-button {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  .disabled-button {
+    background-color: #e5e7eb !important;
+    color: #9ca3af !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
