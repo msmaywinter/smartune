@@ -41,16 +41,34 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  document.querySelector(".download-button").addEventListener("click", async () => {
-    try {
-      await eel.export_model_data(modelName)();
-      alert("📥 המאגר יוצא בהצלחה!");
-    } catch (err) {
-      console.error("שגיאה ביצוא המאגר:", err);
-      alert("❌ שגיאה ביצוא המאגר.");
-    }
-  });
 });
+document.querySelector(".download-button").addEventListener("click", async () => {
+  try {
+    console.log("📦 מתחיל ייצוא לאקסל...");
+    const filePath = await eel.export_model_to_excel(modelName)();
+    console.log("➡️ קובץ נוצר בנתיב:", filePath);
+
+    if (!filePath) {
+      console.error("❌ שגיאה: לא נוצר קובץ.");
+      alert("❌ שגיאה ביצוא לאקסל.");
+      return;
+    }
+
+    // יצירת לינק להורדה
+    const fileName = `${modelName}_dataset.xlsx`;
+    const downloadUrl = `/exports/${fileName}`;
+
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.download = fileName;
+    a.click();
+
+  } catch (err) {
+    console.error("שגיאה ביצוא הנתונים:", err);
+    alert("❌ שגיאה ביצוא הנתונים.");
+  }
+});
+
 
 async function renderQAList(list) {
   const container = document.getElementById("qa-container");

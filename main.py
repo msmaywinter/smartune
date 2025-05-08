@@ -7,6 +7,7 @@ import glob
 import pandas as pd
 import asyncio
 from pathlib import Path
+import openpyxl
 
 from excel_processor import process_excel_file
 from model_registry import is_valid_model_name, is_duplicate_model_name, save_model_metadata as save_fn
@@ -15,6 +16,14 @@ from generation_planner import update_generation_choice as update_generation_cho
 from data_editor import load_generated_data as load_generated_data_fn
 
 eel.init('web')
+# מאפשר גישה לתיקיית exports
+eel.start('home.html', mode=None, port=8000, host='localhost', block=False)
+import bottle
+
+@bottle.route('/exports/<filename>')
+def serve_export(filename):
+    return bottle.static_file(filename, root='exports')
+
 
 # ===== חשיפת פונקציות ל-Eel =====
 
@@ -180,7 +189,68 @@ def load_generated_data(slug):
         data = json.load(f)
         return data
 
+@eel.expose
+def export_model_to_excel(model_name):
+    try:
+        print(f"📦 מתחיל ייצוא למודל: {model_name}")
+        
+        # בדיקת הנתיב החדש
+        data_path = f"data/generated/{model_name}/generated_raw.json"
+        print(f"🔍 מחפש את הקובץ: {data_path}")
+        
+        if not os.path.exists(data_path):
+            print(f"❌ קובץ {data_path} לא קיים!")
+            return None
 
+        print(f"✅ קובץ נמצא: {data_path}")
+
+        output_dir = "exports"
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, f"{model_name}_dataset.xlsx")
+
+        # קריאת הנתונים
+        try:
+            with open(data_path, "r", encoding="utf-8") as file:
+                dataset = json.load(file)
+                print(f"✅ נתונים נקראו בהצלחה. מספר רשומות: {len(dataset)}")
+        except json.JSONDecodeError as e:
+            print(f"❌ שגיאה בקריאת JSON: {e}")
+            return None
+
+        # אם הנתונים ריקים
+        if not dataset:
+            print("❌ הנתונים ריקים – לא נוצר קובץ.")
+            return None
+
+        # יצירת קובץ אקסל
+        workbook = openpyxl.Workbook()
+        sheet = workbook.active
+        sheet.title = "שאלות ותשובות"
+        sheet.append(["שאלה", "תשובה"])
+
+        # הוספת הנתונים
+        for index, item in enumerate(dataset):
+            try:
+                question = item.get("question", "")
+                answer = item.get("answer", "")
+                print(f"➕ שורה {index + 1}: שאלה = {question}, תשובה = {answer}")
+                sheet.append([question, answer])
+            except Exception as e:
+                print(f"❌ שגיאה בהוספת שורה {index + 1}: {e}")
+                continue
+
+        # שמירת הקובץ
+        workbook.save(output_path)
+        print(f"✅ קובץ אקסל נשמר בנתיב: {output_path}")
+
+        return output_path
+
+    except Exception as e:
+        print(f"❌ שגיאה ביצוא הנתונים לאקסל: {e}")
+        return None
+
+# בדיקה עם שם מודל לדוגמה
+export_model_to_excel("example_model")
 # ===== פתיחת הדפדפן והתחלת השרת =====
 
 webbrowser.open_new("http://localhost:8000/home.html")

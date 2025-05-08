@@ -2,21 +2,11 @@
   "original_count": 50,
   "user_generated": true,
   "generated_requested": 10,
-  "generated_count": 2,
+  "generated_count": 10,
   "manual_added_count": 0,
-  "total_final_count": 2,
-  "creation_date": "2025-05-03T14:13:12.567731",
-  "last_updated": "2025-05-03T14:13:30.436822",
+  "total_final_count": 60,
+  "creation_date": "2025-05-08T13:44:26.742858",
+  "last_updated": "2025-05-08T13:44:56.209036",
   "model_name": "789",
-  "slug": "789",
-  "generated": [
-    {
-      "question": "ח",
-      "answer": "וטלחוטכ"
-    },
-    {
-      "question": "ח",
-      "answer": "כחואטח"
-    }
-  ]
+  "slug": "789"
 }
