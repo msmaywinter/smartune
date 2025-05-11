@@ -1,9 +1,45 @@
 /* עיצוב עמוד הבית - home.css */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4rem;
+  background-color: #F7FBFE;  /* רקע לבן */
+  position: relative;
+  z-index: 100;  /* כדי לוודא שזה מעל הרקע */
+}
 
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.hit-logo {
+  width: 140px;   /* גודל לוגו מותאם */
+  height: auto;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 5rem;  /* רווח בין הקישורים */
+}
+
+.header-link {
+  font-size: 38px;
+  color: #004051;
+  text-decoration: none;
+  font-weight: 300;
+  transition: color 0.3s ease;
+}
+
+.header-link:hover {
+  color: #01335F;
+}
 /* רקע עליון עם גלים */
 .hero-home {
     position: relative;
-    padding: 15rem 2rem 5rem;
+    padding: 15rem 0rem 0rem;
     text-align: center;
   }
   
@@ -32,8 +68,8 @@
   }
   
   .subtitle {
-    font-size: 2rem;
-    margin-bottom: 6rem;
+    font-size: 38px;
+    margin-bottom: 7rem;
     color: #003344;
   }
 
@@ -163,7 +199,7 @@
   /* עיצוב אחיד לכרטיסיות */
   .context-card {
     background: white;
-    border-radius: 18px;
+    border-radius: 40px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     padding: 3rem 3rem 2.5rem; /* padding-top גדול יחסית לכותרת קבועה */
     width: 35%; /* צר יותר */
@@ -178,18 +214,18 @@
   
   /* טקסט */
   .context-card h2 {
-    font-size: 2.6rem;
+    font-size: 38px;
     margin-bottom: 0.5rem;
     margin-top: 0;
     text-align: right;
   }
   
   .context-card p {
-    font-size: 1.8rem;
+    font-size: 24px;
     text-align: right;
     line-height: 1.9;
-    margin: 0;
-  }
+    margin: 20px 0px;
+    }
   
   .card-top-right {
     bottom: 3rem;
@@ -212,14 +248,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem;
+    gap: 4rem;
   }
   
   .explainer-box {
-    border-radius: 16px;
+    border-radius: 40px;
     padding: 2rem 2.5rem;
     text-align: center;
-    width: 18%;
+    width: 15%;
     color: white;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     transform: scale(1);
@@ -235,7 +271,7 @@
 
   .explainer-box p{
     margin-top: 5rem;
-    font-size: 1.7rem;
+    font-size: 24px;
   }
   
   .explainer-box.blue {
@@ -258,13 +294,13 @@
   .steps-section {
     background-color: #012E45;
     color: white;
-    padding: 6rem 0rem;
+    padding: 2.5rem 0rem;
     text-align: center;
+    border-radius: 60px;
   }
 
   .steps-section h2 {
-    font-size: 4rem;
-    margin-bottom: 0.1rem;
+    font-size: 64px;
   }
   
   .steps {
@@ -291,23 +327,29 @@
 
   p.description {
     font-size: 1.4rem;
-    margin: 0;
-  }
+    margin-top: 20px;
+    }
   
   /* תחתית - התחלה */
   .start-footer {
     background: url("../assets/P1-END.png") no-repeat center bottom;
     background-size: cover;
-    padding: 8rem 2rem;
+    padding: 18rem 2rem;
     text-align: center;
   }
 
   p,
   span {
-    font-weight: 300;
+    font-weight: 100;
   }
 
   h2 {
-    font-weight: 400;
+    font-weight: 200;
+  }
+  .start-footer h2 {
+    color: #FFFFFF;  /* צבע לבן */
+    font-size: 3rem;  /* גודל מותאם */
+    font-weight: 400;  /* משקל רגיל */
+    margin-bottom: 1.5rem;  /* רווח תחתון */
   }
   
