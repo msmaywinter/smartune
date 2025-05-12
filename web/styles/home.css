@@ -39,7 +39,7 @@
 /* רקע עליון עם גלים */
 .hero-home {
     position: relative;
-    padding: 15rem 0rem 0rem;
+    padding: 17rem 0rem 0rem;
     text-align: center;
   }
   
@@ -349,7 +349,7 @@
   .start-footer h2 {
     color: #FFFFFF;  /* צבע לבן */
     font-size: 3rem;  /* גודל מותאם */
-    font-weight: 400;  /* משקל רגיל */
-    margin-bottom: 1.5rem;  /* רווח תחתון */
+    font-weight: 200;  /* משקל רגיל */
+    margin-bottom: 5.5rem;  /* רווח תחתון */
   }
   

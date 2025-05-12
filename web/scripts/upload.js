@@ -97,13 +97,15 @@ window.addEventListener('load', positionTipBox);
 window.addEventListener('resize', positionTipBox);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const noFile = document.querySelector('.scroll-wrapper');
-  const target = document.getElementById('example');
+  const scrollBtn = document.querySelector('.scroll-btn');
+  const target = document.getElementById('two-columns-section');
 
-  if (noFile && target) {
-    noFile.addEventListener('click', () => {
+  if (scrollBtn && target) {
+    scrollBtn.addEventListener('click', () => {
       target.scrollIntoView({ behavior: 'smooth' });
     });
   }
 });
+
+
 

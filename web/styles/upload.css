@@ -1,12 +1,12 @@
 h2 {
-  font-weight: 300;
-  font-size: 3.5rem;
+  font-weight: 200;
+  font-size: 64px;
 }
 
 .hero-content {
     position: relative;
     text-align: center;
-    padding-top: 1rem;
+    padding-top: 5rem;
   }
   
   .hero-section h1,
@@ -14,12 +14,14 @@ h2 {
   .hero-section p,
   .hero-section button,
   .hero-section .template-link,
-  .hero-section .custom-upload-button {
-    font-weight: 300 !important;
+  .hero-section {
+    font-weight: 200 !important;
   }
-
+  .space-blank1{
+margin-top: 60px;
+  }
   h1 {
-    font-size: 4.5rem;
+    font-size: 64px;
   }
   
   .hero-text-group {
@@ -199,5 +201,105 @@ h2 {
   
 body {
     background: url("../assets/P2-START.png") no-repeat top center;
-    background-size: 100% 20%;
+    background-size: 100% 35%;
+    background-color:#FAFDFF ;
+}
+.back-button {
+  top: 110px;
+}
+
+.two-columns-section {
+  background-image: url("../assets/Two-color-background.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  padding: 4.5rem;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  border-radius: 60px;
+}
+
+.example-box,
+.avoid-box {
+  background-color: transparent;
+  width: 45%;
+  padding: 2rem;
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 200;
+  text-align: right;   /* יישור לימין */
+}
+
+.example-box h2,
+.avoid-box h2 {
+  font-size: 38px;
+  font-weight: 200;
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+.example-box ul,
+.avoid-box ul {
+  list-style-position: inside;
+  margin: 0;
+  padding: 0;
+}
+
+.example-box li,
+.avoid-box li {
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+.notice-section {
+  background-color: #D9F1F7;
+  padding: 60px 70px;
+  margin: 0px auto;
+  margin-top: 100px;
+  width: 70%;
+  max-width: 800px;
+  border-radius: 60px;
+  text-align: center;
+}
+.two-columns-section p,
+.two-columns-section li,
+.two-columns-section span,
+.notice-section p,
+.notice-section li,
+.notice-section span {
+  text-align: right;   /* יישור לימין */
+  direction: rtl;      /* זרימה מימין לשמאל */
+}
+
+.avoid-box p,
+.example-box p{
+font-size: 24px;
+font-weight: 200;
+}
+.summary-section p{
+  font-weight: 200;
+}
+.notice-section h2 {
+  font-size: 38px;
+  font-weight: 200;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  color: #004051;
+  text-align: right;
+}
+
+.notice-section ul {
+  list-style-position: inside;
+  margin: 0;
+  padding: 0;
+}
+
+.notice-section li {
+  font-size: 24px;
+  font-weight: 200;
+  color: #004051;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
 }
