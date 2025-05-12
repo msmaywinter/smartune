@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>הגדרת פרמטרים - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/parameters.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body class="black-logo-page">
+
+  <div id="navbar-placeholder"></div>
+    <main>
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <h1>הגדרת פרמטרים</h1>
+        <h2>ניתן להתאים את הפרמטרים בצורה ידנית על מנת לקבלת תוצאה מותאמת אישית</h2>
+
+        <div class="parameter-box">
+
+          <div class="parameter">
+            <label for="learningRate">באיזו מהירות המודל יסתגל למידע חדש?</label>
+            <div class="slider-wrapper">
+              <input type="range" id="learningRate" min="0" max="100" value="30" class="slider">
+              <div class="slider-tooltip" id="tooltip-learningRate">50</div>
+            </div>
+            <div class="endpoints">
+              <span class="endpoint">לאט אך זהיר ומדויק</span>
+              <span class="endpoint">מהיר אך עלול לטעות</span>
+            </div>
+          </div>
+
+          <div class="parameter">
+            <label for="batchSize">כמה דוגמאות המודל יעבד בכל פעם?</label>
+            <div class="slider-wrapper">
+              <input type="range" id="batchSize" min="0" max="100" value="40" class="slider">
+              <div class="slider-tooltip" id="tooltip-batchSize">50</div>
+            </div>
+            <div class="endpoints">
+              <span class="endpoint">קצת כדי לחסוך בזיכרון המחשב</span>
+              <span class="endpoint">הרבה כדי ללמוד בצורה יעילה</span>
+            </div>
+          </div>
+
+          <div class="parameter">
+            <label for="numEpochs">כמה פעמים המודל יחזור על החומר?</label>
+            <div class="slider-wrapper">
+              <input type="range" id="numEpochs" min="0" max="100" value="60" class="slider">
+              <div class="slider-tooltip" id="tooltip-numEpochs">50</div>
+            </div>
+            <div class="endpoints">
+              <span class="endpoint">קצת כדי ללמוד מהר יותר</span>
+              <span class="endpoint">הרבה כדי להבין לעומק</span>
+            </div>
+          </div>
+
+          <div class="advanced-toggle">
+            <span>פרמטרים מתקדמים</span>
+            <svg class="button-icon arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+          </div>
+
+          <div class="advanced-params">
+            <div class="parameter">
+            <label for="gradientAccumulationSteps">על מה עדיף שהמודל יתעכב?</label>
+            <div class="slider-wrapper">
+                <input type="range" id="gradientAccumulationSteps" min="0" max="100" value="30" class="slider">
+                <div class="slider-tooltip" id="tooltip-gradientAccumulationSteps">20</div>
+            </div>
+            <div class="endpoints">
+                <span class="endpoint">בדיקה של חומר שלמד</span>
+                <span class="endpoint">למידה של חומר חדש</span>
+            </div>
+            </div>
+            <div class="parameter">
+            <label for="warmupRatio">כמה זמן ייקח למודל להתחיל ללמוד בקצב מלא?</label>
+            <div class="slider-wrapper">
+                <input type="range" id="warmupRatio" min="0" max="100" value="10" class="slider">
+                <div class="slider-tooltip" id="tooltip-warmupRatio">20</div>
+            </div>
+            <div class="endpoints">
+                <span class="endpoint">התחלה מהירה ולמידה מיידית</span>
+                <span class="endpoint">התחלה איטית ועלייה הדרגתית</span>
+            </div>
+            </div>
+            <div class="parameter">
+            <label for="baseModel">באיזה מודל בסיס תרצו להשתמש?</label>
+            <div class="select-wrapper">
+                <button class="select-option selected">Mistral Small 3.1</button>
+                <button class="select-option">Qwen 3 14B</button>
+                <button class="select-option">Gemma 2B Instruct</button>
+            </div>
+            </div>
+            <div class="parameter">
+            <label for="maxSeqLength">כמה מידע המודל יכול לעבוד בו זמנית?</label>
+            <div class="select-wrapper">
+                <button class="select-option">הקשרים ארוכים</button>
+                <button class="select-option selected">מאוזן</button>
+                <button class="select-option">טקסטים קצרים</button>
+            </div>
+            </div>
+            <div class="parameter">
+            <label for="FP16">באיזה מצב דיוק המודל ישתמש?</label>
+            <div class="select-wrapper">
+                <button class="select-option">דיוק מלא</button>
+                <button class="select-option selected">דיוק מהיר שדורש פחות משאבים</button>
+            </div>
+            </div>
+        </div>
+      </div>
+    </section>   
+  </main>
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/parameters.js"></script>
+  
+</body>
+</html>
