@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>הכנת הנתונים - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/suggest-expansion.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+  <div id="preloader-placeholder"></div>
+
+  <div id="navbar-placeholder"></div>
+  <main>
+
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <h1>העלאת הקובץ הושלמה בהצלחה!</h1>
+        <div class="hero-text-group">
+            <p>ניתן להוסיף שאלות ותשובות נוספות בעזרת בינה מלאכותית</p>
+            <p>על מנת להרחיב את קובץ הנתונים.</p><br>
+            <p>לאחר ההוספה, תוכלו לבצע אימות מדגמי על המידע שנוסף על מנת לבדוק שהוא אכן מתאים.</p>
+        </div>
+    </section>
+
+    <div class="buttons-row">
+          <div class="upload-wrapper">
+            <button id="expand-button" class="nav-button" onclick="navigator('add-ai-option.html')">
+              <svg class="button-icon icon-plus"  xmlns="http://www.w3.org/2000/svg"fill="#000000" viewBox="0 0 256 256" stroke-width="1.5" stroke="currentColor">
+                <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-40-64a8,8,0,0,1-8,8H136v16a8,8,0,0,1-16,0V160H104a8,8,0,0,1,0-16h16V128a8,8,0,0,1,16,0v16h16A8,8,0,0,1,160,152Z"></path>
+              </svg>
+              הרחבת המאגר
+            </button>
+          </div>
+          
+          <div class="upload-wrapper">
+            <button id="skip-expansion-button" class="nav-button" onclick="navigator('parameters.html')">
+              <svg class="button-icon arrow-down"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+              המשך ללא הרחבה
+            </button>
+          </div>
+          
+
+    <div class="bottom-buttons">
+        <button id="back-button" class="nav-button">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+          חזרה
+        </button>
+    </div>      
+      
+      
+  </main>
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/suggest-expansion.js"></script>
+  
+</body>
+</html>

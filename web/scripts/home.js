@@ -64,8 +64,3 @@ document.addEventListener('DOMContentLoaded', function () {
     cardBottom.style.transform = `translateY(${topMove}px)`;
   });
 });
-
-
-
-
-

@@ -252,13 +252,17 @@ async def generate_by_topics(original_data: list, total_to_generate: int, slug: 
         if remaining_to_generate > 0:
             print(f"עדיין חסרים {remaining_to_generate} סטים – ייתכן שהמודל לא ייצר את כולם.")
 
-    # שמירת הפלט לקובץ
+
+   # שמירת הפלט לקובץ
     output_dir = Path(f"data/generated/{slug}")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "generated_raw.json"
 
+# שילוב של שאלות מקוריות עם מג'ונרטות
+    combined_data = original_data + all_generated
+
     with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(all_generated, f, ensure_ascii=False, indent=2)
+        json.dump(combined_data, f, ensure_ascii=False, indent=2)
         f.flush()
         os.fsync(f.fileno())
 

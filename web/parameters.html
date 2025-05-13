@@ -91,27 +91,28 @@
             </div>
             </div>
             <div class="parameter">
-            <label for="baseModel">באיזה מודל בסיס תרצו להשתמש?</label>
-            <div class="select-wrapper">
-                <button class="select-option selected">Mistral Small 3.1</button>
-                <button class="select-option">Qwen 3 14B</button>
-                <button class="select-option">Gemma 2B Instruct</button>
+              <label for="baseModel">באיזה מודל בסיס תרצו להשתמש?</label>
+              <div class="select-wrapper">
+                <button class="select-option selected" data-value="mistral-small-3.1">Mistral Small 3.1</button>
+                <button class="select-option" data-value="qwen-3-14b">Qwen 3 14B</button>
+                <button class="select-option" data-value="gemma-2b-it">Gemma 2B Instruct</button>
+              </div>
+            </div>
+            <div class="parameter">
+              <label for="maxSeqLength">כמה מידע המודל יכול לעבוד בו זמנית?</label>
+              <div class="select-wrapper">
+                <button class="select-option"         data-value="4096">הקשרים ארוכים</button>
+                <button class="select-option selected" data-value="2048">מאוזן</button>
+                <button class="select-option"         data-value="1024">טקסטים קצרים</button>
+              </div>
             </div>
             </div>
             <div class="parameter">
-            <label for="maxSeqLength">כמה מידע המודל יכול לעבוד בו זמנית?</label>
-            <div class="select-wrapper">
-                <button class="select-option">הקשרים ארוכים</button>
-                <button class="select-option selected">מאוזן</button>
-                <button class="select-option">טקסטים קצרים</button>
-            </div>
-            </div>
-            <div class="parameter">
-            <label for="FP16">באיזה מצב דיוק המודל ישתמש?</label>
-            <div class="select-wrapper">
-                <button class="select-option">דיוק מלא</button>
-                <button class="select-option selected">דיוק מהיר שדורש פחות משאבים</button>
-            </div>
+              <label for="FP16">באיזה מצב דיוק המודל ישתמש?</label>
+              <div class="select-wrapper">
+                <button class="select-option" data-value="false">דיוק מלא</button>
+                <button class="select-option selected" data-value="true">דיוק מהיר שדורש פחות משאבים</button>
+              </div>
             </div>
         </div>
       </div>

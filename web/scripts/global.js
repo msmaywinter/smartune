@@ -1,5 +1,12 @@
 function navigateTo(page) {
-  window.location.href = page;
+  // אם eel קיים, נסגור; אחרת נתעלם
+  if (typeof eel !== 'undefined' && typeof eel.close === 'function') {
+    eel.close();
+  }
+  // נחכה טיפה, ואז נטען את העמוד החדש
+  setTimeout(() => {
+    window.location.href = page;
+  }, 100);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -57,4 +64,4 @@ window.addEventListener("load", () => {
   }, 50);
 });
 
-eel.expose(navigateTo)
+window.navigateTo = navigateTo;

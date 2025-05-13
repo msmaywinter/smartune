@@ -14,17 +14,9 @@ from model_registry import is_valid_model_name, is_duplicate_model_name, save_mo
 from openai_generator import generate_by_topics, load_model_metadata as load_model_metadata_fn, finalize_generation
 from generation_planner import update_generation_choice as update_generation_choice_fn
 from data_editor import load_generated_data as load_generated_data_fn
+from state_manager import cleanup_all, revert_metadata, load_temp_metadata
 
 eel.init('web')
-# מאפשר גישה לתיקיית exports
-eel.start('home.html', mode=None, port=8000, host='localhost', block=False)
-import bottle
-
-@bottle.route('/exports/<filename>')
-def serve_export(filename):
-    return bottle.static_file(filename, root='exports')
-
-
 # ===== חשיפת פונקציות ל-Eel =====
 
 @eel.expose
@@ -192,17 +184,17 @@ def load_generated_data(slug):
 @eel.expose
 def export_model_to_excel(model_name):
     try:
-        print(f"📦 מתחיל ייצוא למודל: {model_name}")
+        print(f"מתחיל ייצוא למודל: {model_name}")
         
         # בדיקת הנתיב החדש
         data_path = f"data/generated/{model_name}/generated_raw.json"
-        print(f"🔍 מחפש את הקובץ: {data_path}")
+        print(f"מחפש את הקובץ: {data_path}")
         
         if not os.path.exists(data_path):
-            print(f"❌ קובץ {data_path} לא קיים!")
+            print(f"קובץ {data_path} לא קיים!")
             return None
 
-        print(f"✅ קובץ נמצא: {data_path}")
+        print(f"קובץ נמצא: {data_path}")
 
         output_dir = "exports"
         os.makedirs(output_dir, exist_ok=True)
@@ -214,12 +206,12 @@ def export_model_to_excel(model_name):
                 dataset = json.load(file)
                 print(f"✅ נתונים נקראו בהצלחה. מספר רשומות: {len(dataset)}")
         except json.JSONDecodeError as e:
-            print(f"❌ שגיאה בקריאת JSON: {e}")
+            print(f"שגיאה בקריאת JSON: {e}")
             return None
 
         # אם הנתונים ריקים
         if not dataset:
-            print("❌ הנתונים ריקים – לא נוצר קובץ.")
+            print("הנתונים ריקים – לא נוצר קובץ.")
             return None
 
         # יצירת קובץ אקסל
@@ -233,26 +225,41 @@ def export_model_to_excel(model_name):
             try:
                 question = item.get("question", "")
                 answer = item.get("answer", "")
-                print(f"➕ שורה {index + 1}: שאלה = {question}, תשובה = {answer}")
+                print(f"שורה {index + 1}: שאלה = {question}, תשובה = {answer}")
                 sheet.append([question, answer])
             except Exception as e:
-                print(f"❌ שגיאה בהוספת שורה {index + 1}: {e}")
+                print(f"שגיאה בהוספת שורה {index + 1}: {e}")
                 continue
 
         # שמירת הקובץ
         workbook.save(output_path)
-        print(f"✅ קובץ אקסל נשמר בנתיב: {output_path}")
+        print(f"קובץ אקסל נשמר בנתיב: {output_path}")
 
         return output_path
 
     except Exception as e:
-        print(f"❌ שגיאה ביצוא הנתונים לאקסל: {e}")
+        print(f"שגיאה ביצוא הנתונים לאקסל: {e}")
         return None
 
-# בדיקה עם שם מודל לדוגמה
-export_model_to_excel("example_model")
-# ===== פתיחת הדפדפן והתחלת השרת =====
+@eel.expose
+def cleanup_upload():
+    cleanup_all()
+    return {"success": True}
 
-webbrowser.open_new("http://localhost:8000/home.html")
-print("🟢 eel.start עומד להתחיל")
-eel.start("home.html", mode=None)
+@eel.expose
+def get_temp_model_name():
+    meta = load_temp_metadata()
+    return meta.get("model_name", "")
+
+@eel.expose
+def get_temp_metadata():
+    return load_temp_metadata()
+
+@eel.expose
+def revert_temp_metadata(slug: str):
+    ok = revert_metadata(slug)
+    return {"success": ok}
+
+
+webbrowser.open_new("http://localhost:8001/home.html")
+eel.start("home.html", mode=None, host="localhost", port=8001)

@@ -9,6 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const minLabel = document.getElementById("min-label");
     const maxLabel = document.getElementById("max-label");
     const continueButton = document.querySelector(".bottom-buttons .nav-button:last-child");
+    const backButton = document.getElementById("back-button");
     
     // מזיז את התצוגה המקורית - מסתיר אותה אבל משאיר אותה בדף כדי לשמור על הערך שלה
     slider.style.opacity = "0";
@@ -175,7 +176,6 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     });
     
-    // תמיכה במכשירים ניידים
     sliderContainer.addEventListener("touchstart", function(e) {
         e.preventDefault();
         isDragging = true;
@@ -226,7 +226,11 @@ window.addEventListener("DOMContentLoaded", () => {
             alert("שגיאה בעדכון מידע. נסה שוב.");
         }
     });
-    
-    // עדכון ראשוני של הסליידר
-    updateSliderUI();
+
+    // **הקשת החזרה** – קריאה עם פרמטר slug
+  backButton.addEventListener("click", () => {
+    window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
+  });
+
+  updateSliderUI();
 });
