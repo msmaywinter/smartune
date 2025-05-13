@@ -32,21 +32,17 @@ h2 {
 }
 
 .parameter-box {
-  background-color: rgba(184, 215, 230, 0.5);
-  border-radius: 1rem;
-  padding: 2.5rem 4rem;
-  width: 50vw;
-  max-width: 1400px;
+  width: 900px;
   margin: 0 auto;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  max-height: 430px;
-  overflow-y: hidden;
-  transition: overflow-y 0.3s ease;
+  height: 52vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 40px;
+  background-color: rgba(184, 215, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.parameter-box.open {
-  overflow-y: auto;
-}
 
 .parameter-box::-webkit-scrollbar {
   width: 0;
@@ -67,6 +63,18 @@ h2 {
   text-align: right;
   position: relative;
   padding-bottom: 1.5rem;
+}
+
+.parameter-box.open .advanced-params {
+  display: block;
+}
+
+.parameter-box.open .advanced-params::-webkit-scrollbar {
+  width: 8px;
+}
+.parameter-box.open .advanced-params::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
 }
 
 .parameter:not(:last-child) {
@@ -172,25 +180,11 @@ h2 {
 }
 
 .advanced-params {
-  max-height: none;
-  overflow: visible;
-  transition: none;
-}
-
-.advanced-params.open {
-  max-height: 400px;
-  overflow-y: auto;
+  display: none;
 }
 
 .advanced-params::-webkit-scrollbar {
   width: 0;
-}
-.advanced-params.open::-webkit-scrollbar {
-  width: 8px;
-}
-.advanced-params.open::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
-  border-radius: 4px;
 }
 
 .select-wrapper {

@@ -1,0 +1,90 @@
+[
+  {
+    "key": "learning_rate",
+    "type": "range",
+    "label": "באיזו מהירות המודל יסתגל למידע חדש?",
+    "tooltip": "ערך לוגריתמי בין 1e-5 (איטי וזהיר) ל-1e-3 (מהיר אך פחות מדויק)",
+    "realRange": { "min": 1e-5, "max": 1e-3, "default": 3e-4 },
+    "endpoints": [
+      "לאט אך זהיר ומדויק",
+      "מהיר אך עלול לטעות"
+    ]
+  },
+  {
+    "key": "batch_size",
+    "type": "range",
+    "label": "כמה דוגמאות המודל יעבד בכל פעם?",
+    "tooltip": "מיפוי ליניארי מ-4 (קצת) עד 64 (הרבה)",
+    "realRange": { "min": 4, "max": 64, "default": 2 },
+    "endpoints": [
+      "קצת כדי לחסוך בזיכרון המחשב",
+      "הרבה כדי ללמוד בצורה יעילה"
+    ]
+  },
+  {
+    "key": "num_epochs",
+    "type": "range",
+    "label": "כמה פעמים המודל יחזור על החומר?",
+    "tooltip": "מיפוי ליניארי בין 1 (קצר) ל-10 (ארוך)",
+    "realRange": { "min": 1, "max": 10, "default": 4 },
+    "endpoints": [
+      "קצת כדי ללמוד מהר יותר",
+      "הרבה כדי להבין לעומק"
+    ]
+  },
+  {
+    "key": "gradient_accumulation_steps",
+    "type": "range",
+    "label": "על מה עדיף שהמודל יתעכב?",
+    "tooltip": "מספר צעדים לאצירת גרדיאנטים לפני עדכון המשקלות",
+    "realRange": { "min": 1, "max": 8, "default": 8 },
+    "endpoints": [
+      "בדיקה של חומר שלמד",
+      "למידה של חומר חדש"
+    ]
+  },
+  {
+    "key": "warmup_ratio",
+    "type": "range",
+    "label": "כמה זמן ייקח למודל להתחיל ללמוד בקצב מלא?",
+    "tooltip": "ערך בין 0.0 (מיידי) ל-0.3 (עלייה הדרגתית)",
+    "realRange": { "min": 0.0, "max": 0.3, "default": 0.2 },
+    "endpoints": [
+      "התחלה מהירה ולמידה מיידית",
+      "התחלה איטית ועלייה הדרגתית"
+    ]
+  },
+  {
+    "key": "model_name",
+    "type": "select",
+    "label": "באיזה מודל בסיס תרצו להשתמש?",
+    "tooltip": "בחרו את המודל שעליו יתבצע ה-fine-tuning",
+    "options": [
+      { "value": "llama-3-8b-instruct", "label": "Llama 3 8B Instruct" }
+    ],
+    "default": "llama-3-8b-instruct"
+  },
+  {
+    "key": "max_seq_length",
+    "type": "select",
+    "label": "כמה מידע המודל יכול לעבוד בו זמנית?",
+    "tooltip": "קיבולת הקשר של המודל; גבוה = זיכרון גבוה",
+    "options": [
+      { "value": 4096, "label": "הקשרים ארוכים" },
+      { "value": 2048, "label": "מאוזן" },
+      { "value": 1024, "label": "טקסטים קצרים" }
+    ],
+    "default": 2048
+  },
+  {
+    "key": "fp16",
+    "type": "select",
+    "label": "באיזה מצב דיוק המודל ישתמש?",
+    "tooltip": "FP16 = מהיר אך פחות מדויק; FP32 = דיוק מלא",
+    "options": [
+      { "value": false, "label": "דיוק מלא" },
+      { "value": true,  "label": "מהיר ופחות מדויק" }
+    ],
+    "default": true
+  }
+]

@@ -260,6 +260,13 @@ def revert_temp_metadata(slug: str):
     ok = revert_metadata(slug)
     return {"success": ok}
 
+@eel.expose
+def load_params():
+    """
+    קורא את params.json ומחזיר אותו כאובייקט שישמש ב־JS
+    """
+    p = Path(__file__).parent / 'params.json'
+    return json.loads(p.read_text(encoding='utf-8'))
 
 webbrowser.open_new("http://localhost:8001/home.html")
 eel.start("home.html", mode=None, host="localhost", port=8001)
