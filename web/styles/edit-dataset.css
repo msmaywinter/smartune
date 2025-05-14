@@ -77,7 +77,7 @@ body {
 }
 
 .qa-box {
-  background-color: rgba(149, 195, 217, 0.65); /* #95C3D9 שקוף */
+  background-color: rgba(149, 195, 217, 0.65);
   border-radius: 5px;
   padding: 8px;
   flex: 1;
@@ -158,9 +158,8 @@ body {
   background-color: #0077b6;
 }
 
-/* תיבות קלט לשורת ההוספה בלבד */
 .add-input {
-  background-color: rgba(217, 220, 221, 0.65); /* אפור עם שקיפות */
+  background-color: rgba(217, 220, 221, 0.65);
   min-height: 25px;
   display: flex;
   align-items: center;
@@ -170,7 +169,6 @@ body {
   color: rgba(0, 45, 62, 0.43);
 }
 
-/* כפתור ההוספה "+" בשורת ההוספה בלבד */
 .grey-add-btn {
   background-color: #B3B3B3;
   color: #ffffff;
@@ -182,7 +180,7 @@ body {
 }
 
 .grey-add-btn:hover {
-  background-color: rgba(170, 173, 175, 0.65); /* hover כהה */
+  background-color: rgba(170, 173, 175, 0.65);
 }
 .qa-row {
   cursor: pointer;
@@ -191,4 +189,32 @@ body {
 
 .qa-row:hover {
   background-color: rgba(149, 195, 217, 0.35);
+}
+
+.bottom-buttons {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.bottom-buttons .nav-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  pointer-events: auto;
+  margin-right: auto; /* כל כפתור יתחוף את עצמו שמאלה */
+}
+
+/* כפתור חזרה - יישאר בקצה הימני */
+#back-button {
+  margin-right: 0; /* לא לדחוף אותו שמאלה בכלל */
+}
+
+.bottom-buttons .nav-button:last-child {
+  margin-left: 20px; /* או כמה שבא לך */
 }

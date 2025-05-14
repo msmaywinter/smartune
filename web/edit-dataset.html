@@ -32,12 +32,20 @@
       <input id="new-answer-input" type="text" placeholder="כתוב/י תשובה חדשה..." class="qa-input add-input">
       <button id="add-question-btn" class="add-btn grey-add-btn">+</button>
     </div>
-    
-
+  
     <button class="download-button">📥 ייצוא המאגר</button>
     
-    
   </main>
+
+      <div class="bottom-buttons">
+        <button class="nav-button" onclick="navigator('parameters.html?slug=' + encodeURIComponent(slug))">
+          שמירה והמשך
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>
 
   <script src="scripts/global.js"></script>
   <script src="scripts/edit-dataset.js"></script>

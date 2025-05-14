@@ -1,3 +1,7 @@
+const urlParams = new URLSearchParams(window.location.search);
+const slug = urlParams.get("slug");
+const backButton = document.getElementById('back-button');
+
 function uiToRealLinear(ui, {min, max}) {
   return min + (ui / 100) * (max - min);
 }
@@ -138,3 +142,78 @@ function attachListeners() {
     });
   });
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const backButton = document.getElementById('back-button');
+  if (backButton) {
+    const referrer = document.referrer;
+    if (referrer.includes('suggest-expansion.html')) {
+      backButton.style.display = 'flex';
+    } else {
+      backButton.style.display = 'none';
+    }
+  }
+});
+
+document.getElementById('reset-default').addEventListener('click', () => {
+  paramDefs.forEach(def => {
+    if (def.type === 'range') {
+      const input = document.getElementById(def.key);
+      if (!input) return;
+
+      const defaultUi = def.key === 'learning_rate'
+        ? uiFromRealLog(def.realRange.default, def.realRange.min, def.realRange.max)
+        : Math.round((def.realRange.default - def.realRange.min) / (def.realRange.max - def.realRange.min) * 100);
+
+      input.value = defaultUi;
+
+      const tooltip = document.getElementById(`tooltip-${def.key}`);
+      if (tooltip) {
+        tooltip.textContent = defaultUi;
+        const percent = (input.value - input.min) / (input.max - input.min);
+        tooltip.style.left = `${percent * 100}%`;
+      }
+
+    } else if (def.type === 'select') {
+      // מוצאים את ה-wrapper של הכפתורים
+      const wrappers = document.querySelectorAll('.select-wrapper');
+      wrappers.forEach(wrapper => {
+        const buttons = wrapper.querySelectorAll('.select-option');
+        // בודקים אם הכפתורים האלה שייכים ל-def הנוכחי
+        buttons.forEach(btn => {
+          if (btn.closest('.parameter')?.querySelector('label')?.htmlFor === def.key) {
+            // איפוס כל הכפתורים בקבוצה הזו
+            buttons.forEach(opt => {
+              opt.classList.remove('selected');
+              if (`${opt.dataset.value}` === `${def.default}`) {
+                opt.classList.add('selected');
+                opt.classList.add('flash');
+                setTimeout(() => {
+                  opt.classList.remove('flash');
+                }, 300);
+              }
+            });
+          }
+        });
+      });
+    }
+    const resetBtn = document.getElementById('reset-default');
+    resetBtn.classList.add('pulse');
+    setTimeout(() => {
+      resetBtn.classList.remove('pulse');
+    }, 300);
+    const resetIcon = resetBtn.querySelector('svg');
+    if (resetIcon) {
+      resetIcon.classList.add('rotate');
+      setTimeout(() => {
+        resetIcon.classList.remove('rotate');
+      }, 400); // זמן הסיבוב צריך להיות כמו האנימציה (400ms)
+    }
+  });
+});
+
+backButton.addEventListener('click', () => {
+    eel.cleanup_upload()().then(() => {
+      window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
+    });
+});

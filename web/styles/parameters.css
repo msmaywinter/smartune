@@ -24,11 +24,23 @@ h1 {
   margin-top: 0;
 }
 
-h2 {
+.header-row {
+  display: flex;
+  align-items: center; /* מיישר את הכפתור והטקסט לגובה אחיד */
+  justify-content: center; /* מרווח יפה ביניהם */
+  margin-bottom: 1rem; /* רווח מהקופסה מתחת */
+}
+
+.header-row h2 {
+  margin: 0; /* להסיר רווחים מיותרים של ברירת מחדל */
   font-size: 1.5rem;
   font-weight: 200;
   color: #004051;
-  margin-bottom: 1rem;
+  margin-left: 2rem;
+}
+
+#reset-default {
+  flex-shrink: 0; /* שלא יקטן כשהמסך קטן */
 }
 
 .parameter-box {
@@ -127,6 +139,7 @@ h2 {
   background: white;
   border-radius: 5px;
   outline: none;
+  transition: all 0.4s ease;
 }
 
 .slider::-webkit-slider-thumb {
@@ -149,6 +162,7 @@ h2 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  transition: left 0.4s ease, transform 0.2s ease;
   width: 36px;
   height: 36px;
   background-color: #004051;
@@ -217,3 +231,61 @@ h2 {
   background-color: #004051;
   color: white;
 }
+
+.select-option.flash {
+  animation: flashHighlight 0.3s ease;
+}
+
+@keyframes flashHighlight {
+  0% { background-color: rgba(0, 64, 81, 0.4); }
+  100% { background-color: #004051; }
+}
+
+#reset-default.pulse {
+  animation: pulseEffect 0.3s ease;
+}
+
+@keyframes pulseEffect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+#reset-default svg.rotate {
+  animation: rotateIcon 0.4s ease;
+}
+
+@keyframes rotateIcon {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.bottom-buttons {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.bottom-buttons .nav-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  pointer-events: auto;
+  margin-right: auto; /* כל כפתור יתחוף את עצמו שמאלה */
+}
+
+/* כפתור חזרה - יישאר בקצה הימני */
+#back-button {
+  margin-right: 0; /* לא לדחוף אותו שמאלה בכלל */
+}
+
+.bottom-buttons .nav-button:last-child {
+  margin-left: 20px; /* או כמה שבא לך */
+}
+
+
