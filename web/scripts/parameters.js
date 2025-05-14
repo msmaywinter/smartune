@@ -93,20 +93,21 @@ function renderParam(def) {
     wrapper.appendChild(ends);
 
   } else if (def.type === 'select') {
-    const sw = document.createElement('div');
-    sw.classList.add('select-wrapper');
+      const sw = document.createElement('div');
+      sw.classList.add('select-wrapper');
+      sw.id = def.key;
 
-    def.options.forEach(opt => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.classList.add('select-option');
-      btn.dataset.value = opt.value;
-      btn.textContent = opt.label;
-      if (`${opt.value}` === `${def.default}`) btn.classList.add('selected');
-      sw.appendChild(btn);
-    });
+      def.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.classList.add('select-option');
+        btn.dataset.value = opt.value;
+        btn.textContent = opt.label;
+        if (`${opt.value}` === `${def.default}`) btn.classList.add('selected');
+        sw.appendChild(btn);
+      });
 
-    wrapper.appendChild(sw);
+      wrapper.appendChild(sw);
   }
 
   return wrapper;
@@ -216,4 +217,73 @@ backButton.addEventListener('click', () => {
     eel.cleanup_upload()().then(() => {
       window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
     });
+});
+
+function closestLearningRate(val) {
+  const candidates = [
+    1e-5, 2e-5, 3e-5, 5e-5,
+    1e-4, 2e-4, 3e-4, 5e-4,
+    1e-3
+  ];
+  let closest = candidates[0];
+  let minDiff = Math.abs(val - candidates[0]);
+  for (let i = 1; i < candidates.length; i++) {
+    const diff = Math.abs(val - candidates[i]);
+    if (diff < minDiff) {
+      closest = candidates[i];
+      minDiff = diff;
+    }
+  }
+  return closest;
+}
+
+document.getElementById('save-and-continue').addEventListener('click', async () => {
+  try {
+    // קודם כל - לוודא שיש קובץ דאטה מוכן
+    const finalDatasetPath = await eel.prepare_final_dataset(slug)(); // קורא לפייתון שיכין את הקובץ
+
+    const trainingParams = {};
+
+    // אחר כך - לבנות את פרמטרי האימון
+    paramDefs.forEach(def => {
+      if (def.type === 'range') {
+        const input = document.getElementById(def.key);
+        if (!input) return;
+
+        const realVal = def.key === 'learning_rate'
+          ? closestLearningRate(realFromUiLog(Number(input.value), def.realRange.min, def.realRange.max))
+          : uiToRealLinear(Number(input.value), def.realRange);
+
+        trainingParams[def.key] = realVal;
+      } else if (def.type === 'select') {
+        const wrapper = document.getElementById(def.key);
+        if (!wrapper) return;
+
+        const selected = wrapper.querySelector('.select-option.selected');
+        if (!selected) return;
+
+        let value = selected.dataset.value;
+        if (value === 'true') value = true;
+        if (value === 'false') value = false;
+        if (!isNaN(Number(value))) value = Number(value);
+
+        trainingParams[def.key] = value;
+      }
+    });
+
+    // עכשיו מוסיפים גם את הנתיב לדאטה האמיתי שהוכן
+    trainingParams.dataset_path = finalDatasetPath;
+
+    console.log('Training params ready:', trainingParams);
+
+    // ואז שומרים את קובץ הקונפיג
+    await eel.save_training_config(trainingParams)();
+
+    alert('ההגדרות נשמרו בהצלחה! אפשר להתחיל אימון 🚀');
+    // פה אפשר להמשיך לעמוד הבא או להתחיל אימון
+
+  } catch (error) {
+    console.error('בעיה בשמירה:', error);
+    alert('אירעה שגיאה במהלך שמירת ההגדרות');
+  }
 });

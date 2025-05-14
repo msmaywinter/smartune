@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import shutil
 import webbrowser
 import eel
 import glob
@@ -267,6 +268,59 @@ def load_params():
     """
     p = Path(__file__).parent / 'params.json'
     return json.loads(p.read_text(encoding='utf-8'))
+
+@eel.expose
+def prepare_final_dataset(slug):
+    # שליפת המטאדאטה
+    metadata_path = os.path.join('models_metadata', f'{slug}.json')
+    if not os.path.exists(metadata_path):
+        raise FileNotFoundError(f"Metadata file not found for slug: {slug}")
+
+    with open(metadata_path, 'r', encoding='utf-8') as f:
+        metadata = json.load(f)
+
+    target_dir = os.path.join('data', 'final_datasets')
+    os.makedirs(target_dir, exist_ok=True)
+    final_path = os.path.join(target_dir, f'{slug}.json')
+
+    if metadata.get('user_generated'):
+        # המשתמש בחר בג'נרציה
+        generated_data_path = os.path.join('data', 'generated', slug, 'generated_raw.json')
+        if not os.path.exists(generated_data_path):
+            raise FileNotFoundError("Generated raw data not found.")
+        shutil.copy(generated_data_path, final_path)
+        print(f"Copied generated data to {final_path}")
+    else:
+        # המשתמש העלה קובץ
+        excel_files = glob.glob("uploads/*.xlsx")
+        if not excel_files:
+            raise FileNotFoundError("No Excel files found in uploads.")
+
+        latest_excel = max(excel_files, key=os.path.getmtime)
+        df = pd.read_excel(latest_excel)
+        df.to_json(final_path, orient='records', force_ascii=False, indent=4)
+        print(f"Converted Excel '{latest_excel}' to JSON at {final_path}")
+        
+    return final_path
+
+@eel.expose
+def save_training_config(config):
+    import datetime
+
+    os.makedirs('configs', exist_ok=True)
+    
+    slug = config.get('slug', 'model')
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
+    
+    filename = f"{slug}_{timestamp}.json"
+    config_path = os.path.join('configs', filename)
+
+    with open(config_path, 'w', encoding='utf-8') as f:
+        json.dump(config, f, ensure_ascii=False, indent=4)
+    
+    print(f"Training config saved at {config_path}")
+    return config_path
+
 
 webbrowser.open_new("http://localhost:8001/home.html")
 eel.start("home.html", mode=None, host="localhost", port=8001)

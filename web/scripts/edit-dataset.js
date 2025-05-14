@@ -1,11 +1,13 @@
 let modelName = "";
+const continueButton = document.getElementById('save-and-continue');
+const urlParams = new URLSearchParams(window.location.search);
+const slug = urlParams.get("slug");
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const urlParams = new URLSearchParams(window.location.search);
   modelName = urlParams.get('slug');
 
   if (!modelName) {
-    alert("❌ חסר שם מודל בכתובת.");
+    alert("חסר שם מודל בכתובת.");
     return;
   }
 
@@ -37,20 +39,29 @@ window.addEventListener("DOMContentLoaded", async () => {
       answerInput.value = "";
     } catch (err) {
       console.error("שגיאה בהוספת שאלה:", err);
-      alert("❌ שגיאה בהוספת שאלה.");
+      alert("שגיאה בהוספת שאלה.");
     }
   });
 
 });
+
+continueButton.addEventListener('click', () => {
+    eel.cleanup_upload()().then(() => {
+      window.location.href = `parameters.html?slug=${encodeURIComponent(slug)}`;
+    });
+});
+
+navigator('parameters.html?slug=' + encodeURIComponent(slug))
+
 document.querySelector(".download-button").addEventListener("click", async () => {
   try {
-    console.log("📦 מתחיל ייצוא לאקסל...");
+    console.log("מתחיל ייצוא לאקסל...");
     const filePath = await eel.export_model_to_excel(modelName)();
     console.log("➡️ קובץ נוצר בנתיב:", filePath);
 
     if (!filePath) {
-      console.error("❌ שגיאה: לא נוצר קובץ.");
-      alert("❌ שגיאה ביצוא לאקסל.");
+      console.error("שגיאה: לא נוצר קובץ.");
+      alert("שגיאה ביצוא לאקסל.");
       return;
     }
 
@@ -65,7 +76,7 @@ document.querySelector(".download-button").addEventListener("click", async () =>
 
   } catch (err) {
     console.error("שגיאה ביצוא הנתונים:", err);
-    alert("❌ שגיאה ביצוא הנתונים.");
+    alert("שגיאה ביצוא הנתונים.");
   }
 });
 
@@ -78,7 +89,7 @@ async function renderQAList(list) {
     const row = document.createElement("div");
     row.className = "qa-row";
 
-    // ❗ הוספת התנהגות של מעבר לעמוד צפייה בפריט
+    // הוספת התנהגות של מעבר לעמוד צפייה בפריט
     row.addEventListener("click", () => {
       localStorage.setItem("dataset", JSON.stringify(list));
       localStorage.setItem("currentIndex", index);
@@ -113,7 +124,7 @@ async function renderQAList(list) {
         renderQAList(updated);
       } catch (err) {
         console.error("שגיאה במחיקה:", err);
-        alert("❌ שגיאה במחיקת שאלה.");
+        alert("שגיאה במחיקת שאלה.");
       }
     });
 

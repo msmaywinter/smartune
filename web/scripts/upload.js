@@ -65,7 +65,7 @@ async function upload() {
       ])       
 
     } finally {
-      fileInput.value = ""; // 🛠 מנקה כדי שלא ייקרא שוב בטעות
+      fileInput.value = ""; // מנקה כדי שלא ייקרא שוב בטעות
     }
   };
 
