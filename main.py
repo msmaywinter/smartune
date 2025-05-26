@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime
 import json
 import os
 import shutil
@@ -15,7 +16,7 @@ from model_registry import is_valid_model_name, is_duplicate_model_name, save_mo
 from openai_generator import generate_by_topics, load_model_metadata as load_model_metadata_fn, finalize_generation
 from generation_planner import update_generation_choice as update_generation_choice_fn
 from data_editor import load_generated_data as load_generated_data_fn
-from state_manager import cleanup_all, revert_metadata, load_temp_metadata
+from state_manager import cleanup_all, load_temp_metadata
 
 eel.init('web')
 # ===== חשיפת פונקציות ל-Eel =====
@@ -24,6 +25,9 @@ eel.init('web')
 def handle_file_upload(filename):
     input_path = os.path.join("uploads", filename)
     result = process_excel_file(input_path)
+    if os.path.exists(input_path):
+        os.remove(input_path)
+
     return result
 
 @eel.expose
@@ -33,12 +37,27 @@ def save_file_to_server(base64data, filename):
         f.write(base64.b64decode(base64data))
 
 @eel.expose
+def delete_model_folder(slug):
+    model_path = os.path.join("models", slug)
+    if os.path.exists(model_path) and os.path.isdir(model_path):
+        shutil.rmtree(model_path)
+        print(f"נמחקה תיקיית המודל: {slug}")
+        return {"success": True}
+    return {"success": False, "error": "תיקייה לא נמצאה"}
+
+@eel.expose
 def validate_model_name(name):
     if not is_valid_model_name(name):
-        return {"success": False, "error": "שם המודל יכול להכיל רק אותיות (עברית/אנגלית), מספרים, רווחים, מקף וקו תחתון."}
+        return {"success": False, "error": "שם המודל יכול להכיל רק אותיות באנגלית, מספרים, רווחים, מקף וקו תחתון."}
     if is_duplicate_model_name(name):
         return {"success": False, "error": f"השם '{name}' כבר בשימוש. יש לבחור שם אחר."}
     return {"success": True}
+
+@eel.expose
+def revert_temp_metadata(current_slug: str, original_slug: str):
+    from state_manager import revert_metadata
+    ok = revert_metadata(current_slug, original_slug)
+    return {"success": ok}
 
 @eel.expose
 def save_model_metadata(name):
@@ -65,11 +84,27 @@ def done_generating():
     """פונקציה שקוראת ל-JavaScript כדי לסמן שהג'נרציה הסתיימה"""
     pass  # אין צורך בלוגיקה נוספת כאן, זה רק לחשיפה
 
+def update_total_count(slug: str, new_count: int):
+    meta_path = Path(f"models/{slug}/metadata.json")
+    if not meta_path.exists():
+        print(f"לא נמצא מטאדאטה לעדכון: {meta_path}")
+        return
+    try:
+        with open(meta_path, "r", encoding="utf-8") as f:
+            metadata = json.load(f)
+        metadata["total_final_count"] = new_count
+        metadata["last_updated"] = datetime.now().isoformat()
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+        print(f"עודכן מטאדאטה: total_final_count = {new_count}")
+    except Exception as e:
+        print(f"שגיאה בעדכון המטאדאטה: {e}")
+
 @eel.expose
 def append_to_generated_raw(slug, example):
     print("📥 append_to_generated_raw הופעלה")
     try:
-        path = Path(f"data/generated/{slug}/generated_raw.json")
+        path = Path(f"models/{slug}/generated_raw.json")
         if not path.exists():
             data = []
         else:
@@ -84,6 +119,7 @@ def append_to_generated_raw(slug, example):
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
+        update_total_count(slug, len(data))
         return {"success": True}
     except Exception as e:
         print(f"שגיאה בשמירת שאלה חדשה: {e}")
@@ -92,7 +128,7 @@ def append_to_generated_raw(slug, example):
 @eel.expose
 def delete_from_generated_raw(slug, index):
     try:
-        path = Path(f"data/generated/{slug}/generated_raw.json")
+        path = Path(f"models/{slug}/generated_raw.json")
         if not path.exists():
             return {"success": False, "error": "לא נמצא קובץ generated_raw."}
 
@@ -107,6 +143,7 @@ def delete_from_generated_raw(slug, index):
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
+        update_total_count(slug, len(data))
         return {"success": True}
     except Exception as e:
         print(f"שגיאה במחיקת שאלה: {e}")
@@ -114,15 +151,13 @@ def delete_from_generated_raw(slug, index):
 
 async def generate_sets_async(slug):
     try:
-        excel_files = glob.glob("uploads/*.xlsx")
-        if not excel_files:
-            print("לא נמצא אף קובץ Excel בתיקיית uploads")
+        excel_path = os.path.join("models", slug, "original.xlsx")
+        if not os.path.exists(excel_path):
+            print(f"שגיאה: לא נמצא קובץ Excel בתיקייה models/{slug}")
             return {"success": False}
 
-        latest_excel = max(excel_files, key=os.path.getmtime)
-        print(f"קובץ האקסל שנבחר: {latest_excel}")
-
-        df = pd.read_excel(latest_excel)
+        print(f"קובץ האקסל שנבחר: {excel_path}")
+        df = pd.read_excel(excel_path)
         print("עמודות שנמצאו בקובץ:", df.columns.tolist())
 
         question_col, answer_col, topic_col = None, None, None
@@ -174,7 +209,7 @@ async def generate_sets_async(slug):
     
 @eel.expose
 def load_generated_data(slug):
-    filepath = f"data/generated/{slug}/generated_raw.json"
+    filepath = f"models/{slug}/generated_raw.json"
     if not os.path.exists(filepath):
         return []
 
@@ -188,7 +223,7 @@ def export_model_to_excel(model_name):
         print(f"מתחיל ייצוא למודל: {model_name}")
         
         # בדיקת הנתיב החדש
-        data_path = f"data/generated/{model_name}/generated_raw.json"
+        data_path = f"models/{model_name}/generated_raw.json"
         print(f"מחפש את הקובץ: {data_path}")
         
         if not os.path.exists(data_path):
@@ -257,11 +292,6 @@ def get_temp_metadata():
     return load_temp_metadata()
 
 @eel.expose
-def revert_temp_metadata(slug: str):
-    ok = revert_metadata(slug)
-    return {"success": ok}
-
-@eel.expose
 def load_params():
     """
     קורא את params.json ומחזיר אותו כאובייקט שישמש ב־JS
@@ -272,20 +302,20 @@ def load_params():
 @eel.expose
 def prepare_final_dataset(slug):
     # שליפת המטאדאטה
-    metadata_path = os.path.join('models_metadata', f'{slug}.json')
+    metadata_path = os.path.join('models', slug, 'metadata.json')
     if not os.path.exists(metadata_path):
         raise FileNotFoundError(f"Metadata file not found for slug: {slug}")
 
     with open(metadata_path, 'r', encoding='utf-8') as f:
         metadata = json.load(f)
 
-    target_dir = os.path.join('data', 'final_datasets')
-    os.makedirs(target_dir, exist_ok=True)
-    final_path = os.path.join(target_dir, f'{slug}.json')
+    model_dir = os.path.join('models', slug)
+    os.makedirs(model_dir, exist_ok=True)
+    final_path = os.path.join(model_dir, "final_dataset.json")
 
     if metadata.get('user_generated'):
         # המשתמש בחר בג'נרציה
-        generated_data_path = os.path.join('data', 'generated', slug, 'generated_raw.json')
+        generated_data_path = os.path.join('models', slug, 'generated_raw.json')
         if not os.path.exists(generated_data_path):
             raise FileNotFoundError("Generated raw data not found.")
         shutil.copy(generated_data_path, final_path)
@@ -307,17 +337,20 @@ def prepare_final_dataset(slug):
 def save_training_config(config):
     import datetime
 
-    os.makedirs('configs', exist_ok=True)
-    
-    slug = config.get('slug', 'model')
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
-    
-    filename = f"{slug}_{timestamp}.json"
-    config_path = os.path.join('configs', filename)
+    slug = config.get('slug')
+    if not slug:
+        raise ValueError("Training config must include a 'slug' key.")
+
+    model_dir = os.path.join("models", slug)
+    os.makedirs(model_dir, exist_ok=True)
+
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"training_config_{timestamp}.json"
+    config_path = os.path.join(model_dir, filename)
 
     with open(config_path, 'w', encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=4)
-    
+
     print(f"Training config saved at {config_path}")
     return config_path
 

@@ -2,18 +2,18 @@ import pandas as pd
 import json
 import re
 import os
+import shutil
 from datetime import datetime
+import state_manager  # לוודא שקיים קובץ עם הפונקציה save_temp_metadata
 
-# הגדרות קבועות
+# קבועים
 MIN_ROWS = 50
 ALLOWED_EXTENSIONS = ['.xlsx', '.xls']
 
-# שלב 0: בדיקת סיומת קובץ
 def is_valid_excel_file(filename: str) -> bool:
     _, ext = os.path.splitext(filename)
     return ext.lower() in ALLOWED_EXTENSIONS
 
-# שלב 1: ניסיון קריאה
 def read_excel_file(file_path: str) -> pd.DataFrame:
     try:
         df = pd.read_excel(file_path)
@@ -21,24 +21,17 @@ def read_excel_file(file_path: str) -> pd.DataFrame:
     except Exception as e:
         raise ValueError(f"שגיאה בקריאת הקובץ: {str(e)}")
 
-# שלב 2: בדיקת מבנה
 def validate_structure(df: pd.DataFrame) -> list:
     errors = []
-
     required_columns = ['שאלה', 'תשובה', 'נושא']
     if list(df.columns[:3]) != required_columns:
         errors.append("הקובץ חייב לכלול שלוש עמודות בלבד – 'שאלה', 'תשובה', 'נושא' – ובסדר הזה.")
         return errors
-
-    # שינוי שמות העמודות באנגלית
     df.columns = ['question', 'answer', 'topic']
     return errors
 
-# שלב 3: ניקוי ראשוני
 def clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    # הסרת שורות חסרות (לפני ניקוי)
     df = df.dropna(subset=['question', 'answer', 'topic'])
-
     for col in ['question', 'answer', 'topic']:
         df[col] = (
             df[col]
@@ -46,16 +39,12 @@ def clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
             .str.strip()
             .replace(r'[\n\t\r]', '', regex=True)
         )
-
     return df
 
-# שלב 4: בדיקות תוכן
 def validate_content(df: pd.DataFrame) -> list:
     errors = []
-
     if len(df) < MIN_ROWS:
         errors.append(f"הקובץ מכיל רק {len(df)} שורות תקינות – נדרשות לפחות {MIN_ROWS}.")
-
     for i, row in df.iterrows():
         row_errors = []
         if not row['question'].strip():
@@ -64,35 +53,11 @@ def validate_content(df: pd.DataFrame) -> list:
             row_errors.append("תשובה חסרה")
         if not row['topic'].strip():
             row_errors.append("נושא חסר")
-
         if row_errors:
             errors.append(f"שורה {i + 2}: {', '.join(row_errors)}.")
-
     return errors
 
-# שלב 5: יצירת קובץ מטאדאטה
-def create_temp_metadata(original_count):
-    """יוצרת קובץ מטאדאטה זמני אחרי ולידציה מוצלחת של קובץ אקסל."""
-    metadata = {
-        "original_count": original_count,
-        "user_generated": False,
-        "generated_requested": 0,
-        "generated_count": 0,
-        "manual_added_count": 0,
-        "total_final_count": original_count,
-        "creation_date": datetime.now().isoformat(),
-        "last_updated": datetime.now().isoformat()
-    }
-    
-    os.makedirs('models_metadata', exist_ok=True)
-    temp_metadata_path = os.path.join('models_metadata', 'temp_metadata.json')
-
-    with open(temp_metadata_path, "w", encoding="utf-8") as f:
-        json.dump(metadata, f, ensure_ascii=False, indent=2)
-
-    print(f"✅ נוצר קובץ מטאדאטה זמני: {temp_metadata_path}")
-
-# פונקציה מרכזית שמריצה את כל התהליך
+# 🧠 פונקציה ראשית
 def process_excel_file(file_path: str) -> dict:
     if not is_valid_excel_file(file_path):
         return {"success": False, "errors": ["הקובץ שהועלה אינו קובץ Excel תקני (.xlsx או .xls)."]}
@@ -111,7 +76,47 @@ def process_excel_file(file_path: str) -> dict:
     if content_errors:
         return {"success": False, "errors": content_errors}
 
-    # החזר את df להמשך טיפול בשלב הבא
-    create_temp_metadata(len(df))
+    # יצירת תיקיית models אם לא קיימת
+    os.makedirs("models", exist_ok=True)
 
-    return {"success": True, "data": df.to_dict(orient="records")}
+    # יצירת slug לפי תאריך ושעה
+    slug = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # יצירת תיקיית הפרויקט
+    model_dir = os.path.join("models", slug)
+    os.makedirs(model_dir, exist_ok=True)
+
+    # שמירת קובץ האקסל בשם אחיד
+    saved_excel_path = os.path.join(model_dir, "original.xlsx")
+    shutil.copy(file_path, saved_excel_path)
+
+    # יצירת metadata ראשוני
+    now_iso = datetime.now().isoformat()
+    metadata = {
+        "slug": slug,
+        "model_name": None,
+        "original_slug": slug,
+        "original_filename": os.path.basename(file_path),
+        "original_count": len(df),
+        "user_generated": False,
+        "generated_requested": 0,
+        "generated_count": 0,
+        "manual_added_count": 0,
+        "total_final_count": len(df),
+        "creation_date": now_iso,
+        "last_updated": now_iso
+    }
+
+    # שמירה לתוך תיקיית הפרויקט
+    metadata_path = os.path.join(model_dir, "metadata.json")
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, ensure_ascii=False, indent=2)
+
+    # עדכון זמני ב-state_manager
+    state_manager.save_temp_metadata(metadata)
+
+    return {
+        "success": True,
+        "slug": slug,
+        "data": df.to_dict(orient="records")
+    }

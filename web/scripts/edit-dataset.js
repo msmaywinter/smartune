@@ -51,8 +51,6 @@ continueButton.addEventListener('click', () => {
     });
 });
 
-navigator('parameters.html?slug=' + encodeURIComponent(slug))
-
 document.querySelector(".download-button").addEventListener("click", async () => {
   try {
     console.log("מתחיל ייצוא לאקסל...");

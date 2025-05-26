@@ -32,11 +32,20 @@ async function initChooseNamePage() {
   }
 
   // 2. וידוא כפתור חזרה
-  backButton.addEventListener('click', () => {
-    eel.cleanup_upload()().then(() => {
-      window.location.href = 'upload.html';
-    });
-  });
+  backButton.addEventListener('click', async () => {
+  try {
+    const tempMeta = await eel.get_temp_metadata()();
+    const slug = tempMeta.slug;
+    if (slug) {
+      await eel.delete_model_folder(slug)();
+    }
+    await eel.cleanup_upload()(); // רק אם את רוצה לנקות גם את uploads
+    window.location.href = 'upload.html';
+  } catch (err) {
+    console.error("שגיאה במחיקת תיקיית המודל:", err);
+    alert("אירעה שגיאה בשחזור. נסו שוב.");
+  }
+});
 }
 
 window.addEventListener("DOMContentLoaded", initChooseNamePage);

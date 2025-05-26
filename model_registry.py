@@ -3,9 +3,7 @@ import os
 import json
 import re
 import unicodedata
-
-MODELS_DIR = "models_metadata"
-os.makedirs(MODELS_DIR, exist_ok=True)
+import state_manager
 
 def slugify(name: str) -> str:
     name = unicodedata.normalize("NFKD", name)
@@ -14,50 +12,49 @@ def slugify(name: str) -> str:
     return name.lower()
 
 def is_valid_model_name(name: str) -> bool:
-    pattern = r'^[\w\s\-א-ת]+$'
+    pattern = r'^[a-zA-Z0-9_\- ]+$'  # רק באנגלית
     return bool(name.strip()) and bool(re.fullmatch(pattern, name.strip()))
 
 def is_duplicate_model_name(name: str) -> bool:
     slug = slugify(name)
-    return os.path.exists(os.path.join(MODELS_DIR, f"{slug}.json"))
+    return os.path.exists(os.path.join("models", slug))
 
 def save_model_metadata(name: str) -> dict:
     print(f"קיבלתי בקשה לשמור מודל: {name}")
 
     if not is_valid_model_name(name):
-        print(f"שם לא חוקי: {name}")
-        return {"success": False, "error": "שם המודל לא חוקי."}
-    
+        return {"success": False, "error": "שם המודל יכול להכיל רק אותיות באנגלית, מספרים, רווחים, מקפים וקווים תחתונים."}
+
     slug = slugify(name)
     if is_duplicate_model_name(name):
-        print(f"שם כבר קיים: {name} (slug: {slug})")
         return {"success": False, "error": f"השם '{name}' כבר בשימוש. יש לבחור שם אחר."}
 
-    temp_metadata_path = os.path.join(MODELS_DIR, "temp_metadata.json")
-    if not os.path.exists(temp_metadata_path):
-        print("לא נמצא קובץ מטאדאטה זמני.")
+    # שליפת המטאדאטה מה-state הזמני
+    metadata = state_manager.load_temp_metadata()
+    if not metadata:
         return {"success": False, "error": "לא נמצא מידע זמני. נסה להעלות את הקובץ מחדש."}
 
-    try:
-        # קריאת המטאדאטה הזמנית
-        with open(temp_metadata_path, "r", encoding="utf-8") as f:
-            metadata = json.load(f)
+    old_slug = metadata.get("slug")
+    old_model_path = os.path.join("models", old_slug)
 
-        # עדכון השדות
-        metadata["model_name"] = name.strip()  # השם המלא לתצוגה
-        metadata["slug"] = slug                # שם לוגי
-        metadata["last_updated"] = datetime.now().isoformat()
+    # עדכון שם המודל וה-slug
+    metadata["model_name"] = name.strip()
+    metadata["slug"] = slug
+    metadata["last_updated"] = datetime.now().isoformat()
 
-        # שמירת הקובץ
-        path = os.path.join(MODELS_DIR, f"{slug}.json")
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(metadata, f, ensure_ascii=False, indent=2)
+    # שינוי שם התיקייה של המודל
+    new_model_path = os.path.join("models", slug)
+    if not os.path.exists(old_model_path):
+        return {"success": False, "error": "תיקיית המודל לא נמצאה."}
+    os.rename(old_model_path, new_model_path)
 
-        os.remove(temp_metadata_path)
+    # שמירת המטאדאטה למיקום החדש
+    metadata_path = os.path.join(new_model_path, "metadata.json")
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, ensure_ascii=False, indent=2)
 
-        print(f"✅ שמירת המטאדאטה הצליחה! slug = {slug}")
-        return {"success": True, "slug": slug}
+    # עדכון מצב זמני
+    state_manager.save_temp_metadata(metadata)
 
-    except Exception as e:
-        print(f"שגיאה בזמן שמירה: {e}")
-        return {"success": False, "error": str(e)}
+    print(f"✅ שם המודל נשמר בהצלחה! slug = {slug}")
+    return {"success": True, "slug": slug}

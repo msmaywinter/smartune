@@ -9,7 +9,10 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from datetime import datetime
 
-MODELS_DIR = "models_metadata"
+from state_manager import save_temp_metadata
+
+def get_metadata_path(slug):
+    return os.path.join("models", slug, "metadata.json")
 
 # === הגדרות כלליות === #
 load_dotenv()
@@ -23,7 +26,7 @@ CHUNK_SIZE = 3
 # === פונקציות עזר === #
 def load_model_metadata(slug: str) -> dict:
     """טוען את המטאדאטה של מודל לפי שם."""
-    metadata_path = os.path.join(MODELS_DIR, f"{slug}.json")
+    metadata_path = get_metadata_path(slug)
     if not os.path.exists(metadata_path):
         raise FileNotFoundError(f"לא נמצא קובץ מטאדאטה למודל: {slug}")
 
@@ -254,7 +257,7 @@ async def generate_by_topics(original_data: list, total_to_generate: int, slug: 
 
 
    # שמירת הפלט לקובץ
-    output_dir = Path(f"data/generated/{slug}")
+    output_dir = Path(f"models/{slug}")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "generated_raw.json"
 
@@ -274,7 +277,7 @@ async def generate_by_topics(original_data: list, total_to_generate: int, slug: 
 # === עדכון מטאדאטה בסיום ג'נרציה === #
 def finalize_generation(slug: str) -> dict:
     """מעודכן את כמות הסטים המג'ונרטים והכמות הסופית במטאדאטה."""
-    metadata_path = os.path.join(MODELS_DIR, f"{slug}.json")
+    metadata_path = get_metadata_path(slug)
     if not os.path.exists(metadata_path):
         return {"success": False, "error": "קובץ מטאדאטה לא נמצא."}
 
@@ -291,6 +294,8 @@ def finalize_generation(slug: str) -> dict:
 
         with open(metadata_path, "w", encoding="utf-8") as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
+        
+        save_temp_metadata(metadata)
 
         print(f"עודכן מטאדאטה לאחר סיום ג'נרציה למודל {slug}")
         return {"success": True}

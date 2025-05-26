@@ -28,11 +28,16 @@ window.addEventListener('DOMContentLoaded', () => {
     paramDefs = defs;
     initRendering();
   });
+
+  if (backButton) {
+    const referrer = document.referrer;
+    backButton.style.display = referrer.includes('suggest-expansion.html') ? 'flex' : 'none';
+  }
 });
 
 function initRendering() {
   const container = document.querySelector('.parameter-box');
-  const basicDefs    = paramDefs.slice(0, 3);
+  const basicDefs = paramDefs.slice(0, 3);
   const advancedDefs = paramDefs.slice(3);
 
   container.innerHTML = '';
@@ -41,8 +46,7 @@ function initRendering() {
 
   const toggle = document.createElement('div');
   toggle.classList.add('advanced-toggle');
-  toggle.innerHTML = `<span>פרמטרים מתקדמים</span>
-    <svg class="arrow-down" …>…</svg>`;
+  toggle.innerHTML = `<span>פרמטרים מתקדמים</span><svg class="arrow-down" …>…</svg>`;
   container.appendChild(toggle);
 
   const advContainer = document.createElement('div');
@@ -72,11 +76,12 @@ function renderParam(def) {
     input.classList.add('slider');
     input.min = 0;
     input.max = 100;
+
     const defaultUi = def.key === 'learning_rate'
       ? uiFromRealLog(def.realRange.default, def.realRange.min, def.realRange.max)
       : Math.round((def.realRange.default - def.realRange.min) / (def.realRange.max - def.realRange.min) * 100);
-    input.value = defaultUi;
 
+    input.value = defaultUi;
     sw.appendChild(input);
 
     const tooltip = document.createElement('div');
@@ -93,21 +98,21 @@ function renderParam(def) {
     wrapper.appendChild(ends);
 
   } else if (def.type === 'select') {
-      const sw = document.createElement('div');
-      sw.classList.add('select-wrapper');
-      sw.id = def.key;
+    const sw = document.createElement('div');
+    sw.classList.add('select-wrapper');
+    sw.id = def.key;
 
-      def.options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.classList.add('select-option');
-        btn.dataset.value = opt.value;
-        btn.textContent = opt.label;
-        if (`${opt.value}` === `${def.default}`) btn.classList.add('selected');
-        sw.appendChild(btn);
-      });
+    def.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.classList.add('select-option');
+      btn.dataset.value = opt.value;
+      btn.textContent = opt.label;
+      if (`${opt.value}` === `${def.default}`) btn.classList.add('selected');
+      sw.appendChild(btn);
+    });
 
-      wrapper.appendChild(sw);
+    wrapper.appendChild(sw);
   }
 
   return wrapper;
@@ -115,7 +120,7 @@ function renderParam(def) {
 
 function attachListeners() {
   const container = document.querySelector('.parameter-box');
-  const toggle    = container.querySelector('.advanced-toggle');
+  const toggle = container.querySelector('.advanced-toggle');
 
   toggle.addEventListener('click', () => {
     container.classList.toggle('open');
@@ -126,7 +131,7 @@ function attachListeners() {
     const update = () => {
       const percent = (slider.value - slider.min) / (slider.max - slider.min);
       tooltip.textContent = slider.value;
-      tooltip.style.left   = `${percent * 100}%`;
+      tooltip.style.left = `${percent * 100}%`;
     };
     slider.addEventListener('input', update);
     window.addEventListener('resize', update);
@@ -137,24 +142,11 @@ function attachListeners() {
     wrapper.addEventListener('click', event => {
       const btn = event.target.closest('.select-option');
       if (!btn) return;
-      wrapper.querySelectorAll('.select-option')
-             .forEach(b => b.classList.remove('selected'));
+      wrapper.querySelectorAll('.select-option').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
     });
   });
 }
-
-window.addEventListener('DOMContentLoaded', () => {
-  const backButton = document.getElementById('back-button');
-  if (backButton) {
-    const referrer = document.referrer;
-    if (referrer.includes('suggest-expansion.html')) {
-      backButton.style.display = 'flex';
-    } else {
-      backButton.style.display = 'none';
-    }
-  }
-});
 
 document.getElementById('reset-default').addEventListener('click', () => {
   paramDefs.forEach(def => {
@@ -176,47 +168,34 @@ document.getElementById('reset-default').addEventListener('click', () => {
       }
 
     } else if (def.type === 'select') {
-      // מוצאים את ה-wrapper של הכפתורים
-      const wrappers = document.querySelectorAll('.select-wrapper');
-      wrappers.forEach(wrapper => {
-        const buttons = wrapper.querySelectorAll('.select-option');
-        // בודקים אם הכפתורים האלה שייכים ל-def הנוכחי
-        buttons.forEach(btn => {
-          if (btn.closest('.parameter')?.querySelector('label')?.htmlFor === def.key) {
-            // איפוס כל הכפתורים בקבוצה הזו
-            buttons.forEach(opt => {
-              opt.classList.remove('selected');
-              if (`${opt.dataset.value}` === `${def.default}`) {
-                opt.classList.add('selected');
-                opt.classList.add('flash');
-                setTimeout(() => {
-                  opt.classList.remove('flash');
-                }, 300);
-              }
-            });
-          }
-        });
+      const wrapper = document.getElementById(def.key);
+      if (!wrapper) return;
+
+      const buttons = wrapper.querySelectorAll('.select-option');
+      buttons.forEach(btn => {
+        btn.classList.remove('selected');
+        if (`${btn.dataset.value}` === `${def.default}`) {
+          btn.classList.add('selected');
+        }
       });
     }
-    const resetBtn = document.getElementById('reset-default');
-    resetBtn.classList.add('pulse');
-    setTimeout(() => {
-      resetBtn.classList.remove('pulse');
-    }, 300);
-    const resetIcon = resetBtn.querySelector('svg');
-    if (resetIcon) {
-      resetIcon.classList.add('rotate');
-      setTimeout(() => {
-        resetIcon.classList.remove('rotate');
-      }, 400); // זמן הסיבוב צריך להיות כמו האנימציה (400ms)
-    }
   });
+
+  const resetBtn = document.getElementById('reset-default');
+  resetBtn.classList.add('pulse');
+  setTimeout(() => resetBtn.classList.remove('pulse'), 300);
+
+  const resetIcon = resetBtn.querySelector('svg');
+  if (resetIcon) {
+    resetIcon.classList.add('rotate');
+    setTimeout(() => resetIcon.classList.remove('rotate'), 400);
+  }
 });
 
 backButton.addEventListener('click', () => {
-    eel.cleanup_upload()().then(() => {
-      window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
-    });
+  eel.cleanup_upload()().then(() => {
+    window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
+  });
 });
 
 function closestLearningRate(val) {
@@ -239,22 +218,24 @@ function closestLearningRate(val) {
 
 document.getElementById('save-and-continue').addEventListener('click', async () => {
   try {
-    // קודם כל - לוודא שיש קובץ דאטה מוכן
-    const finalDatasetPath = await eel.prepare_final_dataset(slug)(); // קורא לפייתון שיכין את הקובץ
-
+    const finalDatasetPath = await eel.prepare_final_dataset(slug)();
     const trainingParams = {};
 
-    // אחר כך - לבנות את פרמטרי האימון
     paramDefs.forEach(def => {
       if (def.type === 'range') {
         const input = document.getElementById(def.key);
         if (!input) return;
 
-        const realVal = def.key === 'learning_rate'
+        let realVal = def.key === 'learning_rate'
           ? closestLearningRate(realFromUiLog(Number(input.value), def.realRange.min, def.realRange.max))
           : uiToRealLinear(Number(input.value), def.realRange);
 
+        if (['batch_size', 'num_epochs', 'gradient_accumulation_steps'].includes(def.key)) {
+          realVal = Math.round(realVal);
+        }
+
         trainingParams[def.key] = realVal;
+
       } else if (def.type === 'select') {
         const wrapper = document.getElementById(def.key);
         if (!wrapper) return;
@@ -271,16 +252,13 @@ document.getElementById('save-and-continue').addEventListener('click', async () 
       }
     });
 
-    // עכשיו מוסיפים גם את הנתיב לדאטה האמיתי שהוכן
     trainingParams.dataset_path = finalDatasetPath;
+    trainingParams.slug = slug;
 
     console.log('Training params ready:', trainingParams);
-
-    // ואז שומרים את קובץ הקונפיג
     await eel.save_training_config(trainingParams)();
 
     alert('ההגדרות נשמרו בהצלחה! אפשר להתחיל אימון 🚀');
-    // פה אפשר להמשיך לעמוד הבא או להתחיל אימון
 
   } catch (error) {
     console.error('בעיה בשמירה:', error);
