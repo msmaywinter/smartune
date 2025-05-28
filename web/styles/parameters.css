@@ -18,10 +18,10 @@ body {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 64px;
   font-weight: 200;
   color: #004051;
-  margin-top: 0;
+  margin-top: 30px;
 }
 
 .header-row {
@@ -44,15 +44,15 @@ h1 {
 }
 
 .parameter-box {
-  width: 900px;
+  width: 1100px;
   margin: 0 auto;
-  height: 52vh;
+  height: 60vh;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 40px;
-  background-color: rgba(184, 215, 255, 0.3);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background-color: rgba(184, 215, 230, 0.65);
+  border-radius: 40px;
+  margin-top: 40px;
 }
 
 
@@ -70,8 +70,8 @@ h1 {
 .parameter {
   margin-bottom: 1rem;
   color: #004051;
-  font-size: 1.6rem;
-  font-weight: 400;
+  font-size: 28px;
+  font-weight: 300;
   text-align: right;
   position: relative;
   padding-bottom: 1.5rem;
@@ -122,6 +122,7 @@ h1 {
   position: relative;
   width: 100%;
   direction: ltr;
+  margin-top: 15px;
 }
 
 .advanced-toggle:hover {
@@ -159,7 +160,7 @@ h1 {
 
 .slider-tooltip {
   position: absolute;
-  top: 50%;
+  top: 70%;
   left: 50%;
   transform: translate(-50%, -50%);
   transition: left 0.4s ease, transform 0.2s ease;
@@ -188,7 +189,7 @@ h1 {
 }
 
 .endpoint {
-  font-size: 1rem;
+  font-size: 20px;
   font-weight: 300;
   line-height: normal;
 }

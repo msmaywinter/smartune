@@ -1,0 +1,14 @@
+{
+  "slug": "crfe",
+  "model_name": "crfe",
+  "original_slug": "20250528_144549",
+  "original_filename": "gadget_qa_dataset_hebrew.xlsx",
+  "original_count": 50,
+  "user_generated": true,
+  "generated_requested": 10,
+  "generated_count": 10,
+  "manual_added_count": 0,
+  "total_final_count": 60,
+  "creation_date": "2025-05-28T14:45:49.961240",
+  "last_updated": "2025-05-28T14:48:03.651444"
+}

@@ -8,14 +8,16 @@ h2 {
     text-align: center;
     padding-top: 5rem;
   }
-  
-  .hero-section h1,
+  .hero-section h1{
+    font-weight: 300
+  }
+  .hero-section,
   .hero-section span,
   .hero-section p,
   .hero-section button,
   .hero-section .template-link,
   .hero-section {
-    font-weight: 200 !important;
+    font-weight: 200
   }
   .space-blank1{
 margin-top: 60px;
@@ -216,9 +218,13 @@ body {
   padding: 4.5rem;
   justify-content: center;
   align-items: flex-start;
-  margin-bottom: 3rem;
+  margin: 0 auto 3rem auto;   /* ✅ מרכז אופקית */
   border-radius: 60px;
+  max-width: 100rem;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 
 .example-box,
 .avoid-box {

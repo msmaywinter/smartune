@@ -16,6 +16,13 @@ function resetValidationUI() {
 async function initChooseNamePage() {
   // 1. טען מטאדאטה זמני כולל count ו-model_name
   try {
+    // הצגת שם הקובץ שהועלה בכותרת
+// הצגת שם הקובץ בכותרת
+const uploadTitle = document.getElementById("upload-success-title");
+const uploadedFilename = localStorage.getItem("uploadedFilename");
+if (uploadedFilename && uploadTitle) {
+  uploadTitle.textContent = `העלאת את הקובץ: ${uploadedFilename}`;
+}
     const tempMeta = await eel.get_temp_metadata()();
     document.getElementById("set-count").textContent =
       `הקובץ מכיל ${tempMeta.original_count} שאלות ותשובות.`;

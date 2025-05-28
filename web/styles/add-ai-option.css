@@ -1,6 +1,9 @@
 body {
-    background: url("../assets/P2-START.png") no-repeat top center;
-    background-size: 100% 80%;
+  background-color: #FAFDFE; /* ✅ צבע הרקע שמתחת */
+  background-image: url("../assets/P2-START.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% 80%;
 }
 
 .hero-section {
@@ -14,7 +17,7 @@ body {
 .hero-content {
     position: relative;
     text-align: center;
-    margin-top: 4rem;
+    margin-top: 8rem;
 }
   
   .hero-section h1,

@@ -14,7 +14,7 @@ body {
 
 .title {
   text-align: center;
-  font-size: 50px;
+  font-size: 64px;
   color: #004051;
   margin-bottom: 35px;
   font-weight: 300;
@@ -50,7 +50,7 @@ body {
 }
 
 .qa-cell.header {
-  width: 47%;
+  width: 47.5%;
   background-color: #95C3D9;
   padding: 6px;
   text-align: center;
@@ -111,7 +111,7 @@ body {
 .qa-add-row {
   display: flex;
   justify-content: stretch;
-  padding: 0px 28px 36px 0px;
+  padding: 0px 28px 36px 12px;
 }
 
 .qa-input {
@@ -163,7 +163,7 @@ body {
   min-height: 25px;
   display: flex;
   align-items: center;
-  flex: 0.46;
+  flex: 0.48;
 }
 .add-input::placeholder {
   color: rgba(0, 45, 62, 0.43);
@@ -217,4 +217,9 @@ body {
 
 .bottom-buttons .nav-button:last-child {
   margin-left: 20px; /* או כמה שבא לך */
+}
+
+@media screen and (min-height: 1200px) {
+  .qa-list {
+    max-height: 700px;  }
 }

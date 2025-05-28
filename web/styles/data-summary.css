@@ -19,27 +19,26 @@ body {
 }
 
 h1 {
-  font-size: 4.5rem;
+  font-size: 64px;
   font-weight: 300;
-  color: #002D3E;
+  color: #004051;
 }
 
 .summary-card {
   background-color: rgba(48, 105, 140, 0.8);
   color: white;
   padding: 3rem 2rem;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 600px;
+  border-radius: 40px;
+  width: 770px;
   text-align: center;
   font-size: 2rem;
   font-weight: 300;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  gap: 4rem;
 }
+
 
 .summary-card p {
   margin: 0;
@@ -63,4 +62,16 @@ h1 {
 
 .nav-button:hover {
   background-color: #A6D4ED;
+}
+
+
+@media screen and (min-width: 1920px) {
+  .summary-card {
+    margin-top: 2rem;
+  }
+}
+@media screen and (min-width: 2400px) {
+  .summary-card {
+    margin-top: 5rem;
+  }
 }
