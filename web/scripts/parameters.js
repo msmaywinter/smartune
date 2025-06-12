@@ -26,6 +26,8 @@ let paramDefs = [];
 window.addEventListener('DOMContentLoaded', () => {
   eel.load_params()(defs => {
     paramDefs = defs;
+    console.log("🚨 פרמטרים שהתקבלו מהשרת:", paramDefs);
+
     initRendering();
   });
 
@@ -117,10 +119,13 @@ function renderParam(def) {
 
     wrapper.appendChild(sw);
 
-    const ends = document.createElement('div');
-    ends.classList.add('endpoints');
-    ends.innerHTML = `<span class="endpoint">${def.endpoints[0]}</span><span class="endpoint">${def.endpoints[1]}</span>`;
-    wrapper.appendChild(ends);
+// רק אם יש endpoints – מוסיפים אותם
+    if (def.endpoints && def.endpoints.length === 2) {
+      const ends = document.createElement('div');
+      ends.classList.add('endpoints');
+      ends.innerHTML = `<span class="endpoint">${def.endpoints[0]}</span><span class="endpoint">${def.endpoints[1]}</span>`;
+      wrapper.appendChild(ends);
+    }
 
   // 🟨 select
   } else if (def.type === 'select') {
