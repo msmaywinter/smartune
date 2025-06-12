@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>מאגר המידע - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/edit-dataset.css" />
+  <link rel="stylesheet" href="styles/pop-up.css">
+</head>
+<body class="black-logo-page">
+
+  <!-- כאן נטען ה-navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="main-wrapper">
+    <h1 class="title">מאגר המידע</h1>
+
+    <div class="qa-header">
+      <div class="qa-cell header">שאלה</div>
+      <div class="qa-cell header">תשובה</div>
+    </div>
+
+    <div id="qa-container" class="qa-list">
+      <!-- שורות שאלות ותשובות יוכנסו כאן -->
+    </div>
+
+    <div class="qa-add-row">
+      <input id="new-question-input" type="text" placeholder="כתוב/י שאלה חדשה..." class="qa-input add-input">
+      <input id="new-answer-input" type="text" placeholder="כתוב/י תשובה חדשה..." class="qa-input add-input">
+      <button id="add-question-btn" class="add-btn grey-add-btn">+</button>
+    </div>
+  
+    <button class="download-button">          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>  ייצוא המאגר</button>
+    
+    <div id="validationPopup" class="popup hidden">
+      <div class="popup-content">
+        <div class="popup-inner-border">
+          <div class="popup-icon">!</div>
+          <h2 id="popupTitle" class="popup-title"></h2>
+          <p id="popupSubtitle" class="popup-subtitle"></p>
+          <div class="popup-actions">
+            <button id="popupConfirmBtn" class="btn-confirm">אישור ומחיקה</button>
+            <button class="btn-cancel" onclick="closePopup()">ביטול</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+
+
+      <div class="bottom-buttons">
+        <button class="nav-button" id="save-and-continue">
+          שמירה והמשך
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>
+  </main>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="scripts/pop-up.js"></script>
+<script src="scripts/global.js"></script>
+<script src="scripts/edit-dataset.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+.popup {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    direction: rtl;
+    font-family: 'Assistant', sans-serif;
+  }
+  
+  .popup-content {
+    background-color: #95C3D9;
+    border-radius: 16px;
+    padding: 15px;
+    width: 90%;
+    max-width: 560px;
+    text-align: center;
+  }
+  
+  .popup-inner-border {
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 25px;
+  }
+  .popup-icon {
+    font-size: 64px;
+    color: #0E3654;
+    margin-bottom: 1rem;
+  }
+  
+  .popup-title {
+    font-size: 32px;
+    font-weight: 300;
+    color: #0E3654;
+    margin-top: 1px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .popup-subtitle {
+    font-size: 24px;
+    font-weight: 300;
+    color: #0E3654;
+    margin-bottom: 2rem;
+  }
+  
+  .popup-actions {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  .popup-actions button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 15px;
+    font-weight: 300;
+    font-size: 18px;
+    cursor: pointer;
+    width: 140px; /* או כל רוחב אחר שאתה רוצה */
+    height: 50px;
+    text-align: center;
+  }
+  
+  .btn-cancel {
+    background-color: #BEE2F8;
+    color: #0E3654;
+    border: 2px solid #BEE2F8;
+  }
+  
+  .btn-confirm {
+    background-color: transparent;
+    color: #0E3654;
+    border: 2px solid #BEE2F8;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  

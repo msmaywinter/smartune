@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>יצירת מודל חדש - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/popup.css">
+  <link rel="stylesheet" href="styles/upload.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+  <div id="preloader-placeholder"></div>
+
+  <div id="navbar-placeholder"></div>
+  <main>
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <div class="back-button" onclick="navigateTo('home.html')">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+          
+          חזרה
+        </div>
+        <h1>יצירת מודל חדש</h1>
+        <div class="hero-text-group">
+          <p>המודל מתאמן על שאלות ותשובות.</p>
+          <p>כדי שהכיוונון יהיה מוצלח, חשוב להעלות קובץ נתונים מסודר ואיכותי.</p>
+        </div>
+        
+        <div class="hero-text-group">
+          <p>זה לא מסובך, רק כדאי לשים לב לכמה כללים פשוטים.</p>
+          <p>אנחנו כאן כדי להדריך אותך לאורך כל הדרך.</p>
+        </div> 
+        <div class="space-blank1"></div>
+        <div class="buttons-row">
+          <div class="upload-wrapper">
+            <label for="fileInput" class="custom-upload-button">
+              <svg class="button-icon icon-plus" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+              העלאת קובץ
+            </label>
+            <input type="file" id="fileInput" accept=".xlsx,.xls" />
+          </div>
+          
+          <div class="upload-wrapper">
+            <button class="custom-upload-button scroll-btn" onclick="scrollToSection('two-columns-section')">
+              <svg class="button-icon arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+              עדיין אין קובץ?
+            </button>
+          </div>          
+        </div>
+        <div class="space-blank1"></div>
+
+    </section>
+
+    <section class="two-columns-section" id="two-columns-section">
+      <div class="example-box">
+        <h2 class="info">איך הקובץ אמור להיראות?</h2>
+        <p>פורמט Excel עם שתי עמודות בלבד:</p>
+        <ul>
+          <li>שאלה – ניסוח ברור של שאלה אחת בכל שורה.</li>
+          <li>תשובה – מלאה ומדויקת לשאלה.</li>
+        </ul>
+      </div>
+    
+      <div class="avoid-box">
+        <h2 class="info">ממה חשוב להימנע?</h2>
+        <p>הפעולות הבאות משבשות את תהליך האימון:</p>
+        <ul>
+          <li>תאים ריקים – כל שורה חייבת לכלול גם שאלה וגם תשובה.</li>
+          <li>מידע חסר – המודל צריך לפחות 50 דוגמאות כדי להבין על מה מדובר.</li>
+        </ul>
+      </div>
+    </section>
+    
+    <section class="notice-section">
+      <h2 class="info">חשוב לשים לב:</h2>
+      <ul>
+        <li>ודאו שהתשובות שלכם ברורות ולא כלליות מדי.</li>
+        <li>אל תוסיפו מידע טכני שלא קשור ישירות לשאלה (כמו מספרי גרסאות, הערות פנימיות וכו').</li>
+        <li>מומלץ להוסיף מעבר ל־50 שאלות ותשובות למודל איכותי יותר.</li>
+      </ul>
+    </section>
+    
+
+    <section class="summary-section">
+      <div class="summary-background"></div>
+      <h2>נשמע מסובך?</h2>
+      <p>תוכלו להוריד תבנית מוכנה, למלא את השאלות והתשובות שלכם ואז להעלות אותה למערכת.</p>
+      <div class="buttons-row">
+        <a href="/assets/template.xlsx" download class="custom-upload-button">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>          
+          הורדת תבנית
+        </a>
+      
+        <div class="upload-wrapper">
+          <label for="fileInput" class="custom-upload-button">
+            <svg class="button-icon icon-plus" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+            העלאת קובץ
+          </label>
+          <input type="file" id="fileInput" accept=".xlsx,.xls" />
+        </div>
+      </div>      
+  
+    </section>
+  </main>
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/popup.js"></script>
+  <script src="scripts/upload.js"></script>
+
+  <div id="feedbackModal" class="modal hidden">
+    <div class="modal-content">
+      <div id="modalContent"></div>
+    </div>
+  </div>
+  
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>הגדרת פרמטרים - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/parameters.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body class="black-logo-page">
+  <div id="navbar-placeholder"></div>
+  <main>
+    <section class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <h1>הגדרת פרמטרים</h1>
+        <div class="header-row">
+          <h2 class="header-info">
+            ניתן להתאים את הפרמטרים בצורה ידנית על מנת לקבל תוצאה מותאמת אישית <br>
+            להסבר על פרמטר יש ללחוץ על סימן 
+            <span class="info-icon">i</span>
+            שלידו
+          </h2>          
+            <button id="reset-default" class="nav-button">              <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 256 256"  stroke-width="1.5" stroke="currentColor" >
+              <path d="M88,104H40a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V76.69L62.63,62.06A95.43,95.43,0,0,1,130,33.94h.53a95.36,95.36,0,0,1,67.07,27.33,8,8,0,0,1-11.18,11.44,79.52,79.52,0,0,0-55.89-22.77h-.45A79.56,79.56,0,0,0,73.94,73.37L59.31,88H88a8,8,0,0,1,0,16Zm128,48H168a8,8,0,0,0,0,16h28.69l-14.63,14.63a79.56,79.56,0,0,1-56.13,23.43h-.45a79.52,79.52,0,0,1-55.89-22.77,8,8,0,1,0-11.18,11.44,95.36,95.36,0,0,0,67.07,27.33H126a95.43,95.43,0,0,0,67.36-28.12L208,179.31V208a8,8,0,0,0,16,0V160A8,8,0,0,0,216,152Z"></path>
+              </svg>
+              איפוס
+
+            </button>
+        </div>
+        <div class="parameter-box">
+        <div class="basic-params"></div>
+
+        <div class="advanced-toggle">
+          <span>פרמטרים מתקדמים</span>
+            <svg class="arrow-down" xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+             width="24" height="24">
+             <path stroke-linecap="round" stroke-linejoin="round"
+             d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+        </div>
+        
+        <div class="advanced-params"></div>
+      </div>
+      </div>
+      
+    </section>
+  </main>
+
+  <div class="bottom-buttons">
+    <button class="nav-button" id="download-json">                  
+הורדת פרמטרים<svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>  </button>
+    
+    <button class="nav-button" id="save-and-continue">
+      <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+      viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+ </svg>
+שמירה והמשך</button>
+  </div>
+  <button id="back-button" class="nav-button">
+    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+    חזרה
+  </button>
+
+  <div id="param-popup" class="tooltip-popup hidden">
+    <div class="tooltip-content">
+      <div class="tooltip-inner-box">
+        <h2 id="popup-title" class="popup-title"></h2>
+        <p id="popup-main-text" class="popup-main-text"></p>
+        <h3 class="popup-subtitle">אז מה מתאים?</h3>
+        <p id="popup-suggestion-text" class="popup-suggestion-text"></p>
+          <div class="popup-button-wrapper">
+          <button id="popup-close" class="popup-close-button">סגירה</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+
+    <script src="scripts/global.js"></script>
+  <script src="scripts/parameters.js"></script>
+</body>
+</html>

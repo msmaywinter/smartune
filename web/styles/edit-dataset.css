@@ -1,0 +1,225 @@
+body {
+  background: url("../assets/soft-bg.png") no-repeat top center;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  font-family: 'Assistant', sans-serif;
+}
+
+.main-wrapper {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 64px;
+  color: #004051;
+  margin-bottom: 35px;
+  font-weight: 300;
+}
+.qa-list {
+  scrollbar-color: #95C3D9 transparent;
+  scrollbar-width: thin;
+  direction: rtl;
+  scrollbar-gutter: right;
+  unicode-bidi: plaintext;
+}
+
+.qa-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.qa-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.qa-list::-webkit-scrollbar-thumb {
+  background-color: #95C3D9;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+
+.qa-header {
+  display: flex;
+  justify-content: stretch;
+  padding: 0px 32px 10px 75px;
+}
+
+.qa-cell.header {
+  width: 47.5%;
+  background-color: #95C3D9;
+  padding: 6px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 24px;
+  border-radius: 5px;
+  color: white;
+}
+
+.qa-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 30px;
+}
+
+.qa-row {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.qa-box {
+  background-color: rgba(149, 195, 217, 0.65);
+  border-radius: 5px;
+  padding: 8px;
+  flex: 1;
+  font-size: 16px;
+  color: #004051;
+  text-align: right;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.qa-delete-box {
+  background-color: rgba(149, 195, 217, 0.65);
+  border-radius: 8px;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.qa-delete-box {
+  background: none;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.qa-add-row {
+  display: flex;
+  justify-content: stretch;
+  padding: 0px 28px 36px 12px;
+}
+
+.qa-input {
+  padding: 12px 16px;
+  width: 40%;
+  border: none;
+  background-color: #e0f7fa;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: right;
+}
+
+.add-btn,
+.delete-btn {
+  background-color: #95C3D9;
+  color: white;
+  font-size: 24px;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.add-btn:hover,
+.delete-btn:hover {
+  background-color: #6ca4bc;
+}
+
+.download-button {
+  display: block;
+  margin: 0 auto;
+  background-color: #BEE2F8;
+  color: #002D3E;
+  font-weight: 300;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.download-button:hover {
+  background-color: #0077b6;
+}
+
+.add-input {
+  background-color: rgba(217, 220, 221, 0.65);
+  min-height: 25px;
+  display: flex;
+  align-items: center;
+  flex: 0.48;
+}
+.add-input::placeholder {
+  color: rgba(0, 45, 62, 0.43);
+}
+
+.grey-add-btn {
+  background-color: #B3B3B3;
+  color: #ffffff;
+  transition: background-color 0.3s;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  font-size: 40px;
+}
+
+.grey-add-btn:hover {
+  background-color: rgba(170, 173, 175, 0.65);
+}
+.qa-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.qa-row:hover {
+  background-color: rgba(149, 195, 217, 0.35);
+}
+
+.bottom-buttons {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 0;
+  left: 0;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.bottom-buttons .nav-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  pointer-events: auto;
+  margin-right: auto; /* כל כפתור יתחוף את עצמו שמאלה */
+}
+
+/* כפתור חזרה - יישאר בקצה הימני */
+#back-button {
+  margin-right: 0; /* לא לדחוף אותו שמאלה בכלל */
+}
+
+.bottom-buttons .nav-button:last-child {
+  margin-left: 20px; /* או כמה שבא לך */
+}
+
+@media screen and (min-height: 1200px) {
+  .qa-list {
+    max-height: 700px;  }
+}

@@ -1,0 +1,78 @@
+body {
+  background: url("../assets/soft-bg.png") no-repeat top center;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  font-family: 'Assistant', sans-serif;
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 300;
+  color: #004051;
+}
+
+.summary-card {
+  background-color: rgba(184, 215, 230, 0.8);
+  color: #004051;
+  padding: 3rem 2rem;
+  border-radius: 40px;
+  width: 770px;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+}
+
+
+.summary-card p {
+  margin: 0;
+}
+
+.nav-button {
+  background-color: #BEE2F8;
+  color: #002D3E;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 200px;
+  transition: background-color 0.3s ease;
+  margin-top: 60px;
+}
+
+.nav-button:hover {
+  background-color: #A6D4ED;
+}
+
+
+@media screen and (min-width: 1920px) {
+  .summary-card {
+    margin-top: 2rem;
+  }
+}
+@media screen and (min-width: 2400px) {
+  .summary-card {
+    margin-top: 5rem;
+  }
+}

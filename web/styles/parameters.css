@@ -1,0 +1,462 @@
+body {
+  background: url("../assets/soft-bg.png") no-repeat top center;
+  background-size: cover;
+}
+
+.hero-section {
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 0.5rem;
+}
+
+.hero-content {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 200;
+  color: #004051;
+  margin-top: 30px;
+}
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.8px solid #30698C;
+  color: #30698C;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.header-row h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 200;
+  color: #004051;
+  margin-left: 8rem;
+  margin-right: 15rem;
+}
+
+#reset-default {
+  flex-shrink: 0;
+}
+
+.extra-button-wrapper {
+  position: absolute;
+  bottom: 70px;
+  right: 20px;
+  z-index: 1001;
+}
+.bottom-buttons {
+  display: flex;
+  flex-direction: column;      /* שורה מתחת לשורה */
+  align-items: flex-start;     /* מצמיד לצד שמאל בתוך ה־LTR */
+  direction: ltr;              /* הופך את הכיוון לשמאל→ימין */
+  gap: 25px;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  margin-left: 20px;
+}
+
+.bottom-buttons .nav-button {
+  pointer-events: auto;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+}
+
+#back-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px; /* ✅ זה מה שחסר */
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  pointer-events: auto;
+  z-index: 1000;
+}
+
+
+
+.parameter-box {
+  width: 1100px;
+  margin: 0 auto;
+  height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 40px;
+  background-color: rgba(184, 215, 230, 0.65);
+  border-radius: 40px;
+  margin-top: 40px;
+}
+
+.parameter-box::-webkit-scrollbar {
+  width: 0;
+}
+
+.parameter-box.open::-webkit-scrollbar {
+  width: 8px;
+}
+
+.parameter-box.open::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.parameter {
+  margin-bottom: 1rem;
+  color: #004051;
+  font-size: 28px;
+  font-weight: 300;
+  text-align: right;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.parameter-box.open .advanced-params {
+  display: block;
+}
+
+.parameter-box.open .advanced-params::-webkit-scrollbar {
+  width: 8px;
+}
+
+.parameter-box.open .advanced-params::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.parameter:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.parameter:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0.5rem;
+}
+
+.advanced-toggle {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.advanced-toggle span {
+  margin-left: 0.5rem;
+  color: #004051;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.arrow-down {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.advanced-toggle:hover {
+  transform: scale(1.05) translateY(4px);
+}
+
+.advanced-toggle:hover svg {
+  transform: translateY(2px) rotate(360deg);
+}
+
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  direction: ltr;
+  margin-top: 15px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: white;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.4s ease;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+
+.slider::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+
+.slider-tooltip {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 0.4s ease, transform 0.2s ease;
+  width: 36px;
+  height: 36px;
+  background-color: #004051;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.endpoints {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  color: #004051;
+  font-weight: 300;
+  font-size: 1rem;
+  direction: ltr;
+}
+
+.endpoint {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.advanced-params {
+  display: none;
+}
+
+.advanced-params::-webkit-scrollbar {
+  width: 0;
+}
+
+.select-wrapper {
+  display: flex;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(0, 64, 81, 0.2);
+  margin-top: 1rem;
+}
+
+.select-option {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background-color: rgba(0, 64, 81, 0.2);
+  color: #004051;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border: none;
+}
+
+.select-option:not(.selected):hover {
+  background-color: rgba(0, 64, 81, 0.1);
+}
+
+.select-option.selected {
+  background-color: #004051;
+  color: white;
+}
+
+.select-option.flash {
+  animation: flashHighlight 0.3s ease;
+}
+
+@keyframes flashHighlight {
+  0% { background-color: rgba(0, 64, 81, 0.4); }
+  100% { background-color: #004051; }
+}
+
+#reset-default.pulse {
+  animation: pulseEffect 0.3s ease;
+}
+
+@keyframes pulseEffect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+#reset-default svg.rotate {
+  animation: rotateIcon 0.4s ease;
+}
+
+@keyframes rotateIcon {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.param-label-with-tooltip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 28px;
+  font-weight: 300;
+  color: #004051;
+  margin-bottom: 0.5rem;
+  direction: rtl;
+}
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.info-button {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1.8px solid #30698C;
+  color: #30698C;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.info-button:hover {
+  background-color: rgba(48, 105, 140, 0.1);
+}
+
+
+.tooltip-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* רקע כהה מאחורי הפופאפ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  direction: rtl;
+  font-family: 'Assistant', sans-serif;
+}
+
+.tooltip-popup.hidden {
+  display: none;
+}
+
+.tooltip-content {
+  background-color: #95C3D9;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  max-width: 650px;
+  width: 90%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-inner-box {
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 25px 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.popup-button-wrapper {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.popup-close-button {
+  background-color: #c6e3f2;
+  color: #002d3e;
+  font-size: 20px;
+  font-weight: 200;
+  border: none;
+  border-radius: 15px;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.popup-close-button:hover {
+  background-color: #b5d7ea;
+}
+
+/* טקסטים בתוך הפופאפ */
+.popup-title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #0E3654;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.popup-main-text {
+  font-size: 20px;
+  font-weight: 300;
+  color: #0E3654;
+  white-space: pre-line;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  text-align: right;
+}
+
+.popup-subtitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #0E3654;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.popup-suggestion-text {
+  font-size: 18px;
+  font-weight: 300;
+  color: #0E3654;
+  white-space: pre-line;
+  line-height: 1.7;
+  text-align: right;
+}
+
+@media (min-width: 1200px) {
+  .parameter-box {
+    height: 52vh;
+  }
+}
+

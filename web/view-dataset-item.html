@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>צפייה בפריט מאגר - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/view-dataset-item.css" />
+  <link rel="stylesheet" href="styles/pop-up.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body class="black-logo-page">
+
+ <!-- כאן נטען ה-navbar -->
+ <div id="navbar-placeholder"></div>
+
+ <main class="main-wrapper">
+    <div class="title-bar">
+      <h1 class="title">בדיקת מאגר המידע</h1>
+      <button id="back-btn" class="back-button1">▶ חזרה למאגר</button>
+    </div>
+  
+  
+  
+    <section class="item-display">
+      <div class="qa-box">
+        <h2 class="qa-label">שאלה:</h2>
+        <p id="question-text" class="qa-text"></p>
+        <h2 class="qa-label">תשובה:</h2>
+        <p id="answer-text" class="qa-text"></p>
+      </div>
+  
+      <!-- כל הכפתורים בתוך פריסת buttons-layout אחת -->
+      <div class="buttons-layout">
+             <div class="delete-button-wrapper">
+            <button id="delete-btn" class="custom-upload-button">❌ מחק מהמאגר</button>
+          </div>
+        <div class="center-buttons">
+          <button id="prev-btn" class="custom-upload-button">▶ סט קודם</button>
+          <button id="next-btn" class="custom-upload-button">סט הבא ◀</button>
+        </div>
+   
+      </div>
+    </section>
+
+    <div id="validationPopup" class="popup hidden">
+      <div class="popup-content">
+        <div class="popup-inner-border">
+          <div class="popup-icon">!</div>
+          <h2 id="popupTitle" class="popup-title"></h2>
+          <p id="popupSubtitle" class="popup-subtitle"></p>
+          <div class="popup-actions">
+            <button id="popupConfirmBtn" class="btn-confirm">אישור ומחיקה</button>
+            <button class="btn-cancel" onclick="closePopup()">ביטול</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+  
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/pop-up.js"></script>
+  <script src="scripts/view-dataset-item.js"></script>
+</body>
+</html>

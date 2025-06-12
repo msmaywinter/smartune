@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>בדיקת המודל - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/test-model.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body class="black-logo-page">
+
+  <div id="navbar-placeholder"></div>
+  <main>
+
+    <section class="hero-section">
+      <div class="hero-background"></div>
+
+      <div class="hero-content">
+        <h1>בדיקת המודל</h1>
+        <h4>הכניסו שאלה על מנת לבדוק את המודל שנוצר</h4>
+      </div>
+
+      <div class="test-section">
+        <div class="chat-box">
+            <div class="chat-inner">
+              <!-- כאן יופיעו ההודעות עצמן בעתיד -->
+            </div>
+
+            <div class="message-wrapper">
+              <div class="message-input-wrapper">
+                <input type="text" id="question" placeholder="כתוב/י שאלה..." />
+                <button id="send-message-button" class="send-button">שליחה</button>
+              </div>
+            </div>
+
+            <div class="creativity-row">
+              <label class="creativity-label">
+                רמת יצירתיות:
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M11.25 11.25l.25 5.25m0-8.25h.008v.008H11.25V8.25zm.75 12A9 9 0 1 1 12 3a9 9 0 0 1 0 18z"/>
+                </svg>
+              </label>
+
+              <div class="slider-wrapper">
+                <input type="range" id="creativity-slider" class="slider" min="0" max="100" value="30">
+                <div class="slider-tooltip" id="tooltip-creativity">30</div>
+                <div class="endpoints">
+                  <span class="endpoint">מדויק</span>
+                  <span class="endpoint">יצירתי</span>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="bottom-buttons">
+        <button id="back-button" class="nav-button">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+          להגדרת הפרמטרים
+        </button>
+
+        <button class="nav-button">
+          סיום התהליך
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>
+
+  </main>
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/test-model.js"></script>
+
+</body>
+</html>

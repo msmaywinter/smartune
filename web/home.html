@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>SMARTUNE - בית</title>
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/home.css">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body class="home-page">
+
+  <div id="aboutModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="about-inner-box">
+        <h2 class="about-title">אודות</h2>
+        <p class="about-subtitle">פרויקט גמר</p>
+        <p class="about-names">מאי וינטר ויואב אבן</p>
+        <img src="assets/HitLogo.png" alt="HIT Logo" class="about-logo-fixed" />
+        <button class="close-btn" onclick="closeAbout()">סגירה</button>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+
+  <header class="main-header">
+   
+    <div class="header-right">
+      <a href="#" class="header-link" onclick="openAbout()">אודות</a>
+      <a href="#" class="header-link">היסטוריית מודלים</a>
+    </div>
+    <div class="header-left">
+      <img src="assets/HitLogo.png" alt="HIT Logo" class="hit-logo">
+    </div>
+  </header>  
+  <div id="preloader-placeholder"></div>
+
+  <header class="hero-home">
+
+    <div class="hero-background">
+        <img src="assets/P1-START.png" alt="רקע גלי">
+    </div>
+
+    <div class="hero-animate-wrapper">
+      <div class="logo-slogan">
+        <img src="assets/SmarTune.png" alt="לוגו SMARTUNE" class="logo">
+        <span class="subtitle">הדרך הפשוטה לכוונן מודל שפה</span>
+      </div>
+    
+      <div class="buttons-row">
+        <div class="custom-upload-button btn-create-model" onclick="navigateTo('upload.html')">
+          <svg class="button-icon icon-plus" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          יצירת מודל חדש
+        </div>
+    
+        <a class="custom-upload-button btn-load-model">
+          <svg class="button-icon icon-upload" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+          </svg>
+          טעינת מודל קיים
+        </a>
+      </div>
+    
+      <div class="scroll-outer-wrapper animate-item" id="scrollTrigger">
+        <div class="scroll-wrapper scroll-bounce">
+          <div class="scroll-down">רגע, מה זה אומר לכוונן מודל?</div>
+          <svg class="button-icon arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
+      </div>
+      
+      
+    </div>
+
+  </header>
+
+  <section class="context-section">
+    <div class="context-cards">
+      <div class="context-card card-top-right">
+        <h2>איך בני אדם לומדים?</h2>
+        <p>
+          בני אדם לומדים מתוך הקשר.<br>
+          כשנשאלת שאלה, המוח מחפש תשובה בזיכרון מחוויות קודמות,
+          מידע שלמדנו, או דברים ששמענו מאחרים.<br>
+          כשאנחנו לא יודעים, אנחנו שואלים, חוקרים ולפעמים טועים,
+          וכך מתבצע תהליך הלמידה שלנו.
+        </p>
+      </div>
+      <div class="context-card card-bottom-left">
+        <h2>איך מודל שפה לומד?</h2>
+        <p>מודל שפה לומד מתוך מידע.<br>
+            במקום להבין מתוך חוויה, הוא לומד מתוך נתונים, במקרה של כיוונון מודל: שאלות ותשובות.<br>
+            ככל שיש יותר שאלות ותשובות, המודל יזהה יותר תבניות וילמד איך לענות בצורה מדויקת יותר.<br>
+            הוא לא חושב, הוא מחפש הקשרים בנתונים.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="explainer-section" id="explainer">
+    <div class="explainer-boxes">
+      <div class="explainer-box blue">
+        <h2>מתאימים את המודל</h2>
+        <p>התאמת מודל שפה הוא תהליך שבו לוקחים מודל בינה מלאכותית קיים, ומכוונים אותו כך שיתאים למשימות ספציפיות.</p>
+      </div>
+      <div class="explainer-box light-green">
+        <h2>בלי שורות קוד</h2>
+        <p>כאן תוכלו לבצע את התהליך בקלות מההתחלה עד הסוף, בלי ידע תכנותי.</p>
+      </div>
+      <div class="explainer-box turquoise">
+        <h2>צעד אחר צעד</h2>
+        <p>נכין נתונים שעליהם יתבסס המודל, נגדיר פרמטרים מותאמים אישית ונבצע בדיקת תקינות לאחר הכיוונון,</p>
+      </div>
+      <div class="explainer-box dark-green">
+        <h2>בלי מאמץ</h2>
+        <p>בכל שלב תקבלו הסברים והכוונה, כדי שתדעו בדיוק מה לעשות כדי להגיע לתוצאה הרצויה.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps-section">
+    <h2>תהליך אחד פשוט.</h2>
+    <div class="steps">
+      <div class="step">
+        <p class="number">1</p>
+        <span>_____</span>
+        <p class="step-title">הכנת הנתונים</p>
+        <p class="description">על מנת שהמודל יקבל מידע על הנושא שבחרת</p>
+      </div>
+      <div class="step">
+        <p class="number">2</p>
+        <span>_____</span>
+        <p class="step-title">אימות הנתונים</p>
+        <p class="description">בכדי שהמודל יהיה מכוונן כראוי יש לבצע אימות איכותי של הרחבת הנתונים שנבחרו</p>
+      </div>
+      <div class="step">
+        <p class="number">3</p>
+        <span>_____</span>
+        <p class="step-title">הגדרת הפרמטרים</p>
+        <p class="description">התאמת מאפיינים למיטוב המודל לפי רצונך</p>
+      </div>
+      <div class="step">
+        <p class="number">4</p>
+        <span>_____</span>
+        <p class="step-title">כיוונון המודל</p>
+        <p class="description">המודל מתאמן וניתן לראות את מד התקדמות התהליך</p>
+      </div>
+      <div class="step">
+        <p class="number">5</p>
+        <span>_____</span>
+        <p class="step-title">בדיקת המודל</p>
+        <p class="description">שימוש במודל על מנת לבדוק את ביצועיו</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="start-footer">
+    <h2>שנתחיל?</h2>
+    <div class="buttons-row">
+      
+      <div class="custom-upload-button" onclick="navigateTo('upload.html')">
+        <svg class="button-icon icon-plus" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+     <path stroke-linecap="round" stroke-linejoin="round"
+           d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+   </svg>
+   יצירת מודל חדש
+      </div>
+
+      <a class="custom-upload-button">
+        <svg class="button-icon icon-upload" xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+        </svg>
+        טעינת מודל קיים
+      </a>
+    </div>
+  </footer>
+  <script src="scripts/home.js"></script>
+  <script src="scripts/global.js"></script>
+
+
+
+
+
+</body>
+</html>

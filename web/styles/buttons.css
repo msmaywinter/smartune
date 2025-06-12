@@ -1,0 +1,117 @@
+.custom-upload-button {
+    background-color: #BEE2F8;
+    color: #002D3E;
+    padding: 0 30px;
+    height: 60px;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    gap: 0.8rem;
+    text-decoration: none;
+    box-sizing: border-box;
+    border: none;        /* מסיר את הגבול */
+    outline: none; 
+    font-weight: 300;
+  }
+  
+  
+  .button {
+    display: inline-block;
+    background-color: #0d6781;
+    color: white;
+    padding: 14px 28px;
+    font-size: 1.4rem;
+    border-radius: 15px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  a {
+    text-decoration: none;
+  }
+  
+  
+  .buttons-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .back-button {
+    position: absolute;
+    top: 0;
+    right: 2rem;
+    background-color: #BEE2F8;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  /* כלל בסיסי לאייקון של כפתור */
+  .button-icon {
+    width: 1.5em;
+    height: 1.5em;
+    stroke: currentColor;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .bottom-buttons {
+    position: absolute;
+    bottom: 3rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3rem;
+    box-sizing: border-box;
+  }
+  
+  .nav-button {
+    background-color: #BEE2F8;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #002D3E;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+
+
+  .disabled-button {
+    background-color: #e5e7eb !important; /* רקע אפור בהיר */
+    color: #9ca3af !important;           /* טקסט אפרפר */
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  
+  .disabled-button:hover {
+    background-color: #e5e7eb !important;
+  }
+  
+  
+  
+  
+  
+
+
+  

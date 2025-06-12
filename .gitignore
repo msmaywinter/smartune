@@ -1,0 +1,32 @@
+# קבצי פרויקט
+models/
+Keys.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# קבצי סביבה ומשתנים
+.env
+*.env
+.env.*
+
+# סביבות עבודה וירטואליות
+venv/
+.venv/
+ENV/
+env/
+
+# PyCharm
+.idea/
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# קבצי לוגים וזמניים
+*.log
+*.tmp
+*.swp

@@ -1,0 +1,51 @@
+body {
+  background-color: #FAFDFE; /* ✅ צבע הרקע שמתחת */
+  background-image: url("../assets/P2-START.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% 80%;
+}
+
+
+.hero-section {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }  
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    margin-top: 7rem;
+}
+  
+  .hero-section h1,
+  .hero-section span,
+  .hero-section button,
+  .hero-section .template-link,
+  .hero-section .custom-upload-button {
+    font-weight: 300 !important;
+  }
+
+  .hero-section p {
+    font-weight: 200 !important;
+  }
+
+  h1 {
+    font-size: 4.5rem;
+  }
+  
+  .hero-text-group {
+    margin-top: 2rem;
+  }
+  
+  .hero-text-group p {
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .buttons-row {
+    margin-top: 5rem;
+  }

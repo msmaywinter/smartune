@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>כיוונון המודל - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/fine-tuning.css">
+  <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body class="black-logo-page">
+
+  <div id="navbar-placeholder"></div>
+  <main>
+
+    <section class="hero-section">
+      <div class="hero-background"></div>
+
+      <div class="hero-content">
+        <h1>כיוונון המודל</h1>
+        <h2>נא לא לכבות את המחשב</h2>
+      </div>
+
+      <div class="timer" id="training-timer-box">
+        <p>זמן שחלף מתחילת הכיוונון</p>
+        <div id="training-timer">00:00:00</div>
+      </div>
+
+      <div id="status-message" class="status-message">המודל מתכוונן...</div>
+
+      <div class="mail-section">
+        <p>הזינו מייל לקבלת עדכון בסיום תהליך הכיוונון</p>
+        <div class="mail-wrapper">
+          <div class="email-input-wrapper">
+            <input type="text" id="emailAddress" placeholder="הזן/י כתובת דוא״ל..." />
+            <button id="send-email-button" class="email-button">אישור</button>
+          </div>
+        </div>
+      </div>
+
+      <span id="email-feedback" class="email-feedback"></span>
+    </section>
+
+    <button class="nav-button" id="end-button">
+      <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" viewBox="0 0 256 256">
+      <path d="M200,40H56A16,16,0,0,0,40,56V200a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,160H56V56H200V200Z">
+      </path>
+      </svg>
+      ביטול וסיום
+    </button>
+
+  </main>
+
+  <script src="scripts/global.js"></script>
+  <script src="scripts/fine-tuning.js"></script>
+
+</body>
+</html>
