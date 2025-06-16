@@ -99,3 +99,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
+fetch('components/navbar.html')
+.then(res => res.text())
+.then(html => {
+  document.getElementById('navbar-placeholder').innerHTML = html;
+
+  const script = document.createElement('script');
+  script.src = 'scripts/navbar.js';
+  script.onload = () => {
+    updateProgressBar(3); // כאן תציין את האינדקס של השלב הנוכחי בעמוד הזה
+  };
+  document.body.appendChild(script);
+});

@@ -41,7 +41,9 @@ body {
   border: 2px solid transparent;
   background-clip: content-box;
 }
-
+.qa-row:nth-child(even) .qa-box {
+  background-color: rgba(217, 241, 247, 0.65);
+}
 
 .qa-header {
   display: flex;
@@ -97,16 +99,21 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-}
-
-.qa-delete-box {
   background: none;
   border: none;
   font-size: 22px;
   font-weight: bold;
   color: white;
   cursor: pointer;
+    opacity: 0; /* מוסתר אבל תופס מקום */
 }
+.qa-row:hover .qa-delete-box {
+  opacity: 1;
+}
+.qa-row:hover .qa-box {
+  background-color: rgba(149, 195, 217, 0.35);
+}
+
 
 .qa-add-row {
   display: flex;
@@ -117,16 +124,17 @@ body {
 .qa-input {
   padding: 12px 16px;
   width: 40%;
-  border: none;
+  border: 3px solid #95C3D9;
   background-color: #e0f7fa;
   border-radius: 5px;
   font-size: 14px;
   text-align: right;
 }
 
+
 .add-btn,
 .delete-btn {
-  background-color: #95C3D9;
+  background-color: #D99595;
   color: white;
   font-size: 24px;
   border: none;
@@ -138,7 +146,20 @@ body {
 }
 .add-btn:hover,
 .delete-btn:hover {
-  background-color: #6ca4bc;
+}
+
+
+
+.add-btn:disabled {
+  background-color: #B3B3B3;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+.delete-btn:hover {
+  background-color: rgba(217, 149, 149, 0.35);
+
 }
 
 .download-button {
@@ -155,11 +176,12 @@ body {
 }
 
 .download-button:hover {
-  background-color: #0077b6;
+    background-color: rgba(190, 226, 248, 0.35);
+
 }
 
 .add-input {
-  background-color: rgba(217, 220, 221, 0.65);
+background-color: rgba(255, 255, 255, 0.85);
   min-height: 25px;
   display: flex;
   align-items: center;
@@ -170,7 +192,7 @@ body {
 }
 
 .grey-add-btn {
-  background-color: #B3B3B3;
+  background-color: #95C3D9;
   color: #ffffff;
   transition: background-color 0.3s;
   width: 50px;
@@ -187,9 +209,6 @@ body {
   transition: background-color 0.2s;
 }
 
-.qa-row:hover {
-  background-color: rgba(149, 195, 217, 0.35);
-}
 
 .bottom-buttons {
   display: flex;

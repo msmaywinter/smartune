@@ -99,3 +99,16 @@ document.getElementById("back-btn").addEventListener("click", () => {
     alert("❌ לא נמצא שם מודל בכתובת.");
   }
 });
+
+fetch('components/navbar.html')
+.then(res => res.text())
+.then(html => {
+  document.getElementById('navbar-placeholder').innerHTML = html;
+
+  const script = document.createElement('script');
+  script.src = 'scripts/navbar.js';
+  script.onload = () => {
+    updateProgressBar(1); // כאן תציין את האינדקס של השלב הנוכחי בעמוד הזה
+  };
+  document.body.appendChild(script);
+});

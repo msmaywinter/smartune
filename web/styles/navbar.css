@@ -120,4 +120,31 @@
   .step:nth-of-type(5) { animation-delay: 0.3s; }
   .step:nth-of-type(7) { animation-delay: 0.4s; }
   .step:nth-of-type(9) { animation-delay: 0.5s; }
+
+  .step .circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #004051;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.step.done .circle {
+  background-color: #004051;
+}
+
+.step.done .circle .check-icon {
+  width: 20px;
+  height: 28px;
+  stroke: white;
+}
+
+.step.current .circle {
+  background-color: #95C3D9;
+}
+
   

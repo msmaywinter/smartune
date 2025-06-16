@@ -53,3 +53,15 @@ function addMessageToChat(sender, text) {
   chatInner.appendChild(messageEl);
   chatInner.scrollTop = chatInner.scrollHeight;
 }
+fetch('components/navbar.html')
+.then(res => res.text())
+.then(html => {
+  document.getElementById('navbar-placeholder').innerHTML = html;
+
+  const script = document.createElement('script');
+  script.src = 'scripts/navbar.js';
+  script.onload = () => {
+    updateProgressBar(4); // כאן תציין את האינדקס של השלב הנוכחי בעמוד הזה
+  };
+  document.body.appendChild(script);
+});

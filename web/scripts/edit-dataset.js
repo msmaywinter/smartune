@@ -4,6 +4,23 @@ const urlParams = new URLSearchParams(window.location.search);
 const slug = urlParams.get("slug");
 
 window.addEventListener("DOMContentLoaded", async () => {
+  const questionInput = document.getElementById("new-question-input");
+  const answerInput = document.getElementById("new-answer-input");
+  const addButton = document.getElementById("add-question-btn");
+
+  function validateInputs() {
+    const question = questionInput.value.trim();
+    const answer = answerInput.value.trim();
+
+    addButton.disabled = !(question && answer);
+  }
+
+  questionInput.addEventListener("input", validateInputs);
+  answerInput.addEventListener("input", validateInputs);
+
+  // התחלה - הכפתור כבוי
+  addButton.disabled = true;
+
   modelName = urlParams.get('slug');
 
   if (!modelName) {
@@ -37,6 +54,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       renderQAList(updated);
       questionInput.value = "";
       answerInput.value = "";
+      validateInputs(); // מפעיל בדיקה מחודשת — הכפתור שוב נהיה disabled
+
     } catch (err) {
       console.error("שגיאה בהוספת שאלה:", err);
       alert("שגיאה בהוספת שאלה.");
@@ -138,3 +157,16 @@ async function renderQAList(list) {
     container.appendChild(row);
   });
 }
+
+fetch('components/navbar.html')
+.then(res => res.text())
+.then(html => {
+  document.getElementById('navbar-placeholder').innerHTML = html;
+
+  const script = document.createElement('script');
+  script.src = 'scripts/navbar.js';
+  script.onload = () => {
+    updateProgressBar(1); // כאן תציין את האינדקס של השלב הנוכחי בעמוד הזה
+  };
+  document.body.appendChild(script);
+});
