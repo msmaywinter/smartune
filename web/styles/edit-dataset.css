@@ -46,13 +46,15 @@ body {
 }
 
 .qa-header {
-  display: flex;
-  justify-content: stretch;
-  padding: 0px 32px 10px 75px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 57px; /* שתי עמודות שוות + עמודה קטנה */
+  padding: 0 30px;
+  gap: 12px;
+  margin-bottom: 15px;
 }
 
+
 .qa-cell.header {
-  width: 47.5%;
   background-color: #95C3D9;
   padding: 6px;
   text-align: center;
@@ -61,6 +63,16 @@ body {
   border-radius: 5px;
   color: white;
 }
+
+.empty-cell {
+  visibility: hidden;
+}
+
+
+.qa-cell.header {
+  flex: 1;
+}
+
 
 .qa-list {
   max-height: 400px;
@@ -117,11 +129,13 @@ body {
 
 .qa-add-row {
   display: flex;
-  justify-content: stretch;
-  padding: 0px 28px 36px 12px;
+  justify-content: space-between;
+  padding: 0 30px 36px;
 }
 
+
 .qa-input {
+  flex: 1;
   padding: 12px 16px;
   width: 40%;
   border: 3px solid #95C3D9;
@@ -130,7 +144,13 @@ body {
   font-size: 14px;
   text-align: right;
 }
-
+.qa-add-box {
+  width: 48px; /* כמו ה־qa-delete-box */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 
 .add-btn,
 .delete-btn {

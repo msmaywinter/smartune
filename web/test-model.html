@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/buttons.css">
   <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/confirm-popup.css">
   <link rel="stylesheet" href="styles/test-model.css">
   <script type="text/javascript" src="/eel.js"></script>
 </head>
@@ -59,6 +60,27 @@
         </div>
       </div>
 
+      <div class="export-buttons-wrapper">
+  <button id="export-model" class="nav-button">
+    ייצוא המודל
+    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>
+  </button>
+
+  <button id="export-zip" class="nav-button">
+    ייצוא הנתונים
+    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>
+  </button>
+</div>
+
+
     </section>
 
     <div class="bottom-buttons">
@@ -70,7 +92,7 @@
           להגדרת הפרמטרים
         </button>
 
-        <button class="nav-button">
+        <button id="finish-button" class="nav-button">
           סיום התהליך
           <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -79,7 +101,61 @@
         </button>
       </div>
 
+
+
   </main>
+  <div id="creativity-popup" class="tooltip-popup hidden">
+  <div class="tooltip-content">
+    <div class="tooltip-inner-box">
+      <h2 class="popup-title">רמת יצירתיות</h2>
+      <p class="popup-main-text">
+        פרמטר זה קובע עד כמה התשובות של המודל יהיו מקוריות או מדויקות.
+        ערך נמוך יניב תשובות צפויות וענייניות.
+        ערך גבוה יניב תשובות פתוחות, עם יצירתיות ולעיתים סטייה מהנושא.
+      </p>
+      <h3 class="popup-subtitle">אז מה מתאים?</h3>
+      <p class="popup-suggestion-text">
+        אם המודל אמור לתת תשובות קונקרטיות – השאר את הערך נמוך.
+        אם אתה רוצה ניסוחים מעניינים או חידוש – העלה את הערך.
+      </p>
+      <div class="popup-button-wrapper">
+        <button id="creativity-popup-close" class="popup-close-button">סגירה</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- פופאפ חזרה לעמוד הפרמטרים -->
+<div id="backParamsPopup" class="confirm-popup hidden">
+  <div class="confirm-popup-content">
+    <div class="confirm-popup-inner-border">
+      <div class="confirm-popup-icon">!</div>
+      <h2 class="confirm-popup-title">האם ברצונך לחזור לעמוד בחירת הפרמטרים?</h2>
+      <p class="confirm-popup-subtitle">לא ניתן לבדוק שוב את המודל מבלי לבצע כיוונון מחדש.</p>
+      <div class="confirm-popup-actions">
+        <button id="confirmBackParams" class="btn-confirm">אישור וחזרה</button>
+        <button class="btn-cancel" onclick="closeConfirmPopup()">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- פופאפ סיום התהליך -->
+<div id="finishPopup" class="confirm-popup hidden">
+  <div class="confirm-popup-content">
+    <div class="confirm-popup-inner-border">
+      <div class="confirm-popup-icon">!</div>
+      <h2 class="confirm-popup-title">האם ברצונך לסיים את תהליך הכיוונון?</h2>
+      <p class="confirm-popup-subtitle">פעולה זו סופית.</p>
+      <div class="confirm-popup-actions">
+        <button id="confirmFinish" class="btn-confirm">אישור וסיום</button>
+        <button class="btn-cancel" onclick="closeConfirmPopup()">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <script src="scripts/global.js"></script>
   <script src="scripts/test-model.js"></script>

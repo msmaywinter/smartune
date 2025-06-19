@@ -319,6 +319,7 @@ def load_params():
     return json.loads(p.read_text(encoding='utf-8'))
 
 
+
 @eel.expose
 def prepare_final_dataset(slug):
     # שליפת המטאדאטה
@@ -447,6 +448,45 @@ def ask_model_js(question_text, temperature):
 
     # אם זה כבר מחרוזת, נחזיר כרגיל
     return str(response)
+
+
+
+@eel.expose
+def export_zip_package(slug):
+    import zipfile
+
+    try:
+        model_dir = os.path.join("models", slug)
+        export_dir = os.path.join("web", "exports")
+        os.makedirs(export_dir, exist_ok=True)
+
+        zip_filename = f"{slug}_export_package.zip"
+        zip_path = os.path.join(export_dir, zip_filename)
+
+        with zipfile.ZipFile(zip_path, 'w') as zipf:
+            # קובץ קונפיג הכי עדכני
+            configs = sorted(
+                glob.glob(os.path.join(model_dir, "training_config_*.json")),
+                reverse=True
+            )
+            if not configs:
+                return {"success": False, "error": "לא נמצא קובץ הגדרות"}
+            zipf.write(configs[0], arcname=os.path.basename(configs[0]))
+
+            # רק קובץ original.xlsx
+            excel_path = os.path.join(model_dir, "original.xlsx")
+            if not os.path.exists(excel_path):
+                return {"success": False, "error": "לא נמצא קובץ original.xlsx"}
+            zipf.write(excel_path, arcname="original.xlsx")
+
+        print(f"✅ ZIP מוכן: {zip_path}")
+        return {"success": True, "zip_path": f"exports/{zip_filename}"}
+
+    except Exception as e:
+        print(f"❌ שגיאה ביצירת ZIP: {e}")
+        return {"success": False, "error": str(e)}
+
+
 
 
 webbrowser.open_new("http://localhost:8001/home.html")

@@ -65,3 +65,64 @@ fetch('components/navbar.html')
   };
   document.body.appendChild(script);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const popup = document.getElementById("creativity-popup");
+  const closeBtn = document.getElementById("creativity-popup-close");
+  const icon = document.querySelector(".creativity-row .info-icon");
+
+  if (icon && popup && closeBtn) {
+    icon.style.cursor = "pointer";
+
+    icon.addEventListener("click", () => {
+      popup.classList.remove("hidden");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      popup.classList.add("hidden");
+    });
+  }
+});
+
+function closeConfirmPopup() {
+  document.querySelectorAll('.confirm-popup').forEach(p => p.classList.add('hidden'));
+}
+
+
+document.getElementById('back-button').addEventListener('click', () => {
+  document.getElementById('backParamsPopup').classList.remove('hidden');
+});
+
+document.getElementById('confirmBackParams').addEventListener('click', () => {
+  const slug = new URLSearchParams(window.location.search).get("slug");
+  window.location.href = `parameters.html?slug=${encodeURIComponent(slug)}`;
+});
+
+document.getElementById('finish-button').addEventListener('click', () => {
+  document.getElementById('finishPopup').classList.remove('hidden');
+});
+
+
+document.getElementById('confirmFinish').addEventListener('click', () => {
+  window.location.href = 'home.html'; // או כל עמוד אחר שתרצה בסיום
+});
+
+document.getElementById("export-zip").addEventListener("click", async () => {
+  try {
+    const response = await eel.export_zip_package(slug)();
+    if (response && response.success) {
+      const zipUrl = response.zip_path;
+      const a = document.createElement("a");
+      a.href = zipUrl;
+      a.download = zipUrl.split("/").pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else {
+      alert("❌ שגיאה ביצירת קובץ ZIP: " + response.error);
+    }
+  } catch (err) {
+    console.error("שגיאה כללית:", err);
+    alert("❌ תקלה בלתי צפויה בעת הורדה");
+  }
+});

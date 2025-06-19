@@ -24,18 +24,42 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 currentPath = os.getcwd()
 basePath = os.getcwd()
 
-models = {
-    "llama-3-8b-instruct": "meta-llama/Meta-Llama-3-8B-Instruct"
+models ={
+  "llama-3-8b-instruct": {
+    "source": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "template": "llama3"
+  },
+ "DeepSeek-R1-Distill-Llama-8B": {
+    "source": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    "template": "llama3"
+  },
+  "Mistral-7B-Instruct-v0.3": {
+    "source": "mistralai/Mistral-7B-Instruct-v0.3",
+    "template": "mistral"
+  },
+  "Aya-23-8B-Chat": {
+    "source": "CohereForAI/aya-23-8B",
+    "template": "cohere"
+  },
+  "Yi-6B-Chat": {
+    "source": "01-ai/Yi-6B-Chat",
+    "template": "yi"
+  },
+  "Qwen-7B": {
+    "source": "Qwen/Qwen-7B",
+    "template": "qwen"
+  }
 }
 
 ############################################
 #               global variables
-
+process = None
 messages = []
 outputDir = ""
 chat_model: ChatModel
 baseModel = ""
 projectID = ""
+template = ""
 
 def startTrain(config_path):
     config = TrainingConfig.from_directory(config_path)
@@ -46,7 +70,7 @@ def startTrain(config_path):
     addDatasetRow(config.dataset_path, config.slug, file_key, run_id)
 
     defineParameters(
-        models[config.model_name],
+        config.model_name,
         config.learning_rate,
         config.num_epochs,
         config.warmup_ratio,
@@ -58,6 +82,17 @@ def startTrain(config_path):
         config.slug,
         run_id
     )
+@eel.expose
+def stop_fine_tuning():
+    global process
+    if process and process.poll() is None:
+        process.terminate()
+        print("❌ תהליך האימון הופסק.")
+        return "stopped"
+    else:
+        print("ℹ️ אין תהליך פעיל כרגע.")
+        return "not_running"
+
 
 def reset():
     global messages, outputDir, chat_model, baseModel, projectID
@@ -66,6 +101,7 @@ def reset():
     chat_model = None
     baseModel = ""
     projectID = ""
+    template = ""
     torch_gc()
 
 def createDB(filePath):
@@ -108,13 +144,14 @@ def addDatasetRow(filePath, slug, file_key, run_id):
         print(f"Added key: {file_key}")
 
 def defineParameters(base_model, learningRate, epochs, warmupRatio, maxLength, FP16, batchSize, gradientAccumulationSteps, file_key, slug, run_id):
-    global baseModel, outputDir
-    baseModel = base_model
+    global baseModel, outputDir,template
+    baseModel = models[base_model]["source"]
+    template = models[base_model]["template"]
     outputDir = Path(os.path.join("models", slug, "trained", run_id)).as_posix()
     os.makedirs(outputDir, exist_ok=True)
     os.chdir(currentPath)
 
-    template = "llama3"
+
     normalized_output_dir = os.path.abspath(outputDir).replace("\\", "/")
 
     args = dict(
@@ -168,6 +205,7 @@ def safe_print(text, end="\n", flush=False):
         print(fallback, end=end, flush=flush)
 
 def doTrain():
+    global process
     torch.cuda.empty_cache()
     torch.cuda.ipc_collect()
     torch.cuda.reset_peak_memory_stats()
@@ -222,11 +260,11 @@ def setTestModel(temperature):
         raise FileNotFoundError(f"לא נמצאו checkpoint-ים בתיקייה '{outputDir}'.")
     adapter_path = os.path.join(currentPath,adapter_path)
     os.chdir(FilePaths.llamaFactory)
-
+    print(baseModel)
     testArgs = dict(
-        model_name_or_path=baseModel,
+        model_name_or_path=baseModel["source"],
         adapter_name_or_path=adapter_path,
-        template="llama3",
+        template=baseModel["template"],
         finetuning_type="lora",
         quantization_bit=4,
         temperature=temperature,

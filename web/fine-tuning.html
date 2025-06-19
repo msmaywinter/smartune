@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles/buttons.css">
   <link rel="stylesheet" href="styles/navbar.css">
   <link rel="stylesheet" href="styles/fine-tuning.css">
+  <link rel="stylesheet" href="styles/pop-up.css">
   <script type="text/javascript" src="/eel.js"></script>
 </head>
 <body class="black-logo-page">
@@ -52,6 +53,20 @@
     </button>
 
   </main>
+
+  <div id="cancelPopup" class="popup hidden">
+  <div class="popup-content">
+    <div class="popup-inner-border">
+      <div class="popup-icon">!</div>
+      <h2 class="popup-title">האם ברצונך לבטל את כיוונון המודל?</h2>
+      <p class="popup-subtitle">פעולה זו לא ניתנת לביטול</p>
+      <div class="popup-actions">
+        <button id="cancelConfirmBtn" class="btn-confirm">אישור וביטול</button>
+        <button class="btn-cancel" onclick="closePopup()">חזרה</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <script src="scripts/global.js"></script>
   <script src="scripts/fine-tuning.js"></script>

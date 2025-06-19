@@ -4,7 +4,7 @@
     "type": "range",
     "label": "באיזו מהירות המודל יסתגל למידע חדש?",
     "tooltip": "Learning rate\n\nשולט על כמה מהר המודל מתאים את עצמו לדוגמאות החדשות.\nערך גבוה אומר שהמודל לומד מהר אבל יכול לפספס,\nוערך נמוך אומר שהמודל לומד בצורה איטית אבל בזהירות ובהדרגה.\nאז מה מתאים?\nערך נמוך מתאים למידע מורכב או רגיש.\nערך גבוה מתאים כשיש מעט זמן או כשהמידע מאוד אחיד וברור.",
-    "realRange": { "min": 1e-5, "max": 1e-3, "default": 3e-4 },
+    "realRange": { "min": 1e-5, "max": 2e-4, "default": 5e-5 },
     "endpoints": [
       "לאט אך זהיר ומדויק",
       "מהיר אך עלול לטעות"
@@ -60,9 +60,14 @@
     "label": "באיזה מודל בסיס תרצו להשתמש?",
     "tooltip": "Model name\n\nהמודל שעליו יתבצע האימון.\nכל מודל מגיע עם יכולות בסיס שונות שמתאימות למשימות אחרות.\nאז מה מתאים?\nבחרו מודל שמתאים לגודל המידע ולמטרה שלכם.\nלמשל: LLaMA 3 מתאים למשימות כלליות ומורכבות.",
     "options": [
-      { "value": "llama-3-8b-instruct", "label": "Llama 3 8B Instruct" }
+      { "value": "llama-3-8b-instruct", "label": "Llama 3 8B Instruct" },
+      { "value": "DeepSeek-R1-Distill-Llama-8B", "label": "DeepSeek R1 Distill Llama 8B" },
+      { "value": "Mistral-7B-Instruct-v0.3", "label": "Mistral 7B Instruct v0.3" },
+      { "value": "Aya-23-8B-Chat", "label": "Aya 23 8B Chat" },
+      { "value": "Yi-6B-Chat", "label": "Yi 6B Chat" },
+      { "value": "Qwen-7B", "label": "Qwen 7B" }
     ],
-    "default": "llama-3-8b-instruct"
+    "default": "Aya-23-8B-Chat"
   },
   {
     "key": "max_seq_length",

@@ -25,7 +25,7 @@ def validate_structure(df: pd.DataFrame) -> list:
     errors = []
     required_columns = ['שאלה', 'תשובה', 'נושא']
     if list(df.columns[:3]) != required_columns:
-        errors.append("הקובץ חייב לכלול שלוש עמודות בלבד – 'שאלה', 'תשובה', 'נושא' – ובסדר הזה.")
+        errors.append("הקובץ חייב לכלול שלוש עמודות בלבד בסדר הזה: 'שאלה', 'תשובה', 'נושא'.")
         return errors
     df.columns = ['question', 'answer', 'topic']
     return errors

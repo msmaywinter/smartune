@@ -130,8 +130,8 @@ h1 {
   font-weight: 300;
   text-align: right;
   position: relative;
-  padding-bottom: 1.5rem;
-}
+  padding-bottom: 2rem;
+  }
 
 .parameter-box.open .advanced-params {
   display: block;
@@ -238,7 +238,7 @@ h1 {
 .endpoints {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
   color: #004051;
   font-weight: 300;
   font-size: 1rem;

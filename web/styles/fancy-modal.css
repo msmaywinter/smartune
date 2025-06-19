@@ -1,0 +1,106 @@
+.popup {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  direction: rtl;
+  font-family: 'Assistant', sans-serif;
+}
+
+.popup-content {
+  background-color: #95C3D9;
+  border-radius: 16px;
+  padding: 15px;
+  width: 90%;
+  max-width: 660px;
+  text-align: center;
+}
+
+.popup-inner-border {
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.popup-icon {
+  font-size: 64px;
+  color: #0E3654;
+  margin-bottom: 1rem;
+}
+
+/* כותרת */
+.popup-title {
+    font-size: 32px;
+    font-weight: 300;
+    color: #0E3654;
+    margin-top: 1px;
+    margin-bottom: 0.5rem;
+}
+
+/* כותרת משנה */
+.popup-subtitle {
+    font-size: 24px;
+    font-weight: 300;
+    color: #0E3654;
+}
+
+/* רשימת שגיאות */
+.modal-error-list {
+  list-style-type: disc;
+  padding-right: 1.5rem;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 300;
+  color: #0E3654;
+  margin-bottom: 1rem;
+  direction: rtl;
+}
+
+.modal-error-list li {
+  margin-bottom: 35px;
+  font-size: 24px;
+  text-align: right;
+}
+
+.modal-error-extra {
+  font-size: 16px;
+  font-weight: 300;
+  color: #0E3654;
+  margin-top: -10px;
+  text-align: right;
+}
+
+/* אזור כפתורים */
+.popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* כפתור */
+.popup-actions button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 15px;
+  font-weight: 300;
+  font-size: 18px;
+  cursor: pointer;
+  width: 140px;
+  height: 50px;
+  text-align: center;
+  border: 2px solid #BEE2F8;
+  background-color: #BEE2F8;
+  color: #0E3654;
+  transition: background-color 0.3s;
+}
+
+.popup-actions button:hover {
+  background-color: #d2ecf9;
+}
+
+/* מסתיר את הפופאפ כשצריך */
+.hidden {
+  display: none !important;
+}

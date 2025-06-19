@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/buttons.css">
   <link rel="stylesheet" href="styles/navbar.css">
-  <link rel="stylesheet" href="styles/popup.css">
+  <link rel="stylesheet" href="styles/fancy-modal.css">
   <link rel="stylesheet" href="styles/upload.css">
   <script type="text/javascript" src="/eel.js"></script>
 </head>
@@ -123,13 +123,27 @@
 
   <script src="scripts/global.js"></script>
   <script src="scripts/popup.js"></script>
+  <script src="scripts/fancy-modal.js"></script>
   <script src="scripts/upload.js"></script>
 
-  <div id="feedbackModal" class="modal hidden">
-    <div class="modal-content">
-      <div id="modalContent"></div>
+
+<div id="feedbackModal" class="popup hidden">
+  <div class="popup-content">
+    <div class="popup-inner-border">
+      <div class="popup-icon">!</div>
+      <h2 id="modalTitle" class="popup-title"></h2>
+      <p id="modalSubtitle" class="popup-subtitle"></p>
+      <ul id="modalErrorList" class="modal-error-list"></ul>
+      <p id="modalExtra" class="modal-error-extra hidden"></p>
+      <div class="popup-actions">
+        <button id="closeModalBtn" class="btn-cancel">סגירה</button>
+      </div>
     </div>
   </div>
+</div>
+
+
+
   
 </body>
 </html>

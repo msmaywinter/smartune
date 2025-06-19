@@ -229,8 +229,8 @@ input#question:focus {
 }
 
 .info-icon {
-  width: 1rem;
-  height: 1rem;
+ width: 20px;
+  height: 20px;
   stroke: #004051;
 }
 
@@ -274,3 +274,109 @@ input#question:focus {
 }
 
 
+/* רקע פופאפ */
+.tooltip-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  direction: rtl;
+  font-family: 'Assistant', sans-serif;
+}
+
+.tooltip-popup.hidden {
+  display: none;
+}
+
+/* מבנה הפנימי של הפופאפ */
+.tooltip-content {
+  background-color: #B8D7E6;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 650px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.tooltip-inner-box {
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 25px 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* טקסטים */
+.popup-title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #0E3654;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.popup-main-text {
+  font-size: 20px;
+  font-weight: 300;
+  color: #0E3654;
+  white-space: pre-line;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  text-align: right;
+}
+
+.popup-subtitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #0E3654;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.popup-suggestion-text {
+  font-size: 18px;
+  font-weight: 300;
+  color: #0E3654;
+  white-space: pre-line;
+  line-height: 1.7;
+  text-align: right;
+}
+
+/* כפתור סגירה */
+.popup-button-wrapper {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.popup-close-button {
+  background-color: #c6e3f2;
+  color: #002d3e;
+  font-size: 20px;
+  font-weight: 200;
+  border: none;
+  border-radius: 15px;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.popup-close-button:hover {
+  background-color: #b5d7ea;
+}
+
+.export-buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 3rem auto;
+  flex-wrap: wrap;
+}

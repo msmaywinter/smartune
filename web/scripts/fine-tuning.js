@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const messages = [
     "זה זמן מושלם להכין קפה ☕",
     "המודל שוקע בלמידה עמוקה",
-    "תכף זה מוכן...",
+    "עוד מעט זה מוכן...",
     "המודל לומד מהמידע שלך",
     "המודל מתכוונן...",
-    "תישארו רגועים, המודל עובד קשה בשבילכם"
+    "הישארו רגועים, המודל עובד בשבילכם"
   ];
 
   let currentIndex = 0;
@@ -112,3 +112,25 @@ fetch('components/navbar.html')
   };
   document.body.appendChild(script);
 });
+
+ const endButton = document.getElementById('end-button');
+  const cancelPopup = document.getElementById('cancelPopup');
+  const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+
+  endButton.addEventListener('click', () => {
+    cancelPopup.classList.remove('hidden');
+  });
+
+  function closePopup() {
+    cancelPopup.classList.add('hidden');
+  }
+
+  cancelConfirmBtn.addEventListener('click', async () => {
+    try {
+      const result = await eel.stop_fine_tuning()();
+      console.log("מצב הפסקה:", result);
+      window.location.href = "home.html"; // או עמוד סיום
+    } catch (err) {
+      console.error("שגיאה בהפסקת האימון:", err);
+    }
+  });
