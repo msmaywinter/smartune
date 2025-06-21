@@ -288,3 +288,5 @@ def question(query, temperature):
         response += new_text
     messages.append({"role": "assistant", "content": response})
     print(messages)
+    return messages
+

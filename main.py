@@ -417,7 +417,13 @@ def prepare_model_for_testing(slug, temperature):
     Train.baseModel = Train.models[config.model_name]
 
     # מוצאים את הריצה הכי עדכנית
-    run_id = sorted(os.listdir(f"models/{slug}/trained"))[-1]
+    runs = sorted([
+        d for d in os.listdir(f"models/{slug}/trained")
+        if os.path.isdir(os.path.join("models", slug, "trained", d)) and d.startswith("run_")
+    ])
+    if not runs:
+        raise FileNotFoundError(f"⚠ לא נמצאו תיקיות run_ בתיקיית האימונים של '{slug}'")
+    run_id = runs[-1]
 
     # ניכנס לתוך תיקיית ה-run ונחפש את checkpoint האחרון
     checkpoints = sorted(
@@ -448,7 +454,6 @@ def ask_model_js(question_text, temperature):
 
     # אם זה כבר מחרוזת, נחזיר כרגיל
     return str(response)
-
 
 
 @eel.expose
@@ -485,9 +490,6 @@ def export_zip_package(slug):
     except Exception as e:
         print(f"❌ שגיאה ביצירת ZIP: {e}")
         return {"success": False, "error": str(e)}
-
-
-
 
 webbrowser.open_new("http://localhost:8001/home.html")
 eel.start("home.html", mode=None, host="localhost", port=8001)

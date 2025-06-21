@@ -21,8 +21,18 @@ slider.addEventListener('input', updateSliderTooltip);
 window.addEventListener('resize', updateSliderTooltip);
 updateSliderTooltip();
 
-document.getElementById("send-message-button").addEventListener("click", async () => {
-  const questionInput = document.getElementById("question");
+const questionInput = document.getElementById("question");
+const sendButton = document.getElementById("send-message-button");
+
+sendButton.addEventListener("click", sendMessage);
+questionInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault(); // מונע ירידת שורה
+    sendMessage();
+  }
+});
+
+async function sendMessage() {
   const question = questionInput.value.trim();
   const creativity = parseInt(slider.value) / 100;
 
@@ -31,19 +41,28 @@ document.getElementById("send-message-button").addEventListener("click", async (
   addMessageToChat("user", question);
   questionInput.value = "";
 
-  // טען את המודל רק בפעם הראשונה
+  // ✅ צור מיד את ההודעה הריקה עם האנימציה
+  const loadingEl = addMessageToChat("model", "");
+  loadingEl.classList.add("loading-dots");
+
+  // ✅ טען את המודל רק בפעם הראשונה
   if (!modelPrepared) {
     await eel.prepare_model_for_testing(window.currentSlug, creativity)();
     modelPrepared = true;
   }
 
-  // קבלת תשובה
-  const response = await eel.ask_model_js(question, creativity)();
-  console.log("תשובת פייתון:", response);
-addMessageToChat("model", response || "[לא התקבלה תשובה]");
+  try {
+    const response = await eel.ask_model_js(question, creativity)();
+    console.log("תשובת פייתון:", response);
+    loadingEl.classList.remove("loading-dots");
+    loadingEl.textContent = response || "[לא התקבלה תשובה]";
+  } catch (error) {
+    console.error("שגיאה בקבלת תשובה:", error);
+    loadingEl.classList.remove("loading-dots");
+    loadingEl.textContent = "[שגיאה בתשובה מהמודל]";
+  }
+}
 
-
-});
 
 function addMessageToChat(sender, text) {
   const chatInner = document.querySelector(".chat-inner");
@@ -52,7 +71,10 @@ function addMessageToChat(sender, text) {
   messageEl.textContent = text;
   chatInner.appendChild(messageEl);
   chatInner.scrollTop = chatInner.scrollHeight;
+  return messageEl; // ✅ חשוב להחזיר את האלמנט
 }
+
+
 fetch('components/navbar.html')
 .then(res => res.text())
 .then(html => {
