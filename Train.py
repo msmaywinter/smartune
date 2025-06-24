@@ -2,11 +2,15 @@ import json
 import os
 import glob
 import random
+import shutil
 import subprocess
 from datetime import datetime
 from pathlib import Path
 
 import eel
+import yaml
+from multipart import file_path
+
 import FilePaths
 from Log import log_to_file
 from llamafactory.chat import ChatModel
@@ -149,7 +153,7 @@ def defineParameters(base_model, learningRate, epochs, warmupRatio, maxLength, F
     template = models[base_model]["template"]
     outputDir = Path(os.path.join("models", slug, "trained", run_id)).as_posix()
     os.makedirs(outputDir, exist_ok=True)
-    os.chdir(currentPath)
+
 
 
     normalized_output_dir = os.path.abspath(outputDir).replace("\\", "/")
@@ -223,7 +227,7 @@ def doTrain():
             stderr=subprocess.STDOUT,
             text=True,
             encoding='utf-8',
-            errors='replace'
+            errors='replace',
         )
 
         for line in process.stdout:
@@ -237,13 +241,12 @@ def doTrain():
     except Exception as e:
         print(f"שגיאה באימון: {e}")
 
-    os.chdir(currentPath)
+
 
 import glob
 
-def setTestModel(temperature):
-    global chat_model
-    adapter_path = None
+def findLastAdapter():
+
     outputDirUnix = os.path.normpath(outputDir)  # ← מתקן את ה־\ או / לפי מערכת ההפעלה
     pattern = os.path.join(outputDirUnix, "checkpoint-*")
     checkpoints = sorted(glob.glob(pattern), reverse=True)
@@ -253,14 +256,20 @@ def setTestModel(temperature):
         print(os.path.join(path, "adapter_model.safetensors"))
         if os.path.exists(os.path.join(path, "adapter_model.safetensors")):
             print("found")
-            adapter_path = path
-            break
+            adapter_path = os.path.join(currentPath, path)
+            return  adapter_path
 
+    raise FileNotFoundError(f"לא נמצאו checkpoint-ים בתיקייה '{outputDir}'.")
+
+
+def setTestModel(temperature):
+    global chat_model
+
+
+    adapter_path = findLastAdapter()
     if not adapter_path:
-        raise FileNotFoundError(f"לא נמצאו checkpoint-ים בתיקייה '{outputDir}'.")
-    adapter_path = os.path.join(currentPath,adapter_path)
-    os.chdir(FilePaths.llamaFactory)
-    print(baseModel)
+        return
+
     testArgs = dict(
         model_name_or_path=baseModel["source"],
         adapter_name_or_path=adapter_path,
@@ -289,4 +298,90 @@ def question(query, temperature):
     messages.append({"role": "assistant", "content": response})
     print(messages)
     return messages
+
+"""
+יש 2 סוגים של ייצוא - לhuggingface ולlmstudio
+בכל מקרה כדי ליצא לlmstudio צריך לייצא לhf
+שימו לב לפרמטר q_type - הוא משפיע על דחיסת המודל
+f16 - ביצועים טובים, מודל כבד 
+q8_0 - קטן יותר - קצת פחות מדוייק
+q6_K - פגיעה בדיוק, מתאים ללפטופים
+"""
+def exportModel(q_type="f16"):
+
+    adapter_path = findLastAdapter()
+    if not adapter_path:
+        return
+    exported_path = os.path.join( currentPath, "models", projectID, "exported")
+    os.makedirs(exported_path, exist_ok=True)
+
+    output_path = os.path.join(exported_path,"hf_export")
+    yaml_path = os.path.join(exported_path,"export_configs.yaml")
+
+    # הגדרות ייצוא
+    export_config = {
+        "model_name_or_path": baseModel["source"],
+        "adapter_name_or_path": adapter_path,
+        "template": baseModel["template"],
+        "finetuning_type": "lora",
+        "export_dir": output_path,
+        "export_legacy_format": False,
+    }
+
+
+    # שמירת הקובץ
+    with open(yaml_path, "w", encoding="utf-8") as f:
+        yaml.dump(export_config, f, default_flow_style=False, allow_unicode=True)
+
+    print(f"נוצר קובץ YAML: {yaml_path}")
+
+
+    # הפעלת הפקודה
+    try:
+        subprocess.run(
+            ["llamafactory-cli", "export", yaml_path],
+            check=True,
+            cwd=FilePaths.llamaFactory)
+
+        print("הייצוא לhf הושלם בהצלחה.")
+    except subprocess.CalledProcessError as e:
+        print("הפקודה נכשלה:")
+        print(e)
+        return
+
+    #   המרה לgguf
+    gguf_path = os.path.join(exported_path,f"{projectID}.gguf")
+
+    try:
+        subprocess.run([
+            "python", "convert_hf_to_gguf.py",
+            "--outtype", q_type,
+            "--outfile", gguf_path,
+            output_path  # מיקום המודל המאוחד
+        ],
+        check=True,
+        cwd=FilePaths.llamacpp)
+
+        print("ייצוא לlmstudio הושלם")
+        os.startfile(exported_path) #פתיחה של התיקייה
+
+    except subprocess.CalledProcessError as e:
+        print("הפקודה נכשלה:")
+        print(e)
+        return
+
+
+
+def moveToLmstudio():
+
+    destination = os.path.join(FilePaths.lmstudio,"models","smartune",projectID)
+    os.makedirs(destination,exist_ok=True)
+
+    source = os.path.join(currentPath,"models",projectID,"exported",f"{projectID}.gguf")
+    print("מעתיק לתיקייה")
+    #העתקה
+    shutil.copy2(source, destination)
+    print("כעת ניתן לשוחח עם המודל")
+
+
 

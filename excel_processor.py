@@ -57,7 +57,6 @@ def validate_content(df: pd.DataFrame) -> list:
             errors.append(f"שורה {i + 2}: {', '.join(row_errors)}.")
     return errors
 
-# 🧠 פונקציה ראשית
 def process_excel_file(file_path: str) -> dict:
     if not is_valid_excel_file(file_path):
         return {"success": False, "errors": ["הקובץ שהועלה אינו קובץ Excel תקני (.xlsx או .xls)."]}
@@ -95,6 +94,8 @@ def process_excel_file(file_path: str) -> dict:
     metadata = {
         "slug": slug,
         "model_name": None,
+        "user": None,
+        "description": None,
         "original_slug": slug,
         "original_filename": os.path.basename(file_path),
         "original_count": len(df),

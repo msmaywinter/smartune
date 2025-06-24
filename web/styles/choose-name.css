@@ -44,35 +44,6 @@ body {
     margin: 0;
     line-height: 1.7;
   }
-  
-  input#modelNameInput {
-    font-family: 'Assistant', sans-serif;
-    width: 40rem;
-    max-width: 90%;
-    padding: 1.2rem 2rem;
-    font-size: 1.4rem;
-    border: none;
-    border-radius: 12px;
-    background-color: #EEF9FD;
-    color: #002D3E;
-    text-align: right;
-    outline: none;
-    transition: box-shadow 0.3s ease;
-    box-shadow: 0 0 0 1px transparent;
-    margin-top: 2.5rem;
-    margin-bottom: 3rem;
-  }
-  
-  /* אפקט קל בלחיצה */
-  input#modelNameInput:focus {
-    box-shadow: 0 0 0 3px rgba(0, 115, 150, 0.3);
-  }
-  
-  /* placeholder אפרפר */
-  input#modelNameInput::placeholder {
-    color: #999;
-    font-weight: 300;
-  }
 
   .input-error-message {
     color: red;
@@ -80,29 +51,40 @@ body {
     margin-top: 0rem;
     text-align: center;
   }
-  .input-row {
+
+.input-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
+  justify-content: flex-start;
+  gap: 16px;
+  margin-top: 24px;
   direction: rtl;
 }
 
 .input-row label {
-  font-size: 28px;
+  flex-shrink: 0; /* לא יימעך כשהמסך קטן */
+  font-size: 1.4rem;
   color: #004051;
-  white-space: nowrap;
+  min-width: 10rem;
 }
 
 .input-row input {
-  padding: 12px 16px;
-  font-size: 18px;
-  border: 3px solid #95C3D9;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.85);
-  width: 300px;
+  flex: 1;
+  max-width: 100%;
+  font-family: 'Assistant', sans-serif;
+  padding: 1.2rem 2rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 12px;
+  background-color: #EEF9FD;
+  color: #002D3E;
+  text-align: right;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 0 0 1px transparent;
+  min-width: 12rem;  /* אפשר גם להחיל max-width אם תרצי */
 }
+
 
   
   

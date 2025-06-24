@@ -76,8 +76,8 @@ def revert_temp_metadata(current_slug: str, original_slug: str):
 
 
 @eel.expose
-def save_model_metadata(name):
-    return save_fn(name)
+def save_model_metadata(model_name, user, description):
+    return save_fn(model_name, user, description)
 
 
 @eel.expose
@@ -490,6 +490,7 @@ def export_zip_package(slug):
     except Exception as e:
         print(f"❌ שגיאה ביצירת ZIP: {e}")
         return {"success": False, "error": str(e)}
+
 
 webbrowser.open_new("http://localhost:8001/home.html")
 eel.start("home.html", mode=None, host="localhost", port=8001)
