@@ -1,8 +1,6 @@
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get("slug");
-
-    const count = parseInt(urlParams.get("count"));
     
     const slider = document.getElementById("setsSlider");
     const thumbValue = document.getElementById("thumb-value");
@@ -62,20 +60,21 @@ window.addEventListener("DOMContentLoaded", () => {
     let step = 5;
     let currentValue = 50;
     
-    if (!isNaN(count)) {
+    let count = await eel.get_original_count(slug)();
+    if (!isNaN(count) && count > 0) {
         max = Math.max(20, count * 2);
+        currentValue = Math.round((min + max) / 2);
         slider.min = min;
         slider.max = max;
         slider.step = step;
-        
-        // התחל עם ערך אמצעי
-        currentValue = Math.round((min + max) / 2);
         slider.value = currentValue;
-        
+
         minLabel.textContent = min;
         maxLabel.textContent = max;
-        
+
         continueButton.classList.remove("disabled-button");
+
+        updateSliderUI();
     }
     
     // פונקציה לעדכון התצוגה של הסליידר
@@ -220,6 +219,7 @@ window.addEventListener("DOMContentLoaded", () => {
     
         try {
             await eel.update_generation_choice(slug, true, selectedSets)();
+            internalNavigation = true;
             window.location.href = `generate-sets.html?slug=${encodeURIComponent(slug)}`;
         } catch (error) {
             console.error("שגיאה בעדכון המטאדאטה:", error);
@@ -229,6 +229,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // **הקשת החזרה** – קריאה עם פרמטר slug
   backButton.addEventListener("click", () => {
+  internalNavigation = true;
     window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
   });
 

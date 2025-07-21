@@ -1,6 +1,6 @@
 function showPopup({ title, subtitle, onConfirm }) {
     document.getElementById("popupTitle").textContent = title;
-    document.getElementById("popupSubtitle").textContent = subtitle;
+    document.getElementById("popupSubtitle").innerHTML = subtitle;
   
     // מוודא שלא נרשם מאזין פעמיים
     const confirmBtn = document.getElementById("popupConfirmBtn");

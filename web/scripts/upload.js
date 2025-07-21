@@ -32,6 +32,7 @@ async function upload() {
         const numOfSets = result.data.length;
         localStorage.setItem('uploadedFilename', filename);
         localStorage.setItem('uploadedCount', numOfSets);
+        internalNavigation = true;
         window.location.href = `choose-name.html?count=${numOfSets}`;
       } else {
         const errors = result.errors;
@@ -99,3 +100,4 @@ fetch('components/navbar.html')
     };
     document.body.appendChild(script);
   });
+

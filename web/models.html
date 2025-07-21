@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<header class="main-header">
+  <div class="header-left">
+    <img src="assets/SmarTune_white.png" alt="HIT Logo" class="hit-logo">
+  </div>
+</header>
+
+
+<head>
+  <meta charset="UTF-8" />
+  <title>מודלים קיימים - SMARTUNE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/buttons.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <link rel="stylesheet" href="styles/models.css" />
+  <link rel="stylesheet" href="styles/pop-up.css">
+  <script type="text/javascript" src="/eel.js"></script>
+  <script src="scripts/global.js"></script>
+  <script src="scripts/models.js"></script>
+  <script src="scripts/pop-up.js"></script>
+</head>
+<body class="black-logo-page">
+
+  <!-- הלוגו שלך יישאר מה־navbar-placeholder או תוכל לשים אותו ידנית כאן -->
+
+  <main class="main-wrapper">
+    <h1 class="title">מודלים קיימים</h1>
+
+    <div class="qa-table">
+      <!-- כותרת הטבלה -->
+      <div class="qa-header">
+        <div class="qa-cell header">שם מודל</div>
+        <div class="qa-cell header">שם משתמש</div>
+        <div class="qa-cell header">תיאור</div>
+        <div class="qa-cell header">כוונונים</div>
+        <div class="qa-cell header">שינוי אחרון</div>
+        <div class="qa-cell header empty-cell"></div>
+      </div>
+
+      <!-- שורות המודלים -->
+      <div id="models-container" class="qa-list">
+        <!-- שורות דינמיות ייכנסו כאן -->
+      </div>
+    </div>
+
+<div class="bottom-buttons">
+        <button id="back-button" class="nav-button">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+          חזרה
+        </button>
+    </div>
+  </main>
+
+<div id="export-loading-popup" class="tooltip-popup hidden">
+  <div class="tooltip-content">
+    <div class="tooltip-inner-box export-popup-box">
+      <h2 class="export-title">מייצאים את המודל שלך...</h2>
+      <div class="spinner"></div>
+      <p class="export-subtext">
+        תהליך זה עשוי להימשך מספר דקות.<br>
+        בסיום, תיפתח התיקייה עם המודל המוכן.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div id="validationPopup" class="popup delete-popup hidden">
+  <div class="popup-content">
+    <div class="popup-inner-border">
+      <div class="popup-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+</svg>
+      </div>
+      <div id="popupTitle" class="popup-title"></div>
+      <div id="popupSubtitle" class="popup-subtitle"></div>
+      <div class="popup-actions">
+        <button id="popupConfirmBtn" class="btn-confirm">אישור</button>
+        <button onclick="closePopup()" class="btn-cancel">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

@@ -4,6 +4,7 @@ import glob
 import random
 import shutil
 import subprocess
+import traceback
 from datetime import datetime
 from pathlib import Path
 
@@ -31,27 +32,35 @@ basePath = os.getcwd()
 models ={
   "llama-3-8b-instruct": {
     "source": "meta-llama/Meta-Llama-3-8B-Instruct",
-    "template": "llama3"
+    "template": "llama3",
+ "from": "llama3"
+
   },
  "DeepSeek-R1-Distill-Llama-8B": {
     "source": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
-    "template": "llama3"
-  },
+    "template": "llama3",
+     "from": "llama3"
+ },
   "Mistral-7B-Instruct-v0.3": {
     "source": "mistralai/Mistral-7B-Instruct-v0.3",
-    "template": "mistral"
+    "template": "mistral",
+      "from": "mistral"
+
   },
   "Aya-23-8B-Chat": {
     "source": "CohereForAI/aya-23-8B",
-    "template": "cohere"
+    "template": "cohere",
+      "from": "command-r"
   },
   "Yi-6B-Chat": {
     "source": "01-ai/Yi-6B-Chat",
-    "template": "yi"
+    "template": "yi",
+      "from": "yi"
   },
   "Qwen-7B": {
     "source": "Qwen/Qwen-7B",
-    "template": "qwen"
+    "template": "qwen",
+      "from": "qwen"
   }
 }
 
@@ -64,6 +73,7 @@ chat_model: ChatModel
 baseModel = ""
 projectID = ""
 template = ""
+
 
 def startTrain(config_path):
     config = TrainingConfig.from_directory(config_path)
@@ -86,15 +96,18 @@ def startTrain(config_path):
         config.slug,
         run_id
     )
+
+    return config.slug
+
 @eel.expose
 def stop_fine_tuning():
     global process
     if process and process.poll() is None:
         process.terminate()
-        print("❌ תהליך האימון הופסק.")
+        print("תהליך האימון הופסק.")
         return "stopped"
     else:
-        print("ℹ️ אין תהליך פעיל כרגע.")
+        print(" אין תהליך פעיל כרגע.")
         return "not_running"
 
 
@@ -189,7 +202,7 @@ def defineParameters(base_model, learningRate, epochs, warmupRatio, maxLength, F
 
     json.dump(args, open(os.path.join(outputDir, "data.json"), "w", encoding="utf-8"), indent=2)
     log_to_file(args, os.path.join(outputDir, "parameters.json"))
-    doTrain()
+    doTrain(slug)
 
     checkpoint_dirs = sorted(glob.glob(os.path.join(outputDir, "checkpoint-*")), reverse=True)
     checkpoint_dir = checkpoint_dirs[0] if checkpoint_dirs else outputDir
@@ -208,7 +221,7 @@ def safe_print(text, end="\n", flush=False):
         fallback = text.encode("utf-8", errors="replace").decode("utf-8")
         print(fallback, end=end, flush=flush)
 
-def doTrain():
+def doTrain(slug):
     global process
     torch.cuda.empty_cache()
     torch.cuda.ipc_collect()
@@ -235,7 +248,7 @@ def doTrain():
         process.wait()
 
         print("✅ האימון הסתיים בהצלחה!")
-        notify_all()
+        notify_all(slug)
         eel.training_complete_js()
 
     except Exception as e:
@@ -245,41 +258,39 @@ def doTrain():
 
 import glob
 
-def findLastAdapter():
-
-    outputDirUnix = os.path.normpath(outputDir)  # ← מתקן את ה־\ או / לפי מערכת ההפעלה
-    pattern = os.path.join(outputDirUnix, "checkpoint-*")
+def findLastAdapter(run_path):
+    run_path_norm = os.path.normpath(run_path)
+    pattern = os.path.join(run_path_norm, "checkpoint-*")
     checkpoints = sorted(glob.glob(pattern), reverse=True)
     print(checkpoints)
 
-    for path in checkpoints + [outputDirUnix]:
-        print(os.path.join(path, "adapter_model.safetensors"))
-        if os.path.exists(os.path.join(path, "adapter_model.safetensors")):
-            print("found")
-            adapter_path = os.path.join(currentPath, path)
-            return  adapter_path
+    for path in checkpoints + [run_path_norm]:
+        adapter_file = os.path.join(path, "adapter_model.safetensors")
+        config_file = os.path.join(path, "adapter_config.json")
+        print(f"בודק: {adapter_file}")
+        if os.path.exists(adapter_file) and os.path.exists(config_file):
+            print("✅ נמצא checkpoint תקין עם קובץ adapter ו־config")
+            return os.path.abspath(path)  # מחזיר את התיקייה – לא את הקובץ
 
-    raise FileNotFoundError(f"לא נמצאו checkpoint-ים בתיקייה '{outputDir}'.")
+    raise FileNotFoundError(f"❌ לא נמצאו checkpoint-ים עם adapter_model ו־adapter_config בתיקייה '{run_path}'.")
 
-
-def setTestModel(temperature):
+def setTestModel(temperature, adapter_path, max_tokens=512):
     global chat_model
 
-
-    adapter_path = findLastAdapter()
     if not adapter_path:
+        print("❌ לא סופק adapter_path – לא ניתן לטעון את המודל")
         return
 
     testArgs = dict(
-        model_name_or_path=baseModel["source"],
+        model_name_or_path=baseModel,          # ← עכשיו מחרוזת תקינה
         adapter_name_or_path=adapter_path,
-        template=baseModel["template"],
+        template=template,
         finetuning_type="lora",
         quantization_bit=4,
         temperature=temperature,
         trust_remote_code=True,
         infer_backend="huggingface",
-        max_new_tokens=512
+        max_new_tokens=max_tokens,
     )
 
     print("ARGS FOR INFERENCE:")
@@ -287,9 +298,9 @@ def setTestModel(temperature):
 
     chat_model = ChatModel(testArgs)
 
-def question(query, temperature):
+def question(query, temperature, max_tokens):
     if not chat_model:
-        setTestModel(temperature)
+        setTestModel(temperature, max_tokens)
     messages.append({"role": "user", "content": query})
     response = ""
     for new_text in chat_model.stream_chat(messages):
@@ -299,6 +310,7 @@ def question(query, temperature):
     print(messages)
     return messages
 
+
 """
 יש 2 סוגים של ייצוא - לhuggingface ולlmstudio
 בכל מקרה כדי ליצא לlmstudio צריך לייצא לhf
@@ -306,6 +318,8 @@ def question(query, temperature):
 f16 - ביצועים טובים, מודל כבד 
 q8_0 - קטן יותר - קצת פחות מדוייק
 q6_K - פגיעה בדיוק, מתאים ללפטופים
+"""
+
 """
 def exportModel(q_type="f16"):
 
@@ -369,19 +383,150 @@ def exportModel(q_type="f16"):
         print("הפקודה נכשלה:")
         print(e)
         return
+"""
+
+def exportModel(slug, q_type="q8_0"):
+    print(f"📥 export_model_js קיבלה slug: {slug}")
+    print("📥 התחלה: exportModel הופעלה")
+
+    if not slug:
+        print("❌ slug לא הוגדר – לא ניתן לייצא")
+        return {"success": False, "error": "slug לא הוגדר"}
+
+    print(f"ℹ️ slug: {slug}")
+
+    # מציאת תיקיית הריצה האחרונה
+    trained_path = os.path.join(currentPath, "models", slug, "trained")
+    print(f"📁 מחפש ריצות בנתיב: {trained_path}")
+
+    try:
+        run_dirs = [d for d in os.listdir(trained_path) if d.startswith("run_")]
+    except FileNotFoundError:
+        return {"success": False, "error": "תיקיית trained לא קיימת"}
+
+    if not run_dirs:
+        return {"success": False, "error": "לא נמצאו ריצות אימון"}
+
+    run_dirs.sort(reverse=True)
+    last_run = run_dirs[0]
+    run_path = os.path.join(trained_path, last_run)
+    outputDir = run_path
+
+    print(f"✅ תיקיית ריצה שנבחרה: {run_path}")
+
+    # מציאת checkpoint אחרון
+    try:
+        adapter_path = findLastAdapter(run_path)
+        print(f"🔗 adapter_path נמצא: {adapter_path}")
+    except Exception as e:
+        traceback.print_exc()
+        return {"success": False, "error": f"שגיאה במציאת checkpoint: {str(e)}"}
+
+    # יצירת תיקיית exported
+    exported_path = os.path.join(run_path, "exported")
+    os.makedirs(exported_path, exist_ok=True)
+    print(f"📂 נוצרה תיקיית exported: {exported_path}")
+
+    output_path = os.path.join(exported_path, "hf_export")
+    yaml_path = os.path.join(exported_path, "export_configs.yaml")
+
+    # קריאה לקובץ פרמטרים
+    params_path = os.path.join(run_path, "parameters.json")
+    if not os.path.exists(params_path):
+        return {"success": False, "error": "לא נמצא parameters.json"}
+
+    with open(params_path, "r", encoding="utf-8") as f:
+        params = json.load(f)
+
+    if isinstance(params, list) and len(params) > 0:
+        params = params[0]
+    elif not isinstance(params, dict):
+        return {"success": False, "error": "קובץ parameters.json בפורמט לא צפוי"}
+
+    base_model_path = params.get("model_name_or_path")
+    template_name = params.get("template")
+
+    if not base_model_path or not template_name:
+        return {"success": False, "error": "חסרים נתונים בקובץ parameters.json"}
+
+    # יצירת קובץ YAML
+    export_config = {
+        "model_name_or_path": base_model_path,
+        "adapter_name_or_path": adapter_path,
+        "template": template_name,
+        "finetuning_type": "lora",
+        "export_dir": output_path,
+        "export_legacy_format": False,
+    }
+
+    try:
+        with open(yaml_path, "w", encoding="utf-8") as f:
+            yaml.dump(export_config, f, default_flow_style=False, allow_unicode=True)
+        print(f"📝 נוצר קובץ YAML: {yaml_path}")
+    except Exception as e:
+        return {"success": False, "error": f"שגיאה בשמירת YAML: {str(e)}"}
+
+    try:
+        subprocess.run(["llamafactory-cli", "export", yaml_path],
+                       check=True, cwd=FilePaths.llamaFactory)
+        print("✅ הייצוא ל-HF הושלם בהצלחה.")
+    except subprocess.CalledProcessError as e:
+        traceback.print_exc()
+        return {"success": False, "error": "הפקודה llamafactory export נכשלה"}
+
+    # המרה ל-GGUF
+    gguf_path = os.path.join(exported_path, f"{slug}.gguf")
+    try:
+        subprocess.run([
+            "python", "convert_hf_to_gguf.py",
+            "--outtype", q_type,
+            "--outfile", gguf_path,
+            output_path
+        ],
+            check=True,
+            cwd=FilePaths.llamacpp
+        )
+        print(f"✅ ייצוא ל-GGUF הושלם: {gguf_path}")
+    except subprocess.CalledProcessError as e:
+        traceback.print_exc()
+        return {"success": False, "error": "המרה ל-GGUF נכשלה"}
+
+    #יצירת modelfile
+    modelfile_content = f"FROM {gguf_path}\n"
+    modelfile_path = os.path.join(exported_path,"Modelfile")
+    with open(modelfile_path, 'w') as f:
+        f.write(modelfile_content)
+        print(f"modelfile created at {modelfile_path}")
+
+    # טעינה לollama
+    try:
+        subprocess.run([
+            "ollama", "create", slug,
+            "-f", "Modelfile"
+        ],
+            check=True,
+            cwd=exported_path
+        )
+        print(f"Ollama created the model: {slug}")
+    except subprocess.CalledProcessError as e:
+        traceback.print_exc()
+        return {"success": False, "error": "טעינה ל-Ollama נכשלה"}
+
+    # יצירת ZIP
+    print(f" פותח את תיקיית המודל: {exported_path}")
+    try:
+        os.startfile(exported_path)
+    except Exception as e:
+        print(f" לא הצליח לפתוח את התיקייה: {e}")
+        return {"success": False, "error": "לא ניתן לפתוח את תיקיית המודל"}
+
+    #  אם הצליח – מחזירים הצלחה לסיום הפופאפ
+    return {"success": True}
 
 
-
-def moveToLmstudio():
-
-    destination = os.path.join(FilePaths.lmstudio,"models","smartune",projectID)
-    os.makedirs(destination,exist_ok=True)
-
-    source = os.path.join(currentPath,"models",projectID,"exported",f"{projectID}.gguf")
-    print("מעתיק לתיקייה")
-    #העתקה
-    shutil.copy2(source, destination)
-    print("כעת ניתן לשוחח עם המודל")
-
-
+    return {
+        "success": True,
+        "folder_path": os.path.abspath(exported_path).replace("\\", "/"),
+        "message": f"המודל יוצא ונשמר בתיקייה:\n{exported_path}"
+    }
 

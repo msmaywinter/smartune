@@ -1,5 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const slug = urlParams.get("slug");
+console.log("🔍 slug מה-URL:", slug);
 
 if (!slug) {
   alert("שגיאה: לא נמצא מזהה מודל (slug)");
@@ -9,6 +10,9 @@ window.currentSlug = slug;
 
 const slider = document.getElementById('creativity-slider');
 const tooltip = document.getElementById('tooltip-creativity');
+const maxTokensSlider = document.getElementById("max-tokens-slider");
+const tooltipMaxTokens = document.getElementById("tooltip-max-tokens");
+
 let modelPrepared = false;
 
 function updateSliderTooltip() {
@@ -24,6 +28,23 @@ updateSliderTooltip();
 const questionInput = document.getElementById("question");
 const sendButton = document.getElementById("send-message-button");
 
+function updateMaxTokensTooltip() {
+  const percent = (maxTokensSlider.value - maxTokensSlider.min) / (maxTokensSlider.max - maxTokensSlider.min);
+  tooltipMaxTokens.textContent = maxTokensSlider.value;
+  tooltipMaxTokens.style.left = `${percent * 100}%`;
+}
+
+function scaleTokens(rawValue) {
+  const min = 50;
+  const max = 1000;
+  return Math.round(min + (rawValue / 100) * (max - min));
+}
+
+maxTokensSlider.addEventListener("input", updateMaxTokensTooltip);
+window.addEventListener("resize", updateMaxTokensTooltip);
+updateMaxTokensTooltip();
+
+
 sendButton.addEventListener("click", sendMessage);
 questionInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -35,24 +56,25 @@ questionInput.addEventListener("keydown", (event) => {
 async function sendMessage() {
   const question = questionInput.value.trim();
   const creativity = parseInt(slider.value) / 100;
+  const rawMaxTokens = parseInt(maxTokensSlider.value);
+    const max_tokens = scaleTokens(rawMaxTokens);
+
 
   if (!question) return;
 
   addMessageToChat("user", question);
   questionInput.value = "";
 
-  // ✅ צור מיד את ההודעה הריקה עם האנימציה
   const loadingEl = addMessageToChat("model", "");
   loadingEl.classList.add("loading-dots");
 
-  // ✅ טען את המודל רק בפעם הראשונה
   if (!modelPrepared) {
-    await eel.prepare_model_for_testing(window.currentSlug, creativity)();
+    await eel.prepare_model_for_testing(window.currentSlug, creativity, max_tokens)();
     modelPrepared = true;
   }
 
   try {
-    const response = await eel.ask_model_js(question, creativity)();
+    const response = await eel.ask_model_js(question, creativity, max_tokens)();
     console.log("תשובת פייתון:", response);
     loadingEl.classList.remove("loading-dots");
     loadingEl.textContent = response || "[לא התקבלה תשובה]";
@@ -64,15 +86,32 @@ async function sendMessage() {
 }
 
 
+
 function addMessageToChat(sender, text) {
   const chatInner = document.querySelector(".chat-inner");
+
+  const wrapper = document.createElement("div");
+  wrapper.style.display = "flex";
+  wrapper.style.flexDirection = "column";
+  wrapper.style.alignItems = sender === "user" ? "flex-start" : "flex-end";
+
+  const label = document.createElement("div");
+  label.className = "message-label";
+  label.textContent = sender === "user" ? "את/ה" : "המודל";
+  wrapper.appendChild(label);
+
   const messageEl = document.createElement("div");
   messageEl.className = sender === "user" ? "message user-message" : "message model-message";
   messageEl.textContent = text;
-  chatInner.appendChild(messageEl);
+  wrapper.appendChild(messageEl);
+
+  chatInner.appendChild(wrapper);
   chatInner.scrollTop = chatInner.scrollHeight;
-  return messageEl; // ✅ חשוב להחזיר את האלמנט
+  return messageEl;
 }
+
+
+
 
 
 fetch('components/navbar.html')
@@ -117,6 +156,7 @@ document.getElementById('back-button').addEventListener('click', () => {
 
 document.getElementById('confirmBackParams').addEventListener('click', () => {
   const slug = new URLSearchParams(window.location.search).get("slug");
+  internalNavigation = true;
   window.location.href = `parameters.html?slug=${encodeURIComponent(slug)}`;
 });
 
@@ -126,6 +166,7 @@ document.getElementById('finish-button').addEventListener('click', () => {
 
 
 document.getElementById('confirmFinish').addEventListener('click', () => {
+internalNavigation = true;
   window.location.href = 'home.html'; // או כל עמוד אחר שתרצה בסיום
 });
 
@@ -148,3 +189,23 @@ document.getElementById("export-zip").addEventListener("click", async () => {
     alert("❌ תקלה בלתי צפויה בעת הורדה");
   }
 });
+
+document.getElementById("export-model").addEventListener("click", async () => {
+  const popup = document.getElementById("export-loading-popup");
+  popup.classList.remove("hidden");
+
+  try {
+    const response = await eel.export_model_js(slug, "f16")();
+    popup.classList.add("hidden");
+
+    if (!response || !response.success) {
+      console.error("❌ שגיאה בייצוא:", response?.error || "שגיאה לא ידועה");
+    }
+
+  } catch (err) {
+    popup.classList.add("hidden");
+    console.error("❌ שגיאה כללית:", err);
+  }
+});
+
+

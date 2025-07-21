@@ -78,6 +78,7 @@
     align-items: center;   /* ממרכז את שניהם אופקית */
     justify-content: center; /* אם יש גובה קבוע, ימרכז גם אנכית */
     text-align: center;
+    margin-top: 50px;
   }
   
   .logo {
@@ -89,6 +90,7 @@
     font-size: 38px;
     margin-bottom: 7rem;
     color: #003344;
+    margin-top: 25px;
   }
 
 .hero-animate-wrapper .logo,
@@ -201,7 +203,7 @@
     background-size: cover;
     border-radius: 18px;
     padding: 6rem 4rem; /* פדינג עליון ותחתון 6rem, צדדים 4rem */
-    min-height: 1000px;
+    min-height: 850px;
     display: flex;
     justify-content: center;
     align-items: center;

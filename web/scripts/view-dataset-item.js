@@ -28,6 +28,7 @@ async function refreshDataset() {
     dataset = await eel.load_generated_data(modelName)();
     if (dataset.length === 0) {
       alert("אין פריטים להצגה.");
+      internalNavigation = true;
       window.location.href = `edit-dataset.html?slug=${modelName}`;
       return;
     }
@@ -94,6 +95,7 @@ deleteBtn.addEventListener("click", () => {
 document.getElementById("back-btn").addEventListener("click", () => {
   const slug = new URLSearchParams(window.location.search).get("slug");
   if (slug) {
+  internalNavigation = true;
     window.location.href = `edit-dataset.html?slug=${slug}`;
   } else {
     alert("❌ לא נמצא שם מודל בכתובת.");

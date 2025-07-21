@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   let startTime = Date.now();
 
   const messages = [
-    "זה זמן מושלם להכין קפה ☕",
-    "המודל שוקע בלמידה עמוקה",
-    "עוד מעט זה מוכן...",
-    "המודל לומד מהמידע שלך",
-    "המודל מתכוונן...",
-    "הישארו רגועים, המודל עובד בשבילכם"
+  "המודל מתכוונן לפי הפרמטרים שבחרת",
+  "הכוונון בעיצומו – המודל לומד מהנתונים שלך",
+  "מבצע אופטימיזציה...",
+  "המודל מתעדכן – עוד קצת סבלנות",
+  "המערכת מעבדת את המידע שהוזן",
+  "המחשב עובד – תהליך הלמידה מתקדם"
   ];
 
   let currentIndex = 0;
@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     button.textContent = "לבדיקת המודל";
     button.className = "nav-button";
     button.onclick = () => {
+    internalNavigation = true;
       window.location.href = `test-model.html?slug=${encodeURIComponent(window.currentSlug)}`;
     };
 
@@ -79,25 +80,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // ✉️ שליחת מייל
-  document.getElementById("send-email-button").addEventListener("click", () => {
-    const email = document.getElementById("emailAddress").value.trim();
-    const feedback = document.getElementById("email-feedback");
+document.getElementById("send-email-button").addEventListener("click", () => {
+  const emailInput = document.getElementById("emailAddress");
+  const email = emailInput.value.trim();
+  const feedback = document.getElementById("email-feedback");
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (!emailRegex.test(email)) {
-      feedback.textContent = "כתובת הדוא״ל שהוזנה אינה תקינה";
-      feedback.className = "email-feedback error";
-      return;
-    }
+  if (!emailRegex.test(email)) {
+    feedback.textContent = "כתובת הדוא״ל שהוזנה אינה תקינה";
+    feedback.className = "email-feedback error";
+    return;
+  }
 
-    feedback.textContent = "✔ נשלח אליך מייל בסיום התהליך";
-    feedback.className = "email-feedback success";
+  // Clear the input field
+  emailInput.value = "";
 
-    if (window.eel) {
-      eel.register_email_for_notification(email);
-    }
-  });
+  // Show success message with email
+  feedback.textContent = `✔ נשלח מייל ל: ${email} בסיום התהליך`;
+  feedback.className = "email-feedback success";
+
+  if (window.eel) {
+    eel.register_email_for_notification(email);
+  }
 });
 
 fetch('components/navbar.html')
@@ -129,8 +134,47 @@ fetch('components/navbar.html')
     try {
       const result = await eel.stop_fine_tuning()();
       console.log("מצב הפסקה:", result);
+      internalNavigation = true;
       window.location.href = "home.html"; // או עמוד סיום
     } catch (err) {
       console.error("שגיאה בהפסקת האימון:", err);
     }
   });
+
+  // כפתור חזרה לפרמטרים
+const backButton = document.getElementById('back-to-params-button');
+const backPopup = document.getElementById('backPopup');
+const backConfirmBtn = document.getElementById('backConfirmBtn');
+
+backButton.addEventListener('click', () => {
+  backPopup.classList.remove('hidden');
+});
+
+function closeBackPopup() {
+  backPopup.classList.add('hidden');
+}
+
+  // כפתור חזרה מתוך פופאפ הביטול
+  const cancelBackBtn = document.querySelector('#cancelPopup .btn-cancel');
+  cancelBackBtn.addEventListener('click', () => {
+    cancelPopup.classList.add('hidden');
+  });
+
+  // כפתור חזרה מתוך פופאפ הפרמטרים
+  const backCancelBtn = document.querySelector('#backPopup .btn-cancel');
+  backCancelBtn.addEventListener('click', () => {
+    backPopup.classList.add('hidden');
+  });
+
+backConfirmBtn.addEventListener('click', async () => {
+  try {
+    const result = await eel.stop_fine_tuning()(); // כמו כפתור ביטול
+    console.log("מצב הפסקה:", result);
+console.log("🔁 עובר לעמוד פרמטרים עם slug:", window.currentSlug);
+internalNavigation = true;
+window.location.href = `parameters.html?slug=${encodeURIComponent(window.currentSlug)}`;
+  } catch (err) {
+    console.error("שגיאה בהפסקת האימון:", err);
+  }
+});
+});

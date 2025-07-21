@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>כיוונון המודל - SMARTUNE</title>
+  <title>כוונון המודל - SMARTUNE</title>
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/buttons.css">
@@ -20,19 +20,19 @@
       <div class="hero-background"></div>
 
       <div class="hero-content">
-        <h1>כיוונון המודל</h1>
+        <h1>כוונון המודל</h1>
         <h2>נא לא לכבות את המחשב</h2>
       </div>
 
       <div class="timer" id="training-timer-box">
-        <p>זמן שחלף מתחילת הכיוונון</p>
+        <p>זמן שחלף מתחילת הכוונון</p>
         <div id="training-timer">00:00:00</div>
       </div>
 
       <div id="status-message" class="status-message">המודל מתכוונן...</div>
 
       <div class="mail-section">
-        <p>הזינו מייל לקבלת עדכון בסיום תהליך הכיוונון</p>
+        <p>הזינו מייל לקבלת עדכון בסיום תהליך הכוונון</p>
         <div class="mail-wrapper">
           <div class="email-input-wrapper">
             <input type="text" id="emailAddress" placeholder="הזן/י כתובת דוא״ל..." />
@@ -52,17 +52,41 @@
       ביטול וסיום
     </button>
 
+    <button class="nav-button" id="back-to-params-button">
+          <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+
+  חזרה לפרמטרים
+</button>
+
+
   </main>
 
   <div id="cancelPopup" class="popup hidden">
   <div class="popup-content">
     <div class="popup-inner-border">
       <div class="popup-icon">!</div>
-      <h2 class="popup-title">האם ברצונך לבטל את כיוונון המודל?</h2>
+      <h2 class="popup-title">האם ברצונך לבטל את כוונון המודל?</h2>
       <p class="popup-subtitle">פעולה זו לא ניתנת לביטול</p>
       <div class="popup-actions">
         <button id="cancelConfirmBtn" class="btn-confirm">אישור וביטול</button>
-        <button class="btn-cancel" onclick="closePopup()">חזרה</button>
+        <button class="btn-cancel">חזרה</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div id="backPopup" class="popup hidden">
+  <div class="popup-content">
+    <div class="popup-inner-border">
+      <div class="popup-icon">!</div>
+      <h2 class="popup-title">האם ברצונך לחזור למסך הפרמטרים?</h2>
+      <p class="popup-subtitle">פעולה זו תבטל את תהליך כוונון המודל הקיים</p>
+      <div class="popup-actions">
+        <button id="backConfirmBtn" class="btn-confirm">אישור וחזרה</button>
+        <button class="btn-cancel" onclick="closeBackPopup()">חזרה</button>
       </div>
     </div>
   </div>

@@ -11,17 +11,14 @@ window.addEventListener("DOMContentLoaded", async () => {
   function validateInputs() {
     const question = questionInput.value.trim();
     const answer = answerInput.value.trim();
-
     addButton.disabled = !(question && answer);
   }
 
   questionInput.addEventListener("input", validateInputs);
   answerInput.addEventListener("input", validateInputs);
-
-  // התחלה - הכפתור כבוי
   addButton.disabled = true;
 
-  modelName = urlParams.get('slug');
+  modelName = urlParams.get("slug");
 
   if (!modelName) {
     alert("חסר שם מודל בכתובת.");
@@ -29,48 +26,49 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
+    const metadata = await eel.load_model_metadata(modelName)();
+
+    // כאן החלק החדש:
+    if (!metadata.user_generated) {
+      await eel.ensure_generated_from_original(modelName)();
+    }
+
     const generated = await eel.load_generated_data(modelName)();
     renderQAList(generated);
   } catch (error) {
     console.error("שגיאה בטעינת הנתונים:", error);
-    alert("שגיאה בטעינת השאלות שנוצרו.");
+    alert("שגיאה בטעינת השאלות.");
   }
 
-document.getElementById("add-question-btn").addEventListener("click", async () => {
-  const questionInput = document.getElementById("new-question-input");
-  const answerInput = document.getElementById("new-answer-input");
+  document.getElementById("add-question-btn").addEventListener("click", async () => {
+    const question = questionInput.value.trim();
+    const answer = answerInput.value.trim();
 
-  const question = questionInput.value.trim();
-  const answer = answerInput.value.trim();
+    if (!question || !answer) {
+      alert("נא למלא גם שאלה וגם תשובה.");
+      return;
+    }
 
-  if (!question || !answer) {
-    alert("נא למלא גם שאלה וגם תשובה.");
-    return;
-  }
+    try {
+      await eel.append_to_generated_raw(modelName, { question, answer })();
+      const updated = await eel.load_generated_data(modelName)();
+      renderQAList(updated, true);
 
-  try {
-    await eel.append_to_generated_raw(modelName, { question, answer })();
-    const updated = await eel.load_generated_data(modelName)();
-
-    // ✅ גולל למטה אחרי הוספה
-    renderQAList(updated, true);
-
-    questionInput.value = "";
-    answerInput.value = "";
-    questionInput.focus(); // רשות, לפוקוס נוח
-    validateInputs();
-
-  } catch (err) {
-    console.error("שגיאה בהוספת שאלה:", err);
-    alert("שגיאה בהוספת שאלה.");
-  }
+      questionInput.value = "";
+      answerInput.value = "";
+      questionInput.focus();
+      validateInputs();
+    } catch (err) {
+      console.error("שגיאה בהוספת שאלה:", err);
+      alert("שגיאה בהוספת שאלה.");
+    }
+  });
 });
 
-
-});
 
 continueButton.addEventListener('click', () => {
     eel.cleanup_upload()().then(() => {
+    internalNavigation = true;
       window.location.href = `parameters.html?slug=${encodeURIComponent(slug)}`;
     });
 });
@@ -110,6 +108,7 @@ async function renderQAList(list, scrollToBottom = false) {
     row.addEventListener("click", () => {
       localStorage.setItem("dataset", JSON.stringify(list));
       localStorage.setItem("currentIndex", index);
+      internalNavigation = true;
       window.location.href = `view-dataset-item.html?slug=${modelName}`;
     });
 

@@ -30,6 +30,24 @@
     color: #0E3654;
     margin-bottom: 1rem;
   }
+
+  .popup-icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+.delete-popup .popup-title {
+  font-weight: 500;
+  font-size: 45px;
+}
+
+.delete-popup .popup-subtitle {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+
   
   .popup-title {
     font-size: 32px;

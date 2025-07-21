@@ -210,6 +210,15 @@ input#question:focus {
   line-height: normal;
 }
 
+.max-tokens-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-top: 1.8rem;
+  width: 100%;
+}
+
+
 .creativity-row {
   display: flex;
   align-items: flex-end; /* מיישר לתחתית השורה (מתיישב עם הסליידר עצמו) */
@@ -246,7 +255,7 @@ input#question:focus {
 
 .message-label {
   font-size: 0.75rem;
-  font-weight: 300;
+  font-weight: 500 !important;
   color: #004051;
   margin-bottom: 0.2rem;
   padding-right: 0.2rem;
@@ -408,3 +417,45 @@ input#question:focus {
   margin: 3rem auto;
   flex-wrap: wrap;
 }
+
+.export-popup-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.export-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #002D3E;
+  margin-bottom: 50px;
+}
+
+.export-subtext {
+  font-size: 22px;
+  line-height: 1.6;  /* קטן יותר = פחות רווח בין השורות */
+  color: #002D3E;
+  margin-top: 20px;
+  font-weight: 300;
+  white-space: pre-line;
+}
+
+/* הספינר */
+.spinner {
+  width: 46px;
+  height: 46px;
+  border: 5px solid #c6e3f2;
+  border-top: 5px solid #004051;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+

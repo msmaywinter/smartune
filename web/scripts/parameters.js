@@ -26,7 +26,7 @@ let paramDefs = [];
 window.addEventListener('DOMContentLoaded', () => {
   eel.load_params()(defs => {
     paramDefs = defs;
-    console.log("🚨 פרמטרים שהתקבלו מהשרת:", paramDefs);
+    console.log("פרמטרים שהתקבלו מהשרת:", paramDefs);
 
     initRendering();
   });
@@ -226,6 +226,7 @@ document.getElementById('reset-default').addEventListener('click', () => {
 
 backButton.addEventListener('click', () => {
   eel.cleanup_upload()().then(() => {
+  internalNavigation = true;
     window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
   });
 });
@@ -294,6 +295,7 @@ document.getElementById('save-and-continue').addEventListener('click', async () 
 
     if (response && response.success) {
       const configPath = encodeURIComponent(response.path);
+      internalNavigation = true;
       window.location.href = `fine-tuning.html?slug=${encodeURIComponent(slug)}&path=${configPath}`;
     } else {
       throw new Error("האימון לא התחיל כראוי");

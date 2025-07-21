@@ -73,6 +73,7 @@ async function initChooseNamePage() {
         await eel.delete_model_folder(slug)();
       }
       await eel.cleanup_upload()();
+      internalNavigation = true;
       window.location.href = 'upload.html';
     } catch (err) {
       console.error("שגיאה במחיקת תיקיית המודל:", err);
@@ -100,6 +101,7 @@ continueButton.addEventListener("click", async () => {
   try {
     const result = await eel.save_model_metadata(name, user, desc)();
     if (result.success) {
+    internalNavigation = true;
       window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(result.slug)}`;
     } else {
       errorMsg.textContent = result.error;

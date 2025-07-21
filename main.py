@@ -1,4 +1,5 @@
 import base64
+import signal
 from datetime import datetime
 import json
 import os
@@ -20,7 +21,7 @@ from generation_planner import update_generation_choice as update_generation_cho
 from data_editor import load_generated_data as load_generated_data_fn
 from state_manager import cleanup_all, load_temp_metadata
 from email_manager import register_email, notify_all
-from Train import startTrain, question, setTestModel
+from Train import startTrain, question, setTestModel, exportModel
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -28,7 +29,6 @@ load_dotenv()
 sys.stdout.reconfigure(encoding='utf-8')
 
 eel.init('web')
-
 
 # ===== חשיפת פונקציות ל-Eel =====
 
@@ -40,7 +40,6 @@ def handle_file_upload(filename):
         os.remove(input_path)
 
     return result
-
 
 @eel.expose
 def save_file_to_server(base64data, filename):
@@ -79,6 +78,19 @@ def revert_temp_metadata(current_slug: str, original_slug: str):
 def save_model_metadata(model_name, user, description):
     return save_fn(model_name, user, description)
 
+@eel.expose
+def get_original_count(slug: str) -> int:
+    metadata_path = os.path.join("models", slug, "metadata.json")
+    if not os.path.exists(metadata_path):
+        return 0
+    try:
+        with open(metadata_path, "r", encoding="utf-8") as f:
+            metadata = json.load(f)
+        return metadata.get("original_count", 0)
+    except Exception as e:
+        print(f"שגיאה בקריאת original_count: {e}")
+        return 0
+
 
 @eel.expose
 def update_generation_choice(slug, wants_generation, generated_requested):
@@ -94,11 +106,9 @@ def load_model_metadata(slug):
 def finalize_model_generation(slug):
     return finalize_generation(slug)
 
-
 @eel.expose
 def generate_sets(slug):
     return asyncio.run(generate_sets_async(slug))
-
 
 @eel.expose
 def done_generating():
@@ -125,7 +135,6 @@ def update_total_count(slug: str, new_count: int):
 
 @eel.expose
 def append_to_generated_raw(slug, example):
-    print("📥 append_to_generated_raw הופעלה")
     try:
         path = Path(f"models/{slug}/generated_raw.json")
         if not path.exists():
@@ -217,7 +226,7 @@ async def generate_sets_async(slug):
             return {"success": False}
 
         metadata = load_model_metadata(slug)
-        model_name = metadata.get("model_name", slug)  # נשתמש בשם המקורי רק לצורכי תיעוד
+        model_name = metadata.get("model_name", slug)
         selected_sets = metadata.get("generated_requested", 0)
 
         if selected_sets <= 0:
@@ -262,7 +271,7 @@ def export_model_to_excel(model_name):
             dataset = json.load(file)
 
         if not dataset:
-            print("⚠️ הקובץ ריק.")
+            print(" הקובץ ריק.")
             return None
 
         # יצירת תיקיית היעד בתוך web
@@ -284,7 +293,7 @@ def export_model_to_excel(model_name):
             sheet.append([question, answer])
 
         workbook.save(output_path)
-        print(f"✅ נשמר ב־: {output_path}")
+        print(f" נשמר ב־: {output_path}")
 
         return f"exports/{file_name}"  # יחסי מתוך תיקיית web
 
@@ -318,8 +327,6 @@ def load_params():
     p = Path(__file__).parent / 'params.json'
     return json.loads(p.read_text(encoding='utf-8'))
 
-
-
 @eel.expose
 def prepare_final_dataset(slug):
     # שליפת המטאדאטה
@@ -342,14 +349,12 @@ def prepare_final_dataset(slug):
         shutil.copy(generated_data_path, final_path)
         print(f"Copied generated data to {final_path}")
     else:
-        # המשתמש העלה קובץ
         excel_path = os.path.join('models', slug, 'original.xlsx')
         if not os.path.exists(excel_path):
             raise FileNotFoundError(f"No uploaded Excel file found at: {excel_path}")
 
         df = pd.read_excel(excel_path)
 
-        # תרגום עמודות לעברית → אנגלית אם צריך
         column_mapping = {
             "שאלה": "question",
             "תשובה": "answer",
@@ -360,7 +365,39 @@ def prepare_final_dataset(slug):
         df.to_json(final_path, orient='records', force_ascii=False, indent=4)
         print(f"Converted Excel to JSON at {final_path}")
 
+    if metadata.get('user_generated') is False:
+        generated_data_path = os.path.join('models', slug, 'generated_raw.json')
+        if os.path.exists(generated_data_path):
+            os.remove(generated_data_path)
+            print(f"✔️ נמחק generated_raw.json עבור מודל {slug} כי user_generated = False")
+
     return final_path
+
+@eel.expose
+def ensure_generated_from_original(slug):
+    generated_path = os.path.join("models", slug, "generated_raw.json")
+    if os.path.exists(generated_path):
+        return {"created": False}
+
+    # יוצרים אותו מתוך original.xlsx
+    excel_path = os.path.join("models", slug, "original.xlsx")
+    if not os.path.exists(excel_path):
+        return {"success": False, "error": "לא נמצא קובץ original.xlsx"}
+
+    df = pd.read_excel(excel_path)
+    data = []
+    for _, row in df.iterrows():
+        question = str(row.get("שאלה", "")).strip()
+        answer = str(row.get("תשובה", "")).strip()
+        if question and answer:
+            data.append({"question": question, "answer": answer})
+
+    with open(generated_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+    return {"created": True}
+
+
 
 @eel.expose
 def save_training_config(config):
@@ -384,8 +421,8 @@ def save_training_config(config):
 @eel.expose
 def start_training_from_path(config_path):
     def run_training():
-        startTrain(config_path)
-        notify_all()
+        slug = startTrain(config_path)
+        notify_all(slug)
 
     thread = threading.Thread(target=run_training)
     thread.start()
@@ -397,62 +434,55 @@ def register_email_for_notification(email):
 
 
 @eel.expose
-def prepare_model_for_testing(slug, temperature):
+def prepare_model_for_testing(slug, temperature, max_tokens):
     import os
     import glob
     from trainingConfig import TrainingConfig
     import Train
+    from Train import findLastAdapter, setTestModel
 
-    # טוענים את הקובץ הכי עדכני של קונפיג
+    # טוענים את קובץ הקונפיג הכי עדכני
     configs = sorted(
         glob.glob(os.path.join("models", slug, "training_config_*.json")),
         reverse=True
     )
     if not configs:
-        raise FileNotFoundError(f"⚠ לא נמצא קובץ קונפיג למודל '{slug}' – ודאי שהאימון הסתיים והקובץ נוצר.")
+        raise FileNotFoundError(f"⚠ לא נמצא קובץ קונפיג למודל '{slug}'")
     config_path = configs[0]
     config = TrainingConfig.from_directory(config_path)
 
-    # מגדירים את baseModel לפי המודל שאומן
-    Train.baseModel = Train.models[config.model_name]
+    # שמירת המודל והתבנית בתוך משתנים גלובליים
+    Train.baseModel = Train.models[config.model_name]["source"]
+    Train.template = Train.models[config.model_name]["template"]
 
-    # מוצאים את הריצה הכי עדכנית
+    # מוצאים את תיקיית הריצה האחרונה
     runs = sorted([
         d for d in os.listdir(f"models/{slug}/trained")
         if os.path.isdir(os.path.join("models", slug, "trained", d)) and d.startswith("run_")
     ])
     if not runs:
-        raise FileNotFoundError(f"⚠ לא נמצאו תיקיות run_ בתיקיית האימונים של '{slug}'")
+        raise FileNotFoundError(f"⚠ לא נמצאו תיקיות run_ עבור המודל '{slug}'")
     run_id = runs[-1]
+    run_path = os.path.join("models", slug, "trained", run_id)
 
-    # ניכנס לתוך תיקיית ה-run ונחפש את checkpoint האחרון
-    checkpoints = sorted(
-        [f for f in os.listdir(f"models/{slug}/trained/{run_id}") if f.startswith("checkpoint")],
-        key=lambda x: int(x.split("-")[-1])
-    )
-    if not checkpoints:
-        raise FileNotFoundError(f"לא נמצאו checkpoint-ים בתיקייה של האימון '{run_id}'.")
+    Train.outputDir = run_path
 
-    # מגדירים את outputDir ל-checkpoint האחרון
-    Train.outputDir = os.path.join("models", slug, "trained", run_id)
+    # מוצאים את האדפטר האחרון
+    adapter_path = findLastAdapter(run_path)
 
-    # טוענים את המודל לצ'אט
-    setTestModel(temperature)
+    # טוענים את המודל עם האדפטר
+    setTestModel(temperature, adapter_path, max_tokens)
+
 
 
 @eel.expose
-def ask_model_js(question_text, temperature):
-    response = question(question_text, temperature)
-
-    # נניח שהתוצאה היא רשימת הודעות [{"role": ..., "content": ...}, ...]
+def ask_model_js(question_text, temperature, max_tokens=512):
+    response = question(question_text, temperature, max_tokens)
     if isinstance(response, list):
-        # מחפש את ההודעה האחרונה של המודל
         for msg in reversed(response):
             if msg.get("role") == "assistant":
                 return msg.get("content", "[שגיאה: אין תוכן]")
         return "[שגיאה: לא נמצאה תשובה מהמודל]"
-
-    # אם זה כבר מחרוזת, נחזיר כרגיל
     return str(response)
 
 
@@ -484,13 +514,159 @@ def export_zip_package(slug):
                 return {"success": False, "error": "לא נמצא קובץ original.xlsx"}
             zipf.write(excel_path, arcname="original.xlsx")
 
-        print(f"✅ ZIP מוכן: {zip_path}")
+        print(f" ZIP מוכן: {zip_path}")
         return {"success": True, "zip_path": f"exports/{zip_filename}"}
 
     except Exception as e:
-        print(f"❌ שגיאה ביצירת ZIP: {e}")
+        print(f"שגיאה ביצירת ZIP: {e}")
         return {"success": False, "error": str(e)}
+
+@eel.expose
+def export_model_js(slug, q_type="f16"):
+    zip_path = exportModel(slug, q_type)
+
+    if zip_path:
+        return {"success": True, "zip_path": zip_path}
+    else:
+        return {"success": False, "error": "לא נוצר קובץ ZIP"}
+
+
+MODELS_DIR: str = "models"
+
+@eel.expose
+def get_all_models_metadata():
+    models = []
+    for subdir in os.listdir(MODELS_DIR):
+        model_path = os.path.join(MODELS_DIR, subdir)
+        if os.path.isdir(model_path):
+            metadata_path = os.path.join(model_path, "metadata.json")
+            if os.path.exists(metadata_path):
+                try:
+                    with open(metadata_path, "r", encoding="utf-8") as f:
+                        metadata = json.load(f)
+
+                    # חיפוש קבצי training_config
+                    # training_configs = glob.glob(os.path.join(model_path, "training_config_*.json"))
+                    valid_runs = check_valid_runs(subdir)
+                    tweaks_count = len(valid_runs)
+
+                    # תאריך
+                    raw_date = metadata.get("last_updated", "")
+                    if raw_date:
+                        dt = datetime.fromisoformat(raw_date)
+                        formatted_date = f"{dt.day}/{dt.month}/{dt.year}"
+                    else:
+                        formatted_date = "—"
+
+                    models.append({
+                        "slug": metadata.get("slug", subdir),
+                        "name": metadata.get("model_name", "ללא שם"),
+                        "user": metadata.get("user", "—"),
+                        "description": metadata.get("description", "—"),
+                        "tweaks": tweaks_count,
+                        "updated_at": formatted_date,
+                        "last_updated_raw": raw_date
+                    })
+                except Exception as e:
+                    print(f"שגיאה בקריאת מטאדאטה מתוך {metadata_path}: {e}")
+    return models
+
+def check_valid_runs(slug):
+    run_dir = os.path.join("models", slug, "trained")
+    if not os.path.exists(run_dir):
+        return []
+
+    valid_runs = []
+    for run in os.listdir(run_dir):
+        run_path = os.path.join(run_dir, run)
+        if os.path.isdir(run_path) and run.startswith("run_"):
+            adapter_path = os.path.join(run_path, "adapter_config.json")
+            if os.path.exists(adapter_path):
+                valid_runs.append(run)
+            else:
+                shutil.rmtree(run_path)  # מנקים את הריצה הלא תקינה
+                print(f"נמחקה ריצה לא תקינה: {run_path}")
+
+    return valid_runs
+
+@eel.expose
+def open_or_export_model(slug, q_type="f16"):
+    from Train import exportModel, findLastAdapter
+    import glob
+
+    model_dir = os.path.join("models", slug)
+
+    # מוצאים את הריצה האחרונה
+    runs = sorted(
+        [d for d in os.listdir(os.path.join(model_dir, "trained")) if d.startswith("run_")],
+        reverse=True
+    )
+
+    if not runs:
+        return {"success": False, "error": "לא נמצאה אף הרצת אימון."}
+
+    last_run = runs[0]
+    last_run_path = os.path.join(model_dir, "trained", last_run)
+
+    # בדיקה אם קיימת תיקיית exported
+    exported_path = os.path.join(last_run_path, "exported")
+    if os.path.exists(exported_path):
+        print(f" מודל כבר יוצא: {exported_path}")
+        open_model_folder(os.path.join(slug, "trained", last_run, "exported"))
+        return {"success": True, "already_exported": True}
+
+    # אם לא קיים – מייצאים
+    zip_path = exportModel(slug, q_type)
+    if zip_path:
+        print(f" מודל יוצא עכשיו: {zip_path}")
+        folder_to_open = os.path.dirname(zip_path)
+        open_model_folder(os.path.relpath(folder_to_open, "models"))
+        return {"success": True, "already_exported": False}
+
+    return {"success": False, "error": "לא נוצר קובץ ZIP"}
+
+
+@eel.expose
+def open_model_folder(name):
+    import subprocess
+    import platform
+
+    folder_path = os.path.abspath(os.path.join("models", name))
+
+    if not os.path.exists(folder_path):
+        return {"success": False, "error": "התיקייה לא קיימת"}
+
+    try:
+        if platform.system() == "Windows":
+            os.startfile(folder_path)
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", folder_path])
+        else:
+            subprocess.Popen(["xdg-open", folder_path])
+        return {"success": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+@eel.expose
+def cleanup_on_close():
+    temp_meta = load_temp_metadata()
+    slug = temp_meta.get("slug")
+    model_name = temp_meta.get("model_name")
+
+    if slug and model_name is None:
+        model_path = os.path.join("models", slug)
+        if os.path.exists(model_path):
+            shutil.rmtree(model_path)
+            print(f"נמחקה תיקיית המודל: {slug}")
+        cleanup_all()
+    else:
+        print("אין מודל זמני פעיל. ")
 
 
 webbrowser.open_new("http://localhost:8001/home.html")
 eel.start("home.html", mode=None, host="localhost", port=8001)
+
+
+
+

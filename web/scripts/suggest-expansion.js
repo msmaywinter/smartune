@@ -34,6 +34,7 @@ async function initSuggestExpansionPage() {
 
     eel.revert_temp_metadata(currentSlug, originalSlug)().then(res => {
       if (res.success) {
+      internalNavigation = true;
         window.location.href = 'choose-name.html';
       } else {
         alert('שחזור נכשל');
@@ -43,11 +44,13 @@ async function initSuggestExpansionPage() {
 
   // כפתור הרחבת מאגר
   expandBtn.addEventListener('click', () => {
+  internalNavigation = true;
     window.location.href = `add-ai-option.html?slug=${encodeURIComponent(slug)}`;
   });
 
   // כפתור דילוג
   skipBtn.addEventListener('click', () => {
+  internalNavigation = true;
     window.location.href = `parameters.html?slug=${encodeURIComponent(slug)}`;
   });
 }

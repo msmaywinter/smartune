@@ -1,15 +1,51 @@
+// Flag גלובלי
+let internalNavigation = false;
+
+window.addEventListener("beforeunload", (e) => {
+  if (!internalNavigation && typeof eel !== 'undefined') {
+    eel.cleanup_on_close();
+  }
+});
+
+
+// ניווט יזום דרך הפונקציה שלך
 function navigateTo(page) {
-  // אם eel קיים, נסגור; אחרת נתעלם
+  internalNavigation = true;
   if (typeof eel !== 'undefined' && typeof eel.close === 'function') {
     eel.close();
   }
-  // נחכה טיפה, ואז נטען את העמוד החדש
   setTimeout(() => {
     window.location.href = page;
   }, 100);
 }
 
+// האזנה לקליקים על לינקים או כפתורים פנימיים
+document.addEventListener("click", function (e) {
+  const target = e.target.closest("a, button");
+  if (!target) return;
+
+  if (target.tagName === "A" && target.href && target.origin === location.origin) {
+    internalNavigation = true;
+  }
+
+  if (target.dataset.navigate === "true") {
+    internalNavigation = true;
+  }
+}, true);
+
+// טיפול בסגירת עמוד
+window.addEventListener("beforeunload", function (e) {
+  console.log("beforeunload triggered. internalNavigation =", internalNavigation);
+  if (!internalNavigation) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
+// איפוס הדגל בטעינת עמוד חדש
 window.addEventListener('DOMContentLoaded', () => {
+  internalNavigation = false;
+
   // Navbar
   fetch('components/navbar.html')
     .then(response => response.text())
@@ -17,8 +53,6 @@ window.addEventListener('DOMContentLoaded', () => {
       const placeholder = document.getElementById('navbar-placeholder');
       if (placeholder) {
         placeholder.innerHTML = html;
-
-        // נוודא ששינוי הלוגו קורה אחרי שה-DOM התעדכן
         setTimeout(() => {
           adjustLogoByPageType();
         }, 0);
@@ -36,14 +70,14 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// פונקציה שמחליפה את הלוגו לפי סוג העמוד
+// החלפת לוגו
 function adjustLogoByPageType() {
   const logo = document.getElementById('logo-image');
   if (logo) {
     if (document.body.classList.contains('black-logo-page')) {
-      logo.src = 'assets/SmarTune.png'; // לוגו שחור
+      logo.src = 'assets/SmarTune.png';
     } else {
-      logo.src = 'assets/SmarTune_white.png'; // לוגו לבן לעמודים אחרים
+      logo.src = 'assets/SmarTune_white.png';
     }
   }
 }

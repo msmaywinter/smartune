@@ -1,0 +1,297 @@
+body {
+  background-color: #FAFDFE; /*  צבע הרקע שמתחת */
+  background-image: url("../assets/P2-START.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% 80%;
+}
+.main-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 30px 35px;
+  height: 60px;
+}
+  h1 {
+    font-size: 4.5rem;
+     font-weight: 300;
+     margin-bottom: 40px;
+  }
+.hit-logo {
+  height: 30px;
+}
+
+.qa-cell.header {
+  background-color: #95C3D9;
+  padding: 6px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 28px;
+  border-radius: 5px;
+  color: white;
+}
+
+
+.qa-header,
+.qa-row {
+  display: grid;
+grid-template-columns: 1fr 1fr 2.5fr 0.7fr 1fr 1.5fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.qa-table {
+transform: translateX(-120px);
+  padding: 0 30px;
+  display: flex;
+  max-width: 1500px;
+  flex-direction: column;
+  gap: 16px;
+   margin: 0 auto;
+}
+
+.qa-list {
+  max-height: 700px;
+  overflow-y: auto;
+  display: grid;
+  gap: 16px;
+    scrollbar-color: #95C3D9 transparent;
+  scrollbar-width: thin;
+}
+
+/* מזיז את סרגל הגלילה לימין בדפדפנים שתומכים בזה */
+.qa-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.qa-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.qa-list::-webkit-scrollbar-thumb {
+  background-color: #95C3D9;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+
+
+.qa-row:nth-child(even) .qa-box {
+  background-color: rgba(149, 195, 217, 0.65); /* 95C3D9 */
+}
+
+.qa-row:nth-child(odd) .qa-box {
+  background-color: rgba(229, 245, 249, 0.65); /* E5F5F9 */
+}
+
+/* צבע גם לפעולות */
+.qa-row:nth-child(even) .model-actions .model-action-btn {
+  background-color: rgba(149, 195, 217, 0.65);
+}
+
+.qa-row:nth-child(odd) .model-actions .model-action-btn {
+  background-color: rgba(229, 245, 249, 0.65);
+}
+
+.qa-cell.header.empty-cell {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+
+
+.qa-box {
+  background-color: rgba(149, 195, 217, 0.65);
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 24px;
+  padding-right: 15px;
+  color: #004051;
+  text-align: right;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.model-actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.model-action-btn {
+  background-color: rgba(149, 195, 217, 0.65);
+  border: none;
+  border-radius: 8px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.model-action-btn svg {
+    width: 30px;
+    height: 30px;
+  color: #003344;
+}
+
+.qa-row:hover .model-actions {
+  opacity: 1;
+}
+
+
+
+/* רקע פופאפ */
+.tooltip-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  direction: rtl;
+  font-family: 'Assistant', sans-serif;
+}
+
+.tooltip-popup.hidden {
+  display: none;
+}
+
+/* מבנה הפנימי של הפופאפ */
+.tooltip-content {
+  background-color: #B8D7E6;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 650px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.tooltip-inner-box {
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 25px 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* טקסטים */
+.popup-title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #0E3654;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.popup-main-text {
+  font-size: 20px;
+  font-weight: 300;
+  color: #0E3654;
+  white-space: pre-line;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  text-align: right;
+}
+
+.popup-subtitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #0E3654;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.popup-suggestion-text {
+  font-size: 18px;
+  font-weight: 300;
+  color: #0E3654;
+  white-space: pre-line;
+  line-height: 1.7;
+  text-align: right;
+}
+
+/* כפתור סגירה */
+.popup-button-wrapper {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.popup-close-button {
+  background-color: #c6e3f2;
+  color: #002d3e;
+  font-size: 20px;
+  font-weight: 200;
+  border: none;
+  border-radius: 15px;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.popup-close-button:hover {
+  background-color: #b5d7ea;
+}
+
+.export-buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 3rem auto;
+  flex-wrap: wrap;
+}
+
+.export-popup-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.export-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #002D3E;
+  margin-bottom: 50px;
+}
+
+.export-subtext {
+  font-size: 22px;
+  line-height: 1.6;  /* קטן יותר = פחות רווח בין השורות */
+  color: #002D3E;
+  margin-top: 20px;
+  font-weight: 300;
+  white-space: pre-line;
+}
+
+/* הספינר */
+.spinner {
+  width: 46px;
+  height: 46px;
+  border: 5px solid #c6e3f2;
+  border-top: 5px solid #004051;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+

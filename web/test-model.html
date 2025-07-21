@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles/navbar.css">
   <link rel="stylesheet" href="styles/confirm-popup.css">
   <link rel="stylesheet" href="styles/test-model.css">
+  <link rel="stylesheet" href="styles/pop-up.css">
   <script type="text/javascript" src="/eel.js"></script>
 </head>
 <body class="black-logo-page">
@@ -56,6 +57,27 @@
                 </div>
               </div>
             </div>
+
+          <div class="max-tokens-row">
+            <label class="creativity-label">
+              אורך התשובה:
+              <svg class="info-icon" id="tokens-info-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M11.25 11.25l.25 5.25m0-8.25h.008v.008H11.25V8.25zm.75 12A9 9 0 1 1 12 3a9 9 0 0 1 0 18z"/>
+              </svg>
+            </label>
+
+            <div class="slider-wrapper">
+              <input type="range" id="max-tokens-slider" class="slider" min="0" max="100" value="50">
+              <div class="slider-tooltip" id="tooltip-max-tokens">50</div>
+              <div class="endpoints">
+                <span class="endpoint">קצר</span>
+                <span class="endpoint">ארוך</span>
+              </div>
+            </div>
+          </div>
+
 
         </div>
       </div>
@@ -156,8 +178,22 @@
   </div>
 </div>
 
+<div id="export-loading-popup" class="tooltip-popup hidden">
+  <div class="tooltip-content">
+    <div class="tooltip-inner-box export-popup-box">
+      <h2 class="export-title">מייצאים את המודל שלך...</h2>
+      <div class="spinner"></div>
+      <p class="export-subtext">
+        תהליך זה עשוי להימשך מספר דקות.<br>
+        בסיום, תיפתח התיקייה עם המודל המוכן.
+      </p>
+    </div>
+  </div>
+</div>
+
 
   <script src="scripts/global.js"></script>
+  <script src="scripts/pop-up.js"></script>
   <script src="scripts/test-model.js"></script>
 
 </body>

@@ -49,7 +49,7 @@ h1 {
 .header-row h2 {
   margin: 0;
   font-size: 1.5rem;
-  font-weight: 200;
+  font-weight: 300;
   color: #004051;
   margin-left: 8rem;
   margin-right: 15rem;
@@ -335,13 +335,13 @@ h1 {
 }
 
 .info-button {
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 23px;
   border-radius: 50%;
   background-color: transparent;
   border: 1.8px solid #30698C;
   color: #30698C;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: bold;
   line-height: 1;
   display: flex;
@@ -379,7 +379,7 @@ h1 {
   padding: 20px;
   border-radius: 10px;
   position: relative;
-  max-width: 650px;
+  max-width: 750px;
   width: 90%;
   box-sizing: border-box;
   display: flex;
@@ -446,7 +446,7 @@ h1 {
 }
 
 .popup-suggestion-text {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 300;
   color: #0E3654;
   white-space: pre-line;
