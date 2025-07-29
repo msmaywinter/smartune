@@ -1,5 +1,6 @@
 import os
 import smtplib
+import sys
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -85,7 +86,10 @@ def send_email(to_email, model_name):
     msg.attach(alternative_part)
 
     # הוספת הלוגואים מהדיסק
-    for cid, path in [("logo_smartune", "web/assets/SmarTune.png"), ("logo_hit", "web/assets/HitLogo.png")]:
+    base_dir = getattr(sys, '_MEIPASS', os.path.abspath("."))  # כדי שיפעל גם אחרי pyinstaller
+
+    for cid, rel_path in [("logo_smartune", "web/assets/SmarTune.png"), ("logo_hit", "web/assets/HitLogo.png")]:
+        path = os.path.join(base_dir, rel_path)
 
         if os.path.exists(path):
             with open(path, "rb") as f:
@@ -97,14 +101,14 @@ def send_email(to_email, model_name):
             print(f"[⚠] לא נמצא לוגו בנתיב: {path}")
 
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:  # ✅ Use SMTP, not SMTP_SSL
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:  # Use SMTP, not SMTP_SSL
             server.ehlo()
-            server.starttls()  # ✅ Start TLS after connecting
+            server.starttls()  # Start TLS after connecting
             server.login(sender_email, sender_password)
             server.sendmail(sender_email, [to_email], msg.as_string())
-        print(f"[📬] נשלח מייל ל־{to_email}")
+        print(f" נשלח מייל ל־{to_email}")
     except Exception as e:
-        print(f"[❌] שגיאה בשליחה ל־{to_email}: {e}")
+        print(f"שגיאה בשליחה ל־{to_email}: {e}")
 
 
 def notify_all(slug: str):

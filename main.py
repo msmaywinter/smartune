@@ -3,6 +3,7 @@ import signal
 from datetime import datetime
 import json
 import os
+os.environ["DISABLE_VERSION_CHECK"] = "1"
 import shutil
 import webbrowser
 import eel
@@ -26,7 +27,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-sys.stdout.reconfigure(encoding='utf-8')
+if sys.stdout:
+    sys.stdout.reconfigure(encoding='utf-8')
 
 eel.init('web')
 
@@ -321,11 +323,15 @@ def get_temp_metadata():
 
 @eel.expose
 def load_params():
-    """
-    קורא את params.json ומחזיר אותו כאובייקט שישמש ב־JS
-    """
-    p = Path(__file__).parent / 'params.json'
-    return json.loads(p.read_text(encoding='utf-8'))
+    base_path = Path(getattr(sys, '_MEIPASS', Path.cwd()))
+    path = base_path / 'params.json'
+
+    if not path.exists():
+        print(f"[load_params] לא נמצא: {path}")
+        return []
+
+    return json.loads(path.read_text(encoding='utf-8'))
+
 
 @eel.expose
 def prepare_final_dataset(slug):

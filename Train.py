@@ -23,8 +23,8 @@ from email_manager import notify_all
 
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
-
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if sys.stdout:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 currentPath = os.getcwd()
 basePath = os.getcwd()
@@ -233,6 +233,13 @@ def doTrain(slug):
 
     try:
         print(f"הרצת אימון עם קובץ: {data_path}")
+        startupinfo = None
+        creationflags = 0
+        if sys.platform == "win32":
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            creationflags = subprocess.CREATE_NO_WINDOW
+
         process = subprocess.Popen(
             command,
             cwd=FilePaths.llamaFactory,
@@ -241,13 +248,15 @@ def doTrain(slug):
             text=True,
             encoding='utf-8',
             errors='replace',
+            startupinfo=startupinfo,
+            creationflags=creationflags
         )
 
         for line in process.stdout:
             safe_print(line, end="", flush=True)
         process.wait()
 
-        print("✅ האימון הסתיים בהצלחה!")
+        print(" האימון הסתיים בהצלחה!")
         notify_all(slug)
         eel.training_complete_js()
 
@@ -269,16 +278,16 @@ def findLastAdapter(run_path):
         config_file = os.path.join(path, "adapter_config.json")
         print(f"בודק: {adapter_file}")
         if os.path.exists(adapter_file) and os.path.exists(config_file):
-            print("✅ נמצא checkpoint תקין עם קובץ adapter ו־config")
+            print(" נמצא checkpoint תקין עם קובץ adapter ו־config")
             return os.path.abspath(path)  # מחזיר את התיקייה – לא את הקובץ
 
-    raise FileNotFoundError(f"❌ לא נמצאו checkpoint-ים עם adapter_model ו־adapter_config בתיקייה '{run_path}'.")
+    raise FileNotFoundError(f" לא נמצאו checkpoint-ים עם adapter_model ו־adapter_config בתיקייה '{run_path}'.")
 
 def setTestModel(temperature, adapter_path, max_tokens=512):
     global chat_model
 
     if not adapter_path:
-        print("❌ לא סופק adapter_path – לא ניתן לטעון את המודל")
+        print(" לא סופק adapter_path – לא ניתן לטעון את המודל")
         return
 
     testArgs = dict(
@@ -386,18 +395,18 @@ def exportModel(q_type="f16"):
 """
 
 def exportModel(slug, q_type="q8_0"):
-    print(f"📥 export_model_js קיבלה slug: {slug}")
-    print("📥 התחלה: exportModel הופעלה")
+    print(f" export_model_js קיבלה slug: {slug}")
+    print(" התחלה: exportModel הופעלה")
 
     if not slug:
-        print("❌ slug לא הוגדר – לא ניתן לייצא")
+        print(" slug לא הוגדר – לא ניתן לייצא")
         return {"success": False, "error": "slug לא הוגדר"}
 
-    print(f"ℹ️ slug: {slug}")
+    print(f" slug: {slug}")
 
     # מציאת תיקיית הריצה האחרונה
     trained_path = os.path.join(currentPath, "models", slug, "trained")
-    print(f"📁 מחפש ריצות בנתיב: {trained_path}")
+    print(f" מחפש ריצות בנתיב: {trained_path}")
 
     try:
         run_dirs = [d for d in os.listdir(trained_path) if d.startswith("run_")]
@@ -412,7 +421,7 @@ def exportModel(slug, q_type="q8_0"):
     run_path = os.path.join(trained_path, last_run)
     outputDir = run_path
 
-    print(f"✅ תיקיית ריצה שנבחרה: {run_path}")
+    print(f" תיקיית ריצה שנבחרה: {run_path}")
 
     # מציאת checkpoint אחרון
     try:
@@ -425,7 +434,7 @@ def exportModel(slug, q_type="q8_0"):
     # יצירת תיקיית exported
     exported_path = os.path.join(run_path, "exported")
     os.makedirs(exported_path, exist_ok=True)
-    print(f"📂 נוצרה תיקיית exported: {exported_path}")
+    print(f" נוצרה תיקיית exported: {exported_path}")
 
     output_path = os.path.join(exported_path, "hf_export")
     yaml_path = os.path.join(exported_path, "export_configs.yaml")
@@ -462,14 +471,14 @@ def exportModel(slug, q_type="q8_0"):
     try:
         with open(yaml_path, "w", encoding="utf-8") as f:
             yaml.dump(export_config, f, default_flow_style=False, allow_unicode=True)
-        print(f"📝 נוצר קובץ YAML: {yaml_path}")
+        print(f" נוצר קובץ YAML: {yaml_path}")
     except Exception as e:
         return {"success": False, "error": f"שגיאה בשמירת YAML: {str(e)}"}
 
     try:
         subprocess.run(["llamafactory-cli", "export", yaml_path],
                        check=True, cwd=FilePaths.llamaFactory)
-        print("✅ הייצוא ל-HF הושלם בהצלחה.")
+        print(" הייצוא ל-HF הושלם בהצלחה.")
     except subprocess.CalledProcessError as e:
         traceback.print_exc()
         return {"success": False, "error": "הפקודה llamafactory export נכשלה"}
@@ -486,7 +495,7 @@ def exportModel(slug, q_type="q8_0"):
             check=True,
             cwd=FilePaths.llamacpp
         )
-        print(f"✅ ייצוא ל-GGUF הושלם: {gguf_path}")
+        print(f" ייצוא ל-GGUF הושלם: {gguf_path}")
     except subprocess.CalledProcessError as e:
         traceback.print_exc()
         return {"success": False, "error": "המרה ל-GGUF נכשלה"}
