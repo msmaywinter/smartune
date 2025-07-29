@@ -78,7 +78,10 @@
     align-items: center;   /* ממרכז את שניהם אופקית */
     justify-content: center; /* אם יש גובה קבוע, ימרכז גם אנכית */
     text-align: center;
+<<<<<<< HEAD
     margin-top: 50px;
+=======
+>>>>>>> origin/main
   }
   
   .logo {
@@ -90,7 +93,10 @@
     font-size: 38px;
     margin-bottom: 7rem;
     color: #003344;
+<<<<<<< HEAD
     margin-top: 25px;
+=======
+>>>>>>> origin/main
   }
 
 .hero-animate-wrapper .logo,
@@ -203,7 +209,11 @@
     background-size: cover;
     border-radius: 18px;
     padding: 6rem 4rem; /* פדינג עליון ותחתון 6rem, צדדים 4rem */
+<<<<<<< HEAD
     min-height: 850px;
+=======
+    min-height: 1000px;
+>>>>>>> origin/main
     display: flex;
     justify-content: center;
     align-items: center;
@@ -537,6 +547,7 @@
     font-size: 34px;
   }
  
+<<<<<<< HEAD
 
 }
 
@@ -633,4 +644,9 @@
 
 .close-btn:hover {
   background-color: #cde4f0;
+=======
+  .hero-home{
+    padding: 50rem 0 0;
+  }
+>>>>>>> origin/main
 }

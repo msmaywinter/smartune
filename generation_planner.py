@@ -2,7 +2,10 @@ import os
 import json
 from datetime import datetime
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def get_generation_limits(original_count: int) -> dict:
     if original_count < 1:
         return {"success": False, "error": "כמות הסטים המקורית חייבת להיות גדולה מאפס."}
@@ -18,11 +21,18 @@ def get_generation_limits(original_count: int) -> dict:
         "message": f"ניתן לג׳נרט עד {max_gen} סטים חדשים על בסיס {original_count} סטים שהועלו."
     }
 
+<<<<<<< HEAD
 
 def update_generation_choice(slug: str, wants_generation: bool, generated_requested: int) -> dict:
     """מעדכנת האם המשתמש רוצה להרחיב את המאגר וכמה סטים לבקש."""
     metadata_path = os.path.join("models", slug, "metadata.json")
 
+=======
+def update_generation_choice(slug: str, wants_generation: bool, generated_requested: int) -> dict:
+    """מעדכנת האם המשתמש רוצה להרחיב את המאגר וכמה סטים לבקש."""
+    metadata_path = os.path.join("models", slug, "metadata.json")
+    
+>>>>>>> origin/main
     if not os.path.exists(metadata_path):
         return {"success": False, "error": "קובץ מטאדאטה לא נמצא."}
 
@@ -40,8 +50,12 @@ def update_generation_choice(slug: str, wants_generation: bool, generated_reques
         from state_manager import save_temp_metadata
         save_temp_metadata(metadata)
 
+<<<<<<< HEAD
         print(
             f"✅ עודכן מטאדאטה למודל {slug}: user_generated={wants_generation}, generated_requested={generated_requested}")
+=======
+        print(f"✅ עודכן מטאדאטה למודל {slug}: user_generated={wants_generation}, generated_requested={generated_requested}")
+>>>>>>> origin/main
         return {"success": True}
 
     except Exception as e:

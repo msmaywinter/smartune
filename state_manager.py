@@ -8,7 +8,10 @@ import shutil
 UPLOAD_DIR = "uploads"
 TEMP_META = os.path.join("models_metadata", "temp_metadata.json")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # ---------------------
 # ניקוי קבצים זמניים
 # ---------------------
@@ -20,7 +23,10 @@ def clear_uploads():
     for f in glob.glob(f"{UPLOAD_DIR}/*"):
         os.remove(f)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def clear_temp_metadata():
     """
     מוחק את המטאדאטה הזמנית שנשמרה (temp_metadata.json).
@@ -28,7 +34,10 @@ def clear_temp_metadata():
     if os.path.exists(TEMP_META):
         os.remove(TEMP_META)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def cleanup_all():
     """
     מנקה גם את ההעלאות וגם את המטאדאטה הזמנית.
@@ -36,7 +45,10 @@ def cleanup_all():
     clear_uploads()
     clear_temp_metadata()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # ---------------------
 # ניהול מטאדאטה זמנית
 # ---------------------
@@ -50,7 +62,10 @@ def load_temp_metadata() -> dict:
     with open(TEMP_META, 'r', encoding='utf-8') as f:
         return json.load(f)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def save_temp_metadata(data: dict):
     """
     שומר עותק של המטאדאטה לקובץ זמני – שימושי כשחוזרים אחורה בתהליך.
@@ -59,7 +74,10 @@ def save_temp_metadata(data: dict):
     with open(TEMP_META, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # ---------------------
 # גישה למטאדאטה לפי slug
 # ---------------------
@@ -73,8 +91,12 @@ def get_model_metadata(slug: str) -> dict:
         return {}
     with open(path, 'r', encoding='utf-8') as f:
         return json.load(f)
+<<<<<<< HEAD
 
 
+=======
+    
+>>>>>>> origin/main
 def revert_metadata(current_slug: str, original_slug: str) -> bool:
     """
     מחזירה את תיקיית המודל לשם המקורי ומעדכנת את המטאדאטה בהתאם.

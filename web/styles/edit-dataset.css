@@ -16,6 +16,7 @@ body {
   text-align: center;
   font-size: 64px;
   color: #004051;
+<<<<<<< HEAD
   font-weight: 300;
 }
 
@@ -27,6 +28,11 @@ body {
 
 }
 
+=======
+  margin-bottom: 35px;
+  font-weight: 300;
+}
+>>>>>>> origin/main
 .qa-list {
   scrollbar-color: #95C3D9 transparent;
   scrollbar-width: thin;
@@ -49,6 +55,7 @@ body {
   border: 2px solid transparent;
   background-clip: content-box;
 }
+<<<<<<< HEAD
 .qa-row:nth-child(even) .qa-box {
   background-color: rgba(217, 241, 247, 0.65);
 }
@@ -63,6 +70,18 @@ body {
 
 
 .qa-cell.header {
+=======
+
+
+.qa-header {
+  display: flex;
+  justify-content: stretch;
+  padding: 0px 32px 10px 75px;
+}
+
+.qa-cell.header {
+  width: 47.5%;
+>>>>>>> origin/main
   background-color: #95C3D9;
   padding: 6px;
   text-align: center;
@@ -72,6 +91,7 @@ body {
   color: white;
 }
 
+<<<<<<< HEAD
 .empty-cell {
   visibility: hidden;
 }
@@ -82,6 +102,8 @@ body {
 }
 
 
+=======
+>>>>>>> origin/main
 .qa-list {
   max-height: 400px;
   overflow-y: auto;
@@ -119,12 +141,19 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+<<<<<<< HEAD
+=======
+}
+
+.qa-delete-box {
+>>>>>>> origin/main
   background: none;
   border: none;
   font-size: 22px;
   font-weight: bold;
   color: white;
   cursor: pointer;
+<<<<<<< HEAD
     opacity: 0; /* מוסתר אבל תופס מקום */
 }
 .qa-row:hover .qa-delete-box {
@@ -147,11 +176,26 @@ body {
   padding: 12px 16px;
   width: 40%;
   border: 3px solid #95C3D9;
+=======
+}
+
+.qa-add-row {
+  display: flex;
+  justify-content: stretch;
+  padding: 0px 28px 36px 12px;
+}
+
+.qa-input {
+  padding: 12px 16px;
+  width: 40%;
+  border: none;
+>>>>>>> origin/main
   background-color: #e0f7fa;
   border-radius: 5px;
   font-size: 14px;
   text-align: right;
 }
+<<<<<<< HEAD
 .qa-add-box {
   width: 48px; /* כמו ה־qa-delete-box */
   display: flex;
@@ -163,6 +207,12 @@ body {
 .add-btn,
 .delete-btn {
   background-color: #D99595;
+=======
+
+.add-btn,
+.delete-btn {
+  background-color: #95C3D9;
+>>>>>>> origin/main
   color: white;
   font-size: 24px;
   border: none;
@@ -174,6 +224,7 @@ body {
 }
 .add-btn:hover,
 .delete-btn:hover {
+<<<<<<< HEAD
 }
 
 
@@ -188,6 +239,9 @@ body {
 .delete-btn:hover {
   background-color: rgba(217, 149, 149, 0.35);
 
+=======
+  background-color: #6ca4bc;
+>>>>>>> origin/main
 }
 
 .download-button {
@@ -204,12 +258,20 @@ body {
 }
 
 .download-button:hover {
+<<<<<<< HEAD
     background-color: rgba(190, 226, 248, 0.35);
 
 }
 
 .add-input {
 background-color: rgba(255, 255, 255, 0.85);
+=======
+  background-color: #0077b6;
+}
+
+.add-input {
+  background-color: rgba(217, 220, 221, 0.65);
+>>>>>>> origin/main
   min-height: 25px;
   display: flex;
   align-items: center;
@@ -220,7 +282,11 @@ background-color: rgba(255, 255, 255, 0.85);
 }
 
 .grey-add-btn {
+<<<<<<< HEAD
   background-color: #95C3D9;
+=======
+  background-color: #B3B3B3;
+>>>>>>> origin/main
   color: #ffffff;
   transition: background-color 0.3s;
   width: 50px;
@@ -237,6 +303,12 @@ background-color: rgba(255, 255, 255, 0.85);
   transition: background-color 0.2s;
 }
 
+<<<<<<< HEAD
+=======
+.qa-row:hover {
+  background-color: rgba(149, 195, 217, 0.35);
+}
+>>>>>>> origin/main
 
 .bottom-buttons {
   display: flex;
@@ -246,7 +318,11 @@ background-color: rgba(255, 255, 255, 0.85);
   bottom: 20px;
   right: 0;
   left: 0;
+<<<<<<< HEAD
   z-index: 900;
+=======
+  z-index: 1000;
+>>>>>>> origin/main
   pointer-events: none;
 }
 

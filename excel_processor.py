@@ -25,7 +25,11 @@ def validate_structure(df: pd.DataFrame) -> list:
     errors = []
     required_columns = ['שאלה', 'תשובה', 'נושא']
     if list(df.columns[:3]) != required_columns:
+<<<<<<< HEAD
         errors.append("הקובץ חייב לכלול שלוש עמודות בלבד בסדר הזה: 'שאלה', 'תשובה', 'נושא'.")
+=======
+        errors.append("הקובץ חייב לכלול שלוש עמודות בלבד – 'שאלה', 'תשובה', 'נושא' – ובסדר הזה.")
+>>>>>>> origin/main
         return errors
     df.columns = ['question', 'answer', 'topic']
     return errors
@@ -57,6 +61,10 @@ def validate_content(df: pd.DataFrame) -> list:
             errors.append(f"שורה {i + 2}: {', '.join(row_errors)}.")
     return errors
 
+<<<<<<< HEAD
+=======
+# 🧠 פונקציה ראשית
+>>>>>>> origin/main
 def process_excel_file(file_path: str) -> dict:
     if not is_valid_excel_file(file_path):
         return {"success": False, "errors": ["הקובץ שהועלה אינו קובץ Excel תקני (.xlsx או .xls)."]}
@@ -94,8 +102,11 @@ def process_excel_file(file_path: str) -> dict:
     metadata = {
         "slug": slug,
         "model_name": None,
+<<<<<<< HEAD
         "user": None,
         "description": None,
+=======
+>>>>>>> origin/main
         "original_slug": slug,
         "original_filename": os.path.basename(file_path),
         "original_count": len(df),

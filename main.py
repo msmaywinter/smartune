@@ -1,9 +1,15 @@
 import base64
+<<<<<<< HEAD
 import signal
 from datetime import datetime
 import json
 import os
 os.environ["DISABLE_VERSION_CHECK"] = "1"
+=======
+from datetime import datetime
+import json
+import os
+>>>>>>> origin/main
 import shutil
 import webbrowser
 import eel
@@ -12,8 +18,11 @@ import pandas as pd
 import asyncio
 from pathlib import Path
 import openpyxl
+<<<<<<< HEAD
 import sys
 import threading
+=======
+>>>>>>> origin/main
 
 from excel_processor import process_excel_file
 from model_registry import is_valid_model_name, is_duplicate_model_name, save_model_metadata as save_fn
@@ -21,6 +30,7 @@ from openai_generator import generate_by_topics, load_model_metadata as load_mod
 from generation_planner import update_generation_choice as update_generation_choice_fn
 from data_editor import load_generated_data as load_generated_data_fn
 from state_manager import cleanup_all, load_temp_metadata
+<<<<<<< HEAD
 from email_manager import register_email, notify_all
 from Train import startTrain, question, setTestModel, exportModel
 from dotenv import load_dotenv
@@ -32,6 +42,10 @@ if sys.stdout:
 
 eel.init('web')
 
+=======
+
+eel.init('web')
+>>>>>>> origin/main
 # ===== חשיפת פונקציות ל-Eel =====
 
 @eel.expose
@@ -49,7 +63,10 @@ def save_file_to_server(base64data, filename):
     with open(path, 'wb') as f:
         f.write(base64.b64decode(base64data))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def delete_model_folder(slug):
     model_path = os.path.join("models", slug)
@@ -59,7 +76,10 @@ def delete_model_folder(slug):
         return {"success": True}
     return {"success": False, "error": "תיקייה לא נמצאה"}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def validate_model_name(name):
     if not is_valid_model_name(name):
@@ -68,13 +88,17 @@ def validate_model_name(name):
         return {"success": False, "error": f"השם '{name}' כבר בשימוש. יש לבחור שם אחר."}
     return {"success": True}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def revert_temp_metadata(current_slug: str, original_slug: str):
     from state_manager import revert_metadata
     ok = revert_metadata(current_slug, original_slug)
     return {"success": ok}
 
+<<<<<<< HEAD
 
 @eel.expose
 def save_model_metadata(model_name, user, description):
@@ -93,17 +117,28 @@ def get_original_count(slug: str) -> int:
         print(f"שגיאה בקריאת original_count: {e}")
         return 0
 
+=======
+@eel.expose
+def save_model_metadata(name):
+    return save_fn(name)
+>>>>>>> origin/main
 
 @eel.expose
 def update_generation_choice(slug, wants_generation, generated_requested):
     return update_generation_choice_fn(slug, wants_generation, generated_requested)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def load_model_metadata(slug):
     return load_model_metadata_fn(slug)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def finalize_model_generation(slug):
     return finalize_generation(slug)
@@ -117,7 +152,10 @@ def done_generating():
     """פונקציה שקוראת ל-JavaScript כדי לסמן שהג'נרציה הסתיימה"""
     pass  # אין צורך בלוגיקה נוספת כאן, זה רק לחשיפה
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def update_total_count(slug: str, new_count: int):
     meta_path = Path(f"models/{slug}/metadata.json")
     if not meta_path.exists():
@@ -134,9 +172,15 @@ def update_total_count(slug: str, new_count: int):
     except Exception as e:
         print(f"שגיאה בעדכון המטאדאטה: {e}")
 
+<<<<<<< HEAD
 
 @eel.expose
 def append_to_generated_raw(slug, example):
+=======
+@eel.expose
+def append_to_generated_raw(slug, example):
+    print("📥 append_to_generated_raw הופעלה")
+>>>>>>> origin/main
     try:
         path = Path(f"models/{slug}/generated_raw.json")
         if not path.exists():
@@ -158,8 +202,12 @@ def append_to_generated_raw(slug, example):
     except Exception as e:
         print(f"שגיאה בשמירת שאלה חדשה: {e}")
         return {"success": False, "error": str(e)}
+<<<<<<< HEAD
 
 
+=======
+    
+>>>>>>> origin/main
 @eel.expose
 def delete_from_generated_raw(slug, index):
     try:
@@ -184,7 +232,10 @@ def delete_from_generated_raw(slug, index):
         print(f"שגיאה במחיקת שאלה: {e}")
         return {"success": False, "error": str(e)}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 async def generate_sets_async(slug):
     try:
         excel_path = os.path.join("models", slug, "original.xlsx")
@@ -228,7 +279,11 @@ async def generate_sets_async(slug):
             return {"success": False}
 
         metadata = load_model_metadata(slug)
+<<<<<<< HEAD
         model_name = metadata.get("model_name", slug)
+=======
+        model_name = metadata.get("model_name", slug)  # נשתמש בשם המקורי רק לצורכי תיעוד
+>>>>>>> origin/main
         selected_sets = metadata.get("generated_requested", 0)
 
         if selected_sets <= 0:
@@ -242,8 +297,12 @@ async def generate_sets_async(slug):
     except Exception as e:
         print(f"שגיאה בג'נרציה: {e}")
         return {"success": False}
+<<<<<<< HEAD
 
 
+=======
+    
+>>>>>>> origin/main
 @eel.expose
 def load_generated_data(slug):
     filepath = f"models/{slug}/generated_raw.json"
@@ -254,20 +313,32 @@ def load_generated_data(slug):
         data = json.load(f)
         return data
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def export_model_to_excel(model_name):
     try:
         print(f"מתחיל ייצוא למודל: {model_name}")
+<<<<<<< HEAD
 
         # קובץ המקור
         data_path = os.path.join("models", model_name, "generated_raw.json")
         print(f"מחפש את הקובץ: {data_path}")
 
+=======
+        
+        # בדיקת הנתיב החדש
+        data_path = f"models/{model_name}/generated_raw.json"
+        print(f"מחפש את הקובץ: {data_path}")
+        
+>>>>>>> origin/main
         if not os.path.exists(data_path):
             print(f"קובץ {data_path} לא קיים!")
             return None
 
+<<<<<<< HEAD
         # קריאת הנתונים
         with open(data_path, "r", encoding="utf-8") as file:
             dataset = json.load(file)
@@ -284,11 +355,35 @@ def export_model_to_excel(model_name):
         output_path = os.path.join(export_dir, file_name)
 
         # יצירת הקובץ
+=======
+        print(f"קובץ נמצא: {data_path}")
+
+        output_dir = "exports"
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, f"{model_name}_dataset.xlsx")
+
+        # קריאת הנתונים
+        try:
+            with open(data_path, "r", encoding="utf-8") as file:
+                dataset = json.load(file)
+                print(f"✅ נתונים נקראו בהצלחה. מספר רשומות: {len(dataset)}")
+        except json.JSONDecodeError as e:
+            print(f"שגיאה בקריאת JSON: {e}")
+            return None
+
+        # אם הנתונים ריקים
+        if not dataset:
+            print("הנתונים ריקים – לא נוצר קובץ.")
+            return None
+
+        # יצירת קובץ אקסל
+>>>>>>> origin/main
         workbook = openpyxl.Workbook()
         sheet = workbook.active
         sheet.title = "שאלות ותשובות"
         sheet.append(["שאלה", "תשובה"])
 
+<<<<<<< HEAD
         for index, item in enumerate(dataset):
             question = item.get("question", "")
             answer = item.get("answer", "")
@@ -298,28 +393,56 @@ def export_model_to_excel(model_name):
         print(f" נשמר ב־: {output_path}")
 
         return f"exports/{file_name}"  # יחסי מתוך תיקיית web
+=======
+        # הוספת הנתונים
+        for index, item in enumerate(dataset):
+            try:
+                question = item.get("question", "")
+                answer = item.get("answer", "")
+                print(f"שורה {index + 1}: שאלה = {question}, תשובה = {answer}")
+                sheet.append([question, answer])
+            except Exception as e:
+                print(f"שגיאה בהוספת שורה {index + 1}: {e}")
+                continue
+
+        # שמירת הקובץ
+        workbook.save(output_path)
+        print(f"קובץ אקסל נשמר בנתיב: {output_path}")
+
+        return output_path
+>>>>>>> origin/main
 
     except Exception as e:
         print(f"שגיאה ביצוא הנתונים לאקסל: {e}")
         return None
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def cleanup_upload():
     cleanup_all()
     return {"success": True}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def get_temp_model_name():
     meta = load_temp_metadata()
     return meta.get("model_name", "")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 @eel.expose
 def get_temp_metadata():
     return load_temp_metadata()
 
+<<<<<<< HEAD
 
 @eel.expose
 def load_params():
@@ -332,6 +455,15 @@ def load_params():
 
     return json.loads(path.read_text(encoding='utf-8'))
 
+=======
+@eel.expose
+def load_params():
+    """
+    קורא את params.json ומחזיר אותו כאובייקט שישמש ב־JS
+    """
+    p = Path(__file__).parent / 'params.json'
+    return json.loads(p.read_text(encoding='utf-8'))
+>>>>>>> origin/main
 
 @eel.expose
 def prepare_final_dataset(slug):
@@ -355,6 +487,7 @@ def prepare_final_dataset(slug):
         shutil.copy(generated_data_path, final_path)
         print(f"Copied generated data to {final_path}")
     else:
+<<<<<<< HEAD
         excel_path = os.path.join('models', slug, 'original.xlsx')
         if not os.path.exists(excel_path):
             raise FileNotFoundError(f"No uploaded Excel file found at: {excel_path}")
@@ -410,11 +543,36 @@ def save_training_config(config):
     slug = config.get('slug')
     if not slug:
         return {"success": False, "error": "Training config must include a 'slug' key."}
+=======
+        # המשתמש העלה קובץ
+        excel_files = glob.glob("uploads/*.xlsx")
+        if not excel_files:
+            raise FileNotFoundError("No Excel files found in uploads.")
+
+        latest_excel = max(excel_files, key=os.path.getmtime)
+        df = pd.read_excel(latest_excel)
+        df.to_json(final_path, orient='records', force_ascii=False, indent=4)
+        print(f"Converted Excel '{latest_excel}' to JSON at {final_path}")
+        
+    return final_path
+
+@eel.expose
+def save_training_config(config):
+    import datetime
+
+    slug = config.get('slug')
+    if not slug:
+        raise ValueError("Training config must include a 'slug' key.")
+>>>>>>> origin/main
 
     model_dir = os.path.join("models", slug)
     os.makedirs(model_dir, exist_ok=True)
 
+<<<<<<< HEAD
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+=======
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+>>>>>>> origin/main
     filename = f"training_config_{timestamp}.json"
     config_path = os.path.join(model_dir, filename)
 
@@ -422,6 +580,7 @@ def save_training_config(config):
         json.dump(config, f, ensure_ascii=False, indent=4)
 
     print(f"Training config saved at {config_path}")
+<<<<<<< HEAD
     return {"success": True, "path": config_path}
 
 @eel.expose
@@ -668,11 +827,17 @@ def cleanup_on_close():
         cleanup_all()
     else:
         print("אין מודל זמני פעיל. ")
+=======
+    return config_path
+>>>>>>> origin/main
 
 
 webbrowser.open_new("http://localhost:8001/home.html")
 eel.start("home.html", mode=None, host="localhost", port=8001)
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> origin/main

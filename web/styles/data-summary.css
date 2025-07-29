@@ -25,8 +25,13 @@ h1 {
 }
 
 .summary-card {
+<<<<<<< HEAD
   background-color: rgba(184, 215, 230, 0.8);
   color: #004051;
+=======
+  background-color: rgba(48, 105, 140, 0.8);
+  color: white;
+>>>>>>> origin/main
   padding: 3rem 2rem;
   border-radius: 40px;
   width: 770px;
@@ -58,7 +63,10 @@ h1 {
   gap: 0.5rem;
   min-width: 200px;
   transition: background-color 0.3s ease;
+<<<<<<< HEAD
   margin-top: 60px;
+=======
+>>>>>>> origin/main
 }
 
 .nav-button:hover {

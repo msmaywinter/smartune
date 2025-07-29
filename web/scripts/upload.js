@@ -32,6 +32,7 @@ async function upload() {
         const numOfSets = result.data.length;
         localStorage.setItem('uploadedFilename', filename);
         localStorage.setItem('uploadedCount', numOfSets);
+<<<<<<< HEAD
         internalNavigation = true;
         window.location.href = `choose-name.html?count=${numOfSets}`;
       } else {
@@ -51,6 +52,41 @@ async function upload() {
         subtitle: "אירעה שגיאה כללית בעת העלאת הקובץ. אנא נסו שוב מאוחר יותר.",
         errors: []
       });
+=======
+        window.location.href = `choose-name.html?count=${numOfSets}`;
+      } else {
+        const errors = result.errors;
+        const shownErrors = errors.slice(0, 5);
+        const hiddenErrorsCount = errors.length - shownErrors.length;
+      
+        let errorListHTML = `
+          <h2 class="modal-title">נמצאו ${errors.length} שגיאות בקובץ</h2>
+          <p class="modal-subtext">אנא תקנו את השגיאות ונסו להעלות את הקובץ מחדש:</p>
+          <ul class="modal-error-list">
+            ${shownErrors.map(error => `<li>${error}</li>`).join('')}
+          </ul>
+        `;
+      
+        if (hiddenErrorsCount > 0) {
+          errorListHTML += `<p class="modal-error-extra">ועוד ${hiddenErrorsCount} שגיאות שלא מוצגות כאן.</p>`;
+        }
+      
+        openModal("error", errorListHTML, [
+          { id: "close-modal-button", label: "סגירה", class: "modal-button" }
+        ]);
+        
+      }      
+    } catch (err) {
+      console.error("שגיאה בזמן העלאה:", err); // הדפסה לקונסול
+    
+      openModal("error", `
+        <h2 class="modal-title">שגיאה בהעלאת הקובץ</h2>
+        <p class="modal-subtext">אירעה שגיאה כללית בעת העלאת הקובץ. אנא נסה שוב מאוחר יותר.</p>
+      `, [
+        { id: "close-modal-button", label: "סגירה", class: "modal-button" }
+      ])       
+
+>>>>>>> origin/main
     } finally {
       fileInput.value = ""; // מנקה כדי שלא ייקרא שוב בטעות
     }
@@ -69,12 +105,26 @@ function positionTipBox() {
   const exampleTop = example.offsetTop;
   const avoidTop = avoid.offsetTop;
 
+<<<<<<< HEAD
   const centerBetweenSections = (exampleTop + avoidTop) / 2;
+=======
+  // חישוב נקודת האמצע
+  const centerBetweenSections = (exampleTop + avoidTop) / 2;
+
+  // אפשר לקזז אם צריך לדייק מיקום
+>>>>>>> origin/main
   const offset = -227;
   tips.style.top = `${centerBetweenSections - offset}px`;
 }
 
+<<<<<<< HEAD
 window.addEventListener('load', positionTipBox);
+=======
+// מריצים כשהדף נטען
+window.addEventListener('load', positionTipBox);
+
+// וגם כאשר משנים גודל מסך
+>>>>>>> origin/main
 window.addEventListener('resize', positionTipBox);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -88,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+<<<<<<< HEAD
 fetch('components/navbar.html')
   .then(res => res.text())
   .then(html => {
@@ -100,4 +151,7 @@ fetch('components/navbar.html')
     };
     document.body.appendChild(script);
   });
+=======
+
+>>>>>>> origin/main
 

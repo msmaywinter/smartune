@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cardTop.style.transform = `translateY(${bottomMove}px)`;
     cardBottom.style.transform = `translateY(${topMove}px)`;
   });
+<<<<<<< HEAD
 
 
 });
@@ -73,3 +74,6 @@ function openAbout() {
 function closeAbout() {
   document.getElementById('aboutModal').classList.add('hidden');
 }
+=======
+});
+>>>>>>> origin/main

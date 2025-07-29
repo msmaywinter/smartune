@@ -19,6 +19,13 @@
     font-weight: 300;
   }
   
+<<<<<<< HEAD
+=======
+  .custom-upload-button:hover {
+    background-color: #A6D4ED;
+    transform: translateY(0) scale(1.04);
+  }
+>>>>>>> origin/main
   
   .button {
     display: inline-block;
@@ -37,6 +44,12 @@
     text-decoration: none;
   }
   
+<<<<<<< HEAD
+=======
+  .button:hover {
+    background-color: #095a71;
+  }
+>>>>>>> origin/main
   
   .buttons-row {
     display: flex;
@@ -50,11 +63,18 @@
     position: absolute;
     top: 0;
     right: 2rem;
+<<<<<<< HEAD
     background-color: #BEE2F8;
     border: none;
     padding: 10px 20px;
     font-size: 1.2rem;
     font-weight:400;
+=======
+    background-color: #d0e6f6;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+>>>>>>> origin/main
     border-radius: 15px;
     cursor: pointer;
     z-index: 10;
@@ -81,9 +101,15 @@
   }
   
   .nav-button {
+<<<<<<< HEAD
     background-color: #BEE2F8;
     border: none;
     padding: 15px 25px;
+=======
+    background-color: #d0e6f6;
+    border: none;
+    padding: 10px 20px;
+>>>>>>> origin/main
     font-size: 1.2rem;
     border-radius: 15px;
     cursor: pointer;
@@ -91,11 +117,21 @@
     align-items: center;
     gap: 0.5rem;
     color: #002D3E;
+<<<<<<< HEAD
     margin-right: 30px;
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
   
 
+=======
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .bottom-buttons .nav-button:hover {
+    background-color: #bdd9ee;
+    transform: scale(1.04);
+  }
+>>>>>>> origin/main
 
   .disabled-button {
     background-color: #e5e7eb !important; /* רקע אפור בהיר */

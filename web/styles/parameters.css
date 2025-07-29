@@ -23,6 +23,7 @@ h1 {
   color: #004051;
   margin-top: 30px;
 }
+<<<<<<< HEAD
 .info-icon {
   display: inline-flex;
   align-items: center;
@@ -98,6 +99,28 @@ h1 {
 
 
 
+=======
+
+.header-row {
+  display: flex;
+  align-items: center; /* מיישר את הכפתור והטקסט לגובה אחיד */
+  justify-content: center; /* מרווח יפה ביניהם */
+  margin-bottom: 1rem; /* רווח מהקופסה מתחת */
+}
+
+.header-row h2 {
+  margin: 0; /* להסיר רווחים מיותרים של ברירת מחדל */
+  font-size: 1.5rem;
+  font-weight: 200;
+  color: #004051;
+  margin-left: 2rem;
+}
+
+#reset-default {
+  flex-shrink: 0; /* שלא יקטן כשהמסך קטן */
+}
+
+>>>>>>> origin/main
 .parameter-box {
   width: 1100px;
   margin: 0 auto;
@@ -110,6 +133,7 @@ h1 {
   margin-top: 40px;
 }
 
+<<<<<<< HEAD
 .parameter-box::-webkit-scrollbar {
   width: 0;
 }
@@ -118,6 +142,15 @@ h1 {
   width: 8px;
 }
 
+=======
+
+.parameter-box::-webkit-scrollbar {
+  width: 0;
+}
+.parameter-box.open::-webkit-scrollbar {
+  width: 8px;
+}
+>>>>>>> origin/main
 .parameter-box.open::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
   border-radius: 4px;
@@ -130,8 +163,13 @@ h1 {
   font-weight: 300;
   text-align: right;
   position: relative;
+<<<<<<< HEAD
   padding-bottom: 2rem;
   }
+=======
+  padding-bottom: 1.5rem;
+}
+>>>>>>> origin/main
 
 .parameter-box.open .advanced-params {
   display: block;
@@ -140,7 +178,10 @@ h1 {
 .parameter-box.open .advanced-params::-webkit-scrollbar {
   width: 8px;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 .parameter-box.open .advanced-params::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
   border-radius: 4px;
@@ -175,6 +216,16 @@ h1 {
   height: 1.2rem;
 }
 
+<<<<<<< HEAD
+=======
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  direction: ltr;
+  margin-top: 15px;
+}
+
+>>>>>>> origin/main
 .advanced-toggle:hover {
   transform: scale(1.05) translateY(4px);
 }
@@ -183,6 +234,7 @@ h1 {
   transform: translateY(2px) rotate(360deg);
 }
 
+<<<<<<< HEAD
 .slider-wrapper {
   position: relative;
   width: 100%;
@@ -190,6 +242,8 @@ h1 {
   margin-top: 15px;
 }
 
+=======
+>>>>>>> origin/main
 .slider {
   -webkit-appearance: none;
   width: 100%;
@@ -238,7 +292,11 @@ h1 {
 .endpoints {
   display: flex;
   justify-content: space-between;
+<<<<<<< HEAD
   margin-top: 1.5rem;
+=======
+  margin-top: 0.5rem;
+>>>>>>> origin/main
   color: #004051;
   font-weight: 300;
   font-size: 1rem;
@@ -273,8 +331,13 @@ h1 {
   padding: 0.75rem 1rem;
   background-color: rgba(0, 64, 81, 0.2);
   color: #004051;
+<<<<<<< HEAD
   font-size: 20px;
   font-weight: 300;
+=======
+  font-size: 1rem;
+  font-weight: 400;
+>>>>>>> origin/main
   text-align: center;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -318,6 +381,7 @@ h1 {
   100% { transform: rotate(360deg); }
 }
 
+<<<<<<< HEAD
 .param-label-with-tooltip {
   display: flex;
   align-items: center;
@@ -459,4 +523,34 @@ h1 {
     height: 52vh;
   }
 }
+=======
+.bottom-buttons {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.bottom-buttons .nav-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  pointer-events: auto;
+  margin-right: auto; /* כל כפתור יתחוף את עצמו שמאלה */
+}
+
+/* כפתור חזרה - יישאר בקצה הימני */
+#back-button {
+  margin-right: 0; /* לא לדחוף אותו שמאלה בכלל */
+}
+
+.bottom-buttons .nav-button:last-child {
+  margin-left: 20px; /* או כמה שבא לך */
+}
+
+>>>>>>> origin/main
 

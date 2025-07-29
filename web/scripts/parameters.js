@@ -26,8 +26,11 @@ let paramDefs = [];
 window.addEventListener('DOMContentLoaded', () => {
   eel.load_params()(defs => {
     paramDefs = defs;
+<<<<<<< HEAD
     console.log("פרמטרים שהתקבלו מהשרת:", paramDefs);
 
+=======
+>>>>>>> origin/main
     initRendering();
   });
 
@@ -48,12 +51,16 @@ function initRendering() {
 
   const toggle = document.createElement('div');
   toggle.classList.add('advanced-toggle');
+<<<<<<< HEAD
   toggle.innerHTML = `<span>פרמטרים מתקדמים</span> <svg class="arrow-down" xmlns="http://www.w3.org/2000/svg"
               fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
              width="24" height="24">
              <path stroke-linecap="round" stroke-linejoin="round"
              d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>`;
+=======
+  toggle.innerHTML = `<span>פרמטרים מתקדמים</span><svg class="arrow-down" …>…</svg>`;
+>>>>>>> origin/main
   container.appendChild(toggle);
 
   const advContainer = document.createElement('div');
@@ -68,6 +75,7 @@ function renderParam(def) {
   const wrapper = document.createElement('div');
   wrapper.classList.add('parameter');
 
+<<<<<<< HEAD
   // 🟦 עטיפת טקסט עם אייקון i
   const labelWrapper = document.createElement('div');
   labelWrapper.classList.add('param-label-with-tooltip');
@@ -93,6 +101,13 @@ function renderParam(def) {
   wrapper.appendChild(labelWrapper);
 
   // 🟪 טווח
+=======
+  const label = document.createElement('label');
+  label.htmlFor = def.key;
+  label.textContent = def.label;
+  wrapper.appendChild(label);
+
+>>>>>>> origin/main
   if (def.type === 'range') {
     const sw = document.createElement('div');
     sw.classList.add('slider-wrapper');
@@ -119,6 +134,7 @@ function renderParam(def) {
 
     wrapper.appendChild(sw);
 
+<<<<<<< HEAD
 // רק אם יש endpoints – מוסיפים אותם
     if (def.endpoints && def.endpoints.length === 2) {
       const ends = document.createElement('div');
@@ -128,6 +144,13 @@ function renderParam(def) {
     }
 
   // 🟨 select
+=======
+    const ends = document.createElement('div');
+    ends.classList.add('endpoints');
+    ends.innerHTML = `<span class="endpoint">${def.endpoints[0]}</span><span class="endpoint">${def.endpoints[1]}</span>`;
+    wrapper.appendChild(ends);
+
+>>>>>>> origin/main
   } else if (def.type === 'select') {
     const sw = document.createElement('div');
     sw.classList.add('select-wrapper');
@@ -149,7 +172,10 @@ function renderParam(def) {
   return wrapper;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 function attachListeners() {
   const container = document.querySelector('.parameter-box');
   const toggle = container.querySelector('.advanced-toggle');
@@ -226,7 +252,10 @@ document.getElementById('reset-default').addEventListener('click', () => {
 
 backButton.addEventListener('click', () => {
   eel.cleanup_upload()().then(() => {
+<<<<<<< HEAD
   internalNavigation = true;
+=======
+>>>>>>> origin/main
     window.location.href = `suggest-expansion.html?slug=${encodeURIComponent(slug)}`;
   });
 });
@@ -250,9 +279,12 @@ function closestLearningRate(val) {
 }
 
 document.getElementById('save-and-continue').addEventListener('click', async () => {
+<<<<<<< HEAD
   const button = document.getElementById('save-and-continue');
   const overlay = document.getElementById('loading-overlay');
 
+=======
+>>>>>>> origin/main
   try {
     const finalDatasetPath = await eel.prepare_final_dataset(slug)();
     const trainingParams = {};
@@ -291,6 +323,7 @@ document.getElementById('save-and-continue').addEventListener('click', async () 
     trainingParams.dataset_path = finalDatasetPath;
     trainingParams.slug = slug;
 
+<<<<<<< HEAD
     const response = await eel.save_training_config(trainingParams)();
 
     if (response && response.success) {
@@ -386,3 +419,15 @@ fetch('components/navbar.html')
   };
   document.body.appendChild(script);
 });
+=======
+    console.log('Training params ready:', trainingParams);
+    await eel.save_training_config(trainingParams)();
+
+    alert('ההגדרות נשמרו בהצלחה! אפשר להתחיל אימון 🚀');
+
+  } catch (error) {
+    console.error('בעיה בשמירה:', error);
+    alert('אירעה שגיאה במהלך שמירת ההגדרות');
+  }
+});
+>>>>>>> origin/main

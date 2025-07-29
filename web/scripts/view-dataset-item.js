@@ -17,6 +17,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+<<<<<<< HEAD
+=======
+  // שליפה מתוך localStorage כדי לדעת איפה להתחיל
+>>>>>>> origin/main
   dataset = JSON.parse(localStorage.getItem("dataset")) || [];
   currentIndex = parseInt(localStorage.getItem("currentIndex")) || 0;
 
@@ -28,11 +32,17 @@ async function refreshDataset() {
     dataset = await eel.load_generated_data(modelName)();
     if (dataset.length === 0) {
       alert("אין פריטים להצגה.");
+<<<<<<< HEAD
       internalNavigation = true;
       window.location.href = `edit-dataset.html?slug=${modelName}`;
       return;
     }
 
+=======
+      window.location.href = `edit-dataset.html?slug=${modelName}`;
+      return;
+    }
+>>>>>>> origin/main
     if (currentIndex >= dataset.length) currentIndex = dataset.length - 1;
 
     localStorage.setItem("dataset", JSON.stringify(dataset));
@@ -49,6 +59,10 @@ function renderCurrentItem() {
   questionText.textContent = current.question;
   answerText.textContent = current.answer;
 
+<<<<<<< HEAD
+=======
+  // עדכון זמינות כפתורים
+>>>>>>> origin/main
   prevBtn.disabled = currentIndex === 0;
   nextBtn.disabled = currentIndex === dataset.length - 1;
 
@@ -74,6 +88,7 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
+<<<<<<< HEAD
 // ✅ מחיקה עם פופאפ מותאם אישית
 deleteBtn.addEventListener("click", () => {
   showPopup({
@@ -114,3 +129,27 @@ fetch('components/navbar.html')
   };
   document.body.appendChild(script);
 });
+=======
+// מחיקה מהמאגר (כולל עדכון בשרת)
+deleteBtn.addEventListener("click", async () => {
+  const confirmed = confirm("האם אתה בטוח שברצונך למחוק את הסט הזה?");
+  if (!confirmed) return;
+
+  try {
+    await eel.delete_from_generated_raw(modelName, currentIndex)();
+    await refreshDataset();
+  } catch (err) {
+    console.error("שגיאה במחיקה:", err);
+    alert("❌ שגיאה במחיקת סט.");
+  }
+});
+document.getElementById("back-btn").addEventListener("click", () => {
+    const slug = new URLSearchParams(window.location.search).get("slug");
+    if (slug) {
+      window.location.href = `edit-dataset.html?slug=${slug}`;
+    } else {
+      alert("❌ לא נמצא שם מודל בכתובת.");
+    }
+  });
+  
+>>>>>>> origin/main

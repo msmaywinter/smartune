@@ -1,0 +1,14 @@
+{
+  "slug": "12345",
+  "model_name": "12345",
+  "original_slug": "20250525_170953",
+  "original_filename": "gadget_qa_dataset_hebrew.xlsx",
+  "original_count": 50,
+  "user_generated": true,
+  "generated_requested": 10,
+  "generated_count": 10,
+  "manual_added_count": 0,
+  "total_final_count": 60,
+  "creation_date": "2025-05-25T17:09:53.382152",
+  "last_updated": "2025-05-25T17:10:21.574554"
+}

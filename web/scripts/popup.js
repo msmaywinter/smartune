@@ -35,7 +35,10 @@ document.addEventListener('click', function(event) {
   switch (event.target.id) {
     case "go-to-parameters":
       // לדוגמה: נווט לעמוד אחר
+<<<<<<< HEAD
       internalNavigation = true;
+=======
+>>>>>>> origin/main
       window.location.href = "parameters.html";
       break;
 

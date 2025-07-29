@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           }
         }, 50);
   });
+<<<<<<< HEAD
 
 
   fetch('components/navbar.html')
@@ -43,3 +44,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
   document.body.appendChild(script);
 });
+=======
+  
+>>>>>>> origin/main

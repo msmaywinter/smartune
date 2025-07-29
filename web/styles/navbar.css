@@ -20,8 +20,12 @@
   }
   
   .logo img {
+<<<<<<< HEAD
    margin-top: 35px;
     height: 35px;
+=======
+    height: 60px;
+>>>>>>> origin/main
     width: auto;
   }
 
@@ -121,6 +125,7 @@
   .step:nth-of-type(5) { animation-delay: 0.3s; }
   .step:nth-of-type(7) { animation-delay: 0.4s; }
   .step:nth-of-type(9) { animation-delay: 0.5s; }
+<<<<<<< HEAD
 
   .step .circle {
   width: 36px;
@@ -149,4 +154,6 @@
   background-color: #95C3D9;
 }
 
+=======
+>>>>>>> origin/main
   

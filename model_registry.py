@@ -19,8 +19,12 @@ def is_duplicate_model_name(name: str) -> bool:
     slug = slugify(name)
     return os.path.exists(os.path.join("models", slug))
 
+<<<<<<< HEAD
 def save_model_metadata(name: str, user: str, description: str) -> dict:
 
+=======
+def save_model_metadata(name: str) -> dict:
+>>>>>>> origin/main
     print(f"קיבלתי בקשה לשמור מודל: {name}")
 
     if not is_valid_model_name(name):
@@ -41,8 +45,11 @@ def save_model_metadata(name: str, user: str, description: str) -> dict:
     # עדכון שם המודל וה-slug
     metadata["model_name"] = name.strip()
     metadata["slug"] = slug
+<<<<<<< HEAD
     metadata["user"] = user.strip()
     metadata["description"] = description.strip()
+=======
+>>>>>>> origin/main
     metadata["last_updated"] = datetime.now().isoformat()
 
     # שינוי שם התיקייה של המודל

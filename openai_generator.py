@@ -11,6 +11,7 @@ from datetime import datetime
 
 from state_manager import save_temp_metadata
 
+<<<<<<< HEAD
 
 def get_metadata_path(slug):
     return os.path.join("models", slug, "metadata.json")
@@ -25,13 +26,24 @@ api_key = keys.get("OPENAI_API_KEY")
 if not api_key:
     raise ValueError("❌ מפתח ה-API לא נמצא בתוך Keys.json")
 
+=======
+def get_metadata_path(slug):
+    return os.path.join("models", slug, "metadata.json")
+
+# === הגדרות כלליות === #
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
+>>>>>>> origin/main
 client = OpenAI(api_key=api_key)
 
 MAX_TOKENS = 4096
 TEMPERATURE = 0.3
 CHUNK_SIZE = 3
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # === פונקציות עזר === #
 def load_model_metadata(slug: str) -> dict:
     """טוען את המטאדאטה של מודל לפי שם."""
@@ -44,7 +56,10 @@ def load_model_metadata(slug: str) -> dict:
 
     return metadata
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def detect_language(data):
     hebrew_chars = set("אבגדהוזחטיכלמנסעפצקרשת")
     for item in data:
@@ -52,7 +67,10 @@ def detect_language(data):
             return "he"
     return "en"
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def group_by_topic(data):
     grouped = defaultdict(list)
     for item in data:
@@ -60,7 +78,10 @@ def group_by_topic(data):
         grouped[topic].append(item)
     return grouped
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def distribute_generation_amount(total, grouped_data):
     total_questions = sum(len(qs) for qs in grouped_data.values())
     raw_distribution = {
@@ -78,12 +99,18 @@ def distribute_generation_amount(total, grouped_data):
 
     return distribution
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def chunk_list(data, size):
     for i in range(0, len(data), size):
         yield data[i:i + size]
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 def extract_json_safely(text):
     try:
         json_str = re.search(r'\[\s*{.*?}\s*]', text, re.DOTALL).group()
@@ -95,7 +122,10 @@ def extract_json_safely(text):
         except Exception:
             return None
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # === בניית פרומפט === #
 
 def build_prompt(sample_data, avoid_qs, lang, num_to_generate):
@@ -155,7 +185,10 @@ Format:
 ]
 """
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # === בקשת ג׳נרציה בודדת === #
 
 def generate_batch(sample_data, avoid_qs, lang, num_to_generate):
@@ -172,7 +205,10 @@ def generate_batch(sample_data, avoid_qs, lang, num_to_generate):
         print(f"שגיאה בג׳נרציה: {e}")
         return []
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # === פונקציית הג׳נרציה הראשית === #
 
 async def generate_by_topics(original_data: list, total_to_generate: int, slug: str):
@@ -272,12 +308,21 @@ async def generate_by_topics(original_data: list, total_to_generate: int, slug: 
         if remaining_to_generate > 0:
             print(f"עדיין חסרים {remaining_to_generate} סטים – ייתכן שהמודל לא ייצר את כולם.")
 
+<<<<<<< HEAD
     # שמירת הפלט לקובץ
+=======
+
+   # שמירת הפלט לקובץ
+>>>>>>> origin/main
     output_dir = Path(f"models/{slug}")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "generated_raw.json"
 
+<<<<<<< HEAD
     # שילוב של שאלות מקוריות עם מג'ונרטות
+=======
+# שילוב של שאלות מקוריות עם מג'ונרטות
+>>>>>>> origin/main
     combined_data = original_data + all_generated
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -290,7 +335,10 @@ async def generate_by_topics(original_data: list, total_to_generate: int, slug: 
     print(f"\nנוצרו {len(all_generated)} סטים חדשים עבור המודל '{slug}'")
     print(f"נשמר אל: {output_path}")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 # === עדכון מטאדאטה בסיום ג'נרציה === #
 def finalize_generation(slug: str) -> dict:
     """מעודכן את כמות הסטים המג'ונרטים והכמות הסופית במטאדאטה."""
@@ -311,7 +359,11 @@ def finalize_generation(slug: str) -> dict:
 
         with open(metadata_path, "w", encoding="utf-8") as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> origin/main
         save_temp_metadata(metadata)
 
         print(f"עודכן מטאדאטה לאחר סיום ג'נרציה למודל {slug}")
